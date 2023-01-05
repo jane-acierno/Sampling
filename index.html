@@ -156,6 +156,16 @@ show_clickable_nav: true
 
 trainingList.push(trial);
 
+// initial survey
+var survey0 = {
+  type: 'survey-text',
+  questions: ["Please estimate the percentage of Americans who feel favorably about X."],
+  rows: [8,8,8],
+  columns: [70,70,70],
+}
+
+trainingList.push(survey0);
+
 // var numTB = 2 // number of Training Blocks
 // var possibleLocations = ["left","right"];
 // // each block of 10 cross sit exposure trials that each show 3 different aliens, so each block has each alien exactly once

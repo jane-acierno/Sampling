@@ -147,7 +147,7 @@ trainingList.push(trial);
 var trial = {
 type: 'instructions',
 pages: [
-	'Welcome to this experiment. In this experiment you will read opinions from a random sample of Americans. At the end we will ask you to [OUTCOME VARIABLE]. When you are ready to proceed, please click "next".',
+	'Welcome to this experiment. In this experiment you will read opinions from a random sample of Americans. At the end we will ask you to estimate the percentage of Americans who feel favorably about X. When you are ready to proceed, please click "next".',
 ],
 show_clickable_nav: true
 }
@@ -164,7 +164,6 @@ var survey0 = {
 }
 
 trainingList.push(survey0);
-
 
 // var numTB = 2 // number of Training Blocks
 // var possibleLocations = ["left","right"];
@@ -438,12 +437,21 @@ var testProdNum = 1;
 
 var survey1 = {
   type: 'survey-text',
-  questions: ["What sampling strategy did you use?"],
+  questions: ["After reading various Americans' opinions, please estimate the percentage of Americans who feel favorably about X."],
   rows: [8,8,8],
   columns: [70,70,70]
 };
 
 prodTestList.push(survey1);
+
+var survey2 = {
+  type: 'survey-text',
+  questions: ["What sampling strategy did you use?"],
+  rows: [8,8,8],
+  columns: [70,70,70]
+};
+
+prodTestList.push(survey2);
 
 
 // FIX THIS AND COMMENT IT BACK IN

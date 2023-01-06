@@ -474,9 +474,97 @@ prodTestList.push(survey2);
 
 // prodTestList.push(survey2);
 
+var NFCq = ["Extremely uncharacteristic", "Somewhat uncharacteristic", "Uncertain", "Somewhat characteristic", "Extremely characteristic"];
+var Genderq = ["Man", "Woman", "Non-binary", "Other", "Prefer not to answer"];
+var Eduq = ["Some high school", "High school degree", "Some college", "Associates Degree", "Bachelors degree", "Graduate degree"];
+var PolIDq = ["1 = Extremely Liberal", "2", "3", "4 = Neither", "5", "6", "7 = Extremely Conservative"];
+var Relq = ["1 = Not at all Religious", "2", "3", "4", "5", "6", "7 = Extremely Religious"];
+var Incomeq = ["Less than $10,000 USD a year", "$10,000 - $20,000 USD", "$20,000-$40,000 USD", "$40,000-$60,000 USD", "$60,000-$80,000 USD", "$80,000-$100,000 USD", "$100,000 USD a year or more"];
+var Raceq = ["White, not hispanic or latinx", "Black or African American", "Asian", "American Indian or Alaska Native", "Native Hawaiian or Other Pacific Islander", "Hispanic or Latinx", "Two or more", "Not listed"];
+var Demand1q = ["1 = Not at all", "2", "3", "4", "5 = Very much so"];
+var compTypeq = ["Laptop/Desktop", "Ipad/Tablet", "Other"];
+var B5q = ["Completely disagree", "Disagree", " Slightly Disagree ", " Slightly Agree ", "Agree", "Completely agree"];
 
+var NFC = {
+            type: 'survey-multi-choice',
+            questions: [
+                {prompt: '<p style="text-align: left;font-size:18px;">I would prefer complex to simple problems.</p>', options: NFCq, required: true, horizontal: true,}, 
+                {prompt: '<p style="text-align: left;font-size:18px;">I like to have the responsibility of handling a situation that requires a lot of thinking.</p>', options: NFCq, required: true, horizontal: true},
+                {prompt: '<p style="text-align: left;font-size:18px;">Thinking is not my idea of fun.</p>', options: NFCq, required: true, horizontal: true,}, 
+                {prompt: '<p style="text-align: left;font-size:18px;">I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>', options: NFCq, required: true, horizontal: true},
+                {prompt: '<p style="text-align: left;font-size:18px;">I really enjoy a task that involves coming up with new solutions to problems.</p>', options: NFCq, required: true, horizontal: true},
+                {prompt: '<p style="text-align: left;font-size:18px;">I would prefer a task that is intellectual, difficult, and important to one than is somewhat important but does not require much thought.</p>', options: NFCq, required: true, horizontal: true}
+            ],
+            randomize_question_order: true,
+            preamble: 'Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:',
+            scale_width: 500
+            };
 
+var demo_Age = {
+        type: 'survey-text',
+        questions: [
+        {prompt: 'How old are you?', columns: 3, required: true, name: 'Age'},
+        {prompt: 'What is your religious affiliation?', columns: 50, name: 'Religious Affiliation'}
+        ],
+        randomize_question_order: true
+        };
 
+var demo_gen = {
+        type: 'survey-multi-choice',
+        questions: [
+            {prompt: '<p style="text-align: left;font-size:18px;">What is your Gender?</p>', options: Genderq, required: true, horizontal: true,}, 
+            {prompt: '<p style="text-align: left;font-size:18px;">Which of the following items BEST describes your ethnic or racial background?</p>', options: Raceq, required: true, horizontal: true},
+            {prompt: '<p style="text-align: left;font-size:18px;">How religious would you consider yourself?</p>', options: Relq, required: true, horizontal: true,}, 
+            {prompt: '<p style="text-align: left;font-size:18px;">What is your household income?</p>', options: Incomeq, required: true, horizontal: true},
+            {prompt: '<p style="text-align: left;font-size:18px;">What is the highest degree or level of school you have completed?</p>', options: Eduq, required: true, horizontal: true}
+          ],
+        randomize_question_order: true,
+        scale_width: 500,
+        preamble: '<p style="text-align: left;font-size:28px;"Using the scales provided, please respond to each question about you as an individual.</p>'
+        };
+
+var demo_PolIQ = {
+        type: 'survey-multi-choice',
+        questions: [
+            {prompt: '<p style="text-align: left;font-size:18px;">Which response best captures your political beliefs surrounding economic issues?</p>', options: PolIDq, required: true, horizontal: true,}, 
+            {prompt: '<p style="text-align: left;font-size:18px;">Which response best captures your political beliefs surrounding social issues?</p>', options: PolIDq, required: true, horizontal: true},
+            {prompt: '<p style="text-align: left;font-size:18px;">When it comes to overall political issues, you consider yourself to be a:</p>', options: PolIDq, required: true, horizontal: true,}
+        ],
+        randomize_question_order: true,
+        scale_width: 500,
+        preamble: '<p style="text-align: left;font-size:28px;"Please answer the following questions about your political ideology.</p>'
+        };
+
+var demo_FinalQs = {
+        type: 'survey-multi-choice',
+        questions: [
+            {prompt: '<p style="text-align: left;font-size:18px;">What kind of device did you use to complete this study?</p>', options: compTypeq, required: true, horizontal: true,}, 
+            {prompt: '<p style="text-align: left;font-size:18px;">Did you feel pressure to respond in a particular way to any of the questions?</p>', options: Demand1q, required: true, horizontal: true,}, 
+            {prompt: '<p style="text-align: left;font-size:18px;">Did you feel as though you might be judged for your responses to the questions you answered.</p>', options: Demand1q, required: true, horizontal: true}        
+          ],
+        randomize_question_order: true,
+        scale_width: 500,
+        preamble: '<p style="text-align: left;font-size:28px;"For these final questions, please answer as honestly as you can! The answers to these questions will not affect whether or not you receive credit/payment for participation!</p>'
+        };
+
+var B5= {type: 'survey-multi-choice',
+	questions: [
+			
+    		{prompt: ' I see myself as Extraverted, enthusiastic ', options: B5q, required: true, horizontal: true,}, 
+		{prompt: ' I see myself as Critical, quarrelsome ', options: B5q, required: true, horizontal: true},
+		{prompt: ' I see myself as Dependable, self-disciplined. ', options: B5q, required: true, horizontal: true,}, 
+		{prompt: 'I see myself as Anxious, easily upset ', options: B5q, required: true, horizontal: true},
+		{prompt: ' I see myself as Open to new experiences, complex.', options: B5q, required: true, horizontal: true},
+    		{prompt: ' I see myself as Reserved, quiet.', options: B5q, required: true, horizontal: true,}, 
+   		{prompt: ' I see myself as Sympathetic, warm.', options: B5q, required: true, horizontal: true},
+		{prompt: ' I see myself as Disorganized, careless.', options: B5q, required: true, horizontal: true,}, 
+		{prompt: ' I see myself as Calm, emotionally stable.', options: B5q, required: true, horizontal: true},
+		{prompt: ' I see myself as Conventional, uncreative. ', options: B5q, required: true, horizontal: true},
+		],
+
+		    randomize_question_order: true,
+		    preamble: '<p style="text-align: left;font-size:28px" Here are a number of personality traits that may or may not apply to you. Please choose the options next to each statement to indicate the extent to which you agree or disagree with that statement. You should rate the extent to which the pair of traits applies to you, even if one characteristic applies more strongly than the other. Show how much you agree with the items below. You can work quickly; your first feeling is generally best'
+		};
 
 //combine all trials into timeline
 timeline=trainingList.concat(selectList);

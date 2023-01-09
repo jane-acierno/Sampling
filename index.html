@@ -36,8 +36,20 @@
   <div id="jspsych-target"></div>
 </body>
 <script>
-	// GLOBAL VARIABLE
-var survey2_options = ["Yes",  "Somewhat", "No"];
+
+	// GLOBAL VARIABLES
+var survey3_options = ["Yes",  "Somewhat", "No"];
+var NFCq = ["Extremely uncharacteristic", "Somewhat uncharacteristic", "Uncertain", "Somewhat characteristic", "Extremely characteristic"];
+var Genderq = ["Man", "Woman", "Non-binary", "Other", "Prefer not to answer"];
+var Eduq = ["Some high school", "High school degree", "Some college", "Associates Degree", "Bachelors degree", "Graduate degree"];
+var PolIDq = ["1 = Extremely Liberal", "2", "3", "4 = Neither", "5", "6", "7 = Extremely Conservative"];
+var Relq = ["1 = Not at all Religious", "2", "3", "4", "5", "6", "7 = Extremely Religious"];
+var Incomeq = ["Less than $10,000 USD a year", "$10,000 - $20,000 USD", "$20,000-$40,000 USD", "$40,000-$60,000 USD", "$60,000-$80,000 USD", "$80,000-$100,000 USD", "$100,000 USD a year or more"];
+var Raceq = ["White, not hispanic or latinx", "Black or African American", "Asian", "American Indian or Alaska Native", "Native Hawaiian or Other Pacific Islander", "Hispanic or Latinx", "Two or more", "Not listed"];
+var Demand1q = ["1 = Not at all", "2", "3", "4", "5 = Very much so"];
+var compTypeq = ["Laptop/Desktop", "Ipad/Tablet", "Other"];
+var B5q = ["Completely disagree", "Disagree", " Slightly Disagree ", " Slightly Agree ", "Agree", "Completely agree"];
+
 
 // ORGANIZE SUBJECT ID & GENERAL PARAMETERS
 
@@ -431,10 +443,19 @@ var testProdNum = 1;
 // };
 // };
 
+// CHANGE THIS TO A YES/NO QUESTION. IF 'YES': PRESENT SAMPLING SCREEN AGAIN WITH DIFFERENT OPTIONS. IF 'NO': ADVANCE TO FINAL SURVEYS.
+var continue_trial = {
+type: 'instructions',
+pages: [
+	'Do you want to read more opinions? If so, please click to continue'
+],
+show_clickable_nav: true
+};
+
+prodTestList.push(continue_trial);
 
 
 // final response survey
-
 
 var survey1 = {
   type: 'survey-text',
@@ -455,35 +476,26 @@ var survey2 = {
 prodTestList.push(survey2);
 
 
-// FIX THIS AND COMMENT IT BACK IN
-// var survey2 = {
-// 	type: 'survey-multi-choice',
-// 	preamble: "<br><br>Do you value the opinion of the following people?",
-// 	questions: [{
-// 		prompt: "Liberals",
-// 		options: survey2_options,
-// 		required: true,
-// 		horizontal: true
-// 		}, {
-// 		prompt: "Conservatives",
-// 		options: survey2_options,
-// 		required: true,
-// 		horizontal: true
-// 		}, ]
-// };
+// FIX THIS
+var survey3 = {
+	type: 'survey-multi-choice',
+	preamble: "<br><br>Do you value the opinion of the following people?",
+	randomize_question_order: true,
+	questions: [{
+		prompt: "Liberals",
+		options: survey3_options,
+		required: true,
+		horizontal: true
+		}, {
+		prompt: "Conservatives",
+		options: survey3_options,
+		required: true,
+		horizontal: true
+		}, ]
+};
 
-// prodTestList.push(survey2);
+prodTestList.push(survey3);
 
-var NFCq = ["Extremely uncharacteristic", "Somewhat uncharacteristic", "Uncertain", "Somewhat characteristic", "Extremely characteristic"];
-var Genderq = ["Man", "Woman", "Non-binary", "Other", "Prefer not to answer"];
-var Eduq = ["Some high school", "High school degree", "Some college", "Associates Degree", "Bachelors degree", "Graduate degree"];
-var PolIDq = ["1 = Extremely Liberal", "2", "3", "4 = Neither", "5", "6", "7 = Extremely Conservative"];
-var Relq = ["1 = Not at all Religious", "2", "3", "4", "5", "6", "7 = Extremely Religious"];
-var Incomeq = ["Less than $10,000 USD a year", "$10,000 - $20,000 USD", "$20,000-$40,000 USD", "$40,000-$60,000 USD", "$60,000-$80,000 USD", "$80,000-$100,000 USD", "$100,000 USD a year or more"];
-var Raceq = ["White, not hispanic or latinx", "Black or African American", "Asian", "American Indian or Alaska Native", "Native Hawaiian or Other Pacific Islander", "Hispanic or Latinx", "Two or more", "Not listed"];
-var Demand1q = ["1 = Not at all", "2", "3", "4", "5 = Very much so"];
-var compTypeq = ["Laptop/Desktop", "Ipad/Tablet", "Other"];
-var B5q = ["Completely disagree", "Disagree", " Slightly Disagree ", " Slightly Agree ", "Agree", "Completely agree"];
 
 var NFC = {
             type: 'survey-multi-choice',

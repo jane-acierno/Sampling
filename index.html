@@ -476,25 +476,25 @@ var survey2 = {
 prodTestList.push(survey2);
 
 
-// FIX THIS
-var survey3 = {
-	type: 'survey-multi-choice',
-	preamble: "<br><br>Do you value the opinion of the following people?",
-	randomize_question_order: true,
-	questions: [{
-		prompt: "Liberals",
-		options: survey3_options,
-		required: true,
-		horizontal: true
-		}, {
-		prompt: "Conservatives",
-		options: survey3_options,
-		required: true,
-		horizontal: true
-		}, ]
-};
+// FIX THIS and comment it back in once it's fixed
+// var survey3 = {
+// 	type: 'survey-multi-choice',
+// 	preamble: "<br><br>Do you value the opinion of the following people?",
+// 	randomize_question_order: true,
+// 	questions: [{
+// 		prompt: "Liberals",
+// 		options: survey3_options,
+// 		required: true,
+// 		horizontal: true
+// 		}, {
+// 		prompt: "Conservatives",
+// 		options: survey3_options,
+// 		required: true,
+// 		horizontal: true
+// 		}, ]
+// };
 
-prodTestList.push(survey3);
+// prodTestList.push(survey3);
 
 
 var NFC = {
@@ -512,6 +512,8 @@ var NFC = {
             scale_width: 500
             };
 
+prodTestList.push(NFC);
+
 var demo_Age = {
         type: 'survey-text',
         questions: [
@@ -520,6 +522,8 @@ var demo_Age = {
         ],
         randomize_question_order: true
         };
+
+prodTestList.push(demo_Age);
 
 var demo_gen = {
         type: 'survey-multi-choice',
@@ -535,6 +539,8 @@ var demo_gen = {
         preamble: '<p style="text-align: left;font-size:28px;"Using the scales provided, please respond to each question about you as an individual.</p>'
         };
 
+prodTestList.push(demo_gen);	
+
 var demo_PolIQ = {
         type: 'survey-multi-choice',
         questions: [
@@ -547,6 +553,8 @@ var demo_PolIQ = {
         preamble: '<p style="text-align: left;font-size:28px;"Please answer the following questions about your political ideology.</p>'
         };
 
+prodTestList.push(demo_PolIQ);	
+
 var demo_FinalQs = {
         type: 'survey-multi-choice',
         questions: [
@@ -558,6 +566,8 @@ var demo_FinalQs = {
         scale_width: 500,
         preamble: '<p style="text-align: left;font-size:28px;"For these final questions, please answer as honestly as you can! The answers to these questions will not affect whether or not you receive credit/payment for participation!</p>'
         };
+
+prodTestList.push(demo_FinalQs);
 
 var B5= {type: 'survey-multi-choice',
 	questions: [
@@ -577,6 +587,8 @@ var B5= {type: 'survey-multi-choice',
 		    randomize_question_order: true,
 		    preamble: '<p style="text-align: left;font-size:28px" Here are a number of personality traits that may or may not apply to you. Please choose the options next to each statement to indicate the extent to which you agree or disagree with that statement. You should rate the extent to which the pair of traits applies to you, even if one characteristic applies more strongly than the other. Show how much you agree with the items below. You can work quickly; your first feeling is generally best'
 		};
+
+prodTestList.push(B5);
 
 //combine all trials into timeline
 timeline=trainingList.concat(selectList);

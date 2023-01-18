@@ -443,6 +443,17 @@ var testProdNum = 1;
 // };
 // };
 
+// ANOTHER ATTEMPT AT CREATING THE CONTINUE SAMPLING SCREEN. NEED LIKERT PACKAGE IN JSPSYCH.
+// var continueoption = {
+// 	type: 'likert',
+// 	preamble: "<br><br>Do you want to sample from another 8 characters?",
+// 	likert_scale_values: [{value: 1, text: "Yes"},{value: 2, text: "No"}],
+// 	randomize_question_order: true,
+// 	questions: ["After reading various Americans' opinions, please estimate the percentage of Americans who feel favorably about X."]
+// };
+
+// prodTestList.push(continueoption);
+
 // CHANGE THIS TO A YES/NO QUESTION. IF 'YES': PRESENT SAMPLING SCREEN AGAIN WITH DIFFERENT OPTIONS. IF 'NO': ADVANCE TO FINAL SURVEYS.
 var continue_trial = {
 type: 'instructions',
@@ -453,6 +464,16 @@ show_clickable_nav: true
 };
 
 prodTestList.push(continue_trial);
+
+// ANOTHER ATTEMPT AT CREATING THE CONTINUE SAMPLING SCREEN. NEED HTML BUTTON RESPONSE PACKAGE IN JSPSYCH.
+// var continue_trial = {
+// 	type: html-button-response,
+// 	stimulus: '<p style="font-size:48px; color:red;">CONTINUE?</p>',
+// 	choices: [Yes, No],
+// 	prompt: "<p>Would you like to sample again?</p>"
+// };
+
+// prodTestList.push(continue_trial);
 
 
 // final response survey
@@ -477,24 +498,24 @@ prodTestList.push(survey2);
 
 
 // FIX THIS and comment it back in once it's fixed
-// var survey3 = {
-// 	type: 'survey-multi-choice',
-// 	preamble: "<br><br>Do you value the opinion of the following people?",
-// 	randomize_question_order: true,
-// 	questions: [{
-// 		prompt: "Liberals",
-// 		options: survey3_options,
-// 		required: true,
-// 		horizontal: true
-// 		}, {
-// 		prompt: "Conservatives",
-// 		options: survey3_options,
-// 		required: true,
-// 		horizontal: true
-// 		}, ]
-// };
+var survey3 = {
+	type: 'survey-multi-choice',
+	preamble: "<br><br>Do you value the opinion of the following people?",
+	randomize_question_order: true,
+	questions: [{
+		prompt: "Liberals",
+		options: survey3_options,
+		required: true,
+		horizontal: true
+		}, {
+		prompt: "Conservatives",
+		options: survey3_options,
+		required: true,
+		horizontal: true
+		}, ]
+};
 
-// prodTestList.push(survey3);
+prodTestList.push(survey3);
 
 
 var NFC = {

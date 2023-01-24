@@ -2,31 +2,34 @@
 <html>
 	
 <head>
-	
   	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery-ui.min.js"></script>
   	<script src="js/snap.svg-min.js"></script> 
   	<script src="js/jspsych.js"></script>
-	<script src="plugins/jspsych-instructions.js"></script>
+	<!-- <script src="plugins/jspsych-instructions.js"></script> -->
   	<script src="jspsych-learning.js"></script>
 	<script src="jspsych-learning-prompt.js"></script>
-	<script src="jspsych-production-test-singlepic.js"></script>
+	<!-- <script src="Sampling-main 2/plugins/jspsych-production-test-singlepic.js"></script> -->
 	<script src="jspsych-comprehension-test-prompt.js"></script>
 	<script src="jspsych-comprehension-test.js"></script>
 	<script src="jspsych-selection-learning.js"></script>
 	<script src="jspsych-audio-check.js"></script>
-  	<script src="plugins/jspsych-button-response.js"></script>
-  	<script src="plugins/jspsych-survey-text.js"></script>
-	<script src="plugins/jspsych-survey-multi-choice.js"></script>
-	<script src="jspsych-production-test-singlepic.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-categorize-html.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-image-button-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-survey-html-form.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
-    <script src="plugins/jspsych-survey-multi-select.js"></script>
+  	<!-- <script src="Sampling-main 2/plugins/jspsych-button-response.js"></script> -->
+  	<script src="Sampling-main 2/plugins/jspsych-survey-text.js"></script>
+	<script src="Sampling-main 2/plugins/jspsych-survey-multi-select.js"></script>
+	<!-- <script src="Sampling-main 2/plugins/plugin-survey-multi-select.js"></script> -->
+	<!-- <script src="Sampling-main 2/plugins/jspsych-production-test-singlepic.js"></script> -->
+    <!-- <script src="Sampling-main 2/plugins/jspsych-html-keyboard-response.js"></script> -->
+    <!-- <script src="Sampling-main 2/plugins/jspsych-image-keyboard-response.js"></script> -->
+    <!-- <script src="Sampling-main 2/plugins/jspsych-categorize-html.js"></script> -->
+    <!-- <script src="Sampling-main 2/plugins/jspsych-image-button-response.js"></script> -->
+    <script src="Sampling-main 2/plugins/jspsych-button-response.js"></script>
+    <!-- <script src="Sampling-main 2/plugins/jspsych-survey-html-form.js"></script> -->
+    <!-- <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script> -->
+	<script src="Sampling-main 2/plugins/jspsych-instructions.js"></script>
+    <!-- <script src="plugins/jspsych-survey-multi-select.js"></script> -->
+	<!-- <script src="jsPsych-main/packages/plugin-survey-multi-select"></script> -->
+	<!-- <link href="https://unpkg.com/jspsych@7.0.0/css/jspsych.css" rel="stylesheet" type="text/css" /> -->
     <link rel="stylesheet" href="css/jspsych.css"></link>
 	<link rel="stylesheet" href="css/jquery-ui.css"></link>
     <link rel="stylesheet" href="css/crossact.css"></link>
@@ -147,7 +150,7 @@ var trainingList = [];
 
 // start with a general instruction
 var trial = {
-type: 'instructions',
+type: jsPsychInstructions,
 pages: [
   'Consent form goes here. Press the button to consent and begin the experiment, or exit the experiment now if you do not wish to proceed.',
 ],
@@ -158,7 +161,7 @@ trainingList.push(trial);
 
 
 var trial = {
-type: 'instructions',
+type: jsPsychInstructions,
 pages: [
 	'Welcome to this experiment. In this experiment you will read opinions from a random sample of Americans. At the end we will ask you to estimate the percentage of Americans who feel favorably about X. When you are ready to proceed, please click "next".',
 ],
@@ -170,7 +173,7 @@ trainingList.push(trial);
 
 // initial survey
 var survey0 = {
-  type: 'survey-text',
+  type: jsPsychSurveyText,
   questions: ["Please estimate the percentage of Americans who feel favorably about X."],
   rows: [8,8,8],
   columns: [70,70,70],
@@ -269,7 +272,7 @@ var selectNum = 1;
 // start with instructions about the label test
 // put in instructions about being fast here if we are interested in RTs
 var selectionInstr = {
-type: 'instructions',
+type: jsPsychInstructions,
 pages: ['In this part you will get a chance to sample from the opinions of various Americans. On each trial you will see 8 Americans on the screen. You will get to choose which of the 8 perspectives you would like to learn more about. Click NEXT to get started.'],
 show_clickable_nav: true
 }
@@ -294,7 +297,7 @@ for (i =0; i < numSelectBlocks; i++) {
 	for (j =0; j < numLabelSelectTrialsPerBlock; j++) {
 		
 	var select = {
-		type: 'selection-learning',
+		type: "selection-learning",
 			image1: stims[stimNames[curLocationList[0]]]["image"],
 			image2: stims[stimNames[curLocationList[1]]]["image"],
 			image3: stims[stimNames[curLocationList[2]]]["image"],
@@ -456,7 +459,7 @@ var testProdNum = 1;
 
 // CHANGE THIS TO A YES/NO QUESTION. IF 'YES': PRESENT SAMPLING SCREEN AGAIN WITH DIFFERENT OPTIONS. IF 'NO': ADVANCE TO FINAL SURVEYS.
 var continue_trial = {
-type: 'instructions',
+type: jsPsychInstructions,
 pages: [
 	'Do you want to read more opinions? If so, please click to continue'
 ],
@@ -479,7 +482,7 @@ prodTestList.push(continue_trial);
 // final response survey
 
 var survey1 = {
-  type: 'survey-text',
+  type: jsPsychSurveyText,
   questions: ["After reading various Americans' opinions, please estimate the percentage of Americans who feel favorably about X."],
   rows: [8,8,8],
   columns: [70,70,70]
@@ -488,7 +491,7 @@ var survey1 = {
 prodTestList.push(survey1);
 
 var survey2 = {
-  type: 'survey-text',
+  type: jsPsychSurveyText,
   questions: ["What sampling strategy did you use?"],
   rows: [8,8,8],
   columns: [70,70,70]
@@ -499,7 +502,7 @@ prodTestList.push(survey2);
 
 // FIX THIS and comment it back in once it's fixed
 var survey3 = {
-	type: 'survey-multi-choice',
+	type: jsPsychMultiSelect,
 	preamble: "<br><br>Do you value the opinion of the following people?",
 	randomize_question_order: true,
 	questions: [{
@@ -519,7 +522,7 @@ prodTestList.push(survey3);
 
 
 var NFC = {
-            type: 'survey-multi-choice',
+            type: jsPsychMultiChoice,
             questions: [
                 {prompt: '<p style="text-align: left;font-size:18px;">I would prefer complex to simple problems.</p>', options: NFCq, required: true, horizontal: true,}, 
                 {prompt: '<p style="text-align: left;font-size:18px;">I like to have the responsibility of handling a situation that requires a lot of thinking.</p>', options: NFCq, required: true, horizontal: true},
@@ -536,7 +539,7 @@ var NFC = {
 prodTestList.push(NFC);
 
 var demo_Age = {
-        type: 'survey-text',
+        type: jsPsychSurveyText,
         questions: [
         {prompt: 'How old are you?', columns: 3, required: true, name: 'Age'},
         {prompt: 'What is your religious affiliation?', columns: 50, name: 'Religious Affiliation'}
@@ -547,7 +550,7 @@ var demo_Age = {
 prodTestList.push(demo_Age);
 
 var demo_gen = {
-        type: 'survey-multi-choice',
+        type: jsPsychMultiChoice,
         questions: [
             {prompt: '<p style="text-align: left;font-size:18px;">What is your Gender?</p>', options: Genderq, required: true, horizontal: true,}, 
             {prompt: '<p style="text-align: left;font-size:18px;">Which of the following items BEST describes your ethnic or racial background?</p>', options: Raceq, required: true, horizontal: true},
@@ -563,7 +566,7 @@ var demo_gen = {
 prodTestList.push(demo_gen);	
 
 var demo_PolIQ = {
-        type: 'survey-multi-choice',
+        type: jsPsychMultiChoice,
         questions: [
             {prompt: '<p style="text-align: left;font-size:18px;">Which response best captures your political beliefs surrounding economic issues?</p>', options: PolIDq, required: true, horizontal: true,}, 
             {prompt: '<p style="text-align: left;font-size:18px;">Which response best captures your political beliefs surrounding social issues?</p>', options: PolIDq, required: true, horizontal: true},
@@ -577,7 +580,7 @@ var demo_PolIQ = {
 prodTestList.push(demo_PolIQ);	
 
 var demo_FinalQs = {
-        type: 'survey-multi-choice',
+        type: jsPsychMultiChoice,
         questions: [
             {prompt: '<p style="text-align: left;font-size:18px;">What kind of device did you use to complete this study?</p>', options: compTypeq, required: true, horizontal: true,}, 
             {prompt: '<p style="text-align: left;font-size:18px;">Did you feel pressure to respond in a particular way to any of the questions?</p>', options: Demand1q, required: true, horizontal: true,}, 
@@ -590,7 +593,7 @@ var demo_FinalQs = {
 
 prodTestList.push(demo_FinalQs);
 
-var B5= {type: 'survey-multi-choice',
+var B5= {type: jsPsychMultiChoice,
 	questions: [
 			
     		{prompt: ' I see myself as Extraverted, enthusiastic ', options: B5q, required: true, horizontal: true,}, 
@@ -650,7 +653,7 @@ for (var i = 0; i < 10; i++){
 //debrief and code message
 var experimentFinal = [];
 var final_instructions = {
-	type: 'instructions',
+	type: jsPsychInstructions,
 	size: 400,
 	pages: [
 		'Thanks for participating!... debrief form goes here.'

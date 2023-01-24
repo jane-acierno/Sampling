@@ -1,0 +1,151 @@
+body {
+    /*background-image: url("../stims/water_background.jpg"); */
+	margin: 0;
+}
+
+/*
+html { 
+  background: url("../stims/water_background.jpg") center center fixed; 
+  -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+  background-size: cover;
+};
+*/
+
+
+/*.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
+} */
+
+
+/* #jspsych-button-response-btngroup {
+	position: absolute;
+	top: 409px;
+	left: 591px;
+}
+*/
+
+#jspsych-target {
+  position: relative;
+}
+
+
+#jspsych-test-canvas {
+  margin: auto;
+}
+
+input[type=number]{
+    width: 70px;
+} 
+
+#jspsych-bet-1 {
+	font-size: 18pt;
+	position: absolute;
+	left: 112px;
+	top: 300px;
+	
+}
+
+#jspsych-bet-2 {
+	font-size: 18pt;
+	position: absolute;
+	left: 612px;
+	top: 300px;
+	
+}
+
+#jspsych-bet-3 {
+	font-size: 18pt;
+	position: absolute;
+	left: 362px;
+	top: 500px;
+	
+}
+
+#jspsych-produce-1 {
+	font-size: 18pt;
+	position: absolute;
+	left: 72px;
+	top: 350px;
+	
+}
+
+#jspsych-produce-2 {
+	font-size: 18pt;
+	position: absolute;
+	left: 572px;
+	top: 350px;
+	
+}
+
+#jspsych-produce-3 {
+	font-size: 18pt;
+	position: absolute;
+	left: 322px;
+	top: 320px;
+	
+}
+
+
+#jspsych-betbox-1 {
+	font-size: 20pt;
+	
+}
+
+#jspsych-betbox-2 {
+	font-size: 20pt;
+	
+}
+
+#jspsych-betbox-3 {
+	font-size: 20pt;	
+}
+
+#jspsych-prodbox-1 {
+	font-size: 20pt;
+	
+}
+
+#jspsych-prodbox-2 {
+	font-size: 20pt;
+	
+}
+
+#jspsych-prodbox-3 {
+	font-size: 20pt;	
+}
+
+
+input:invalid {
+  outline: 2px solid red;
+}
+input:focus:invalid {
+  color: red;
+}
+
+#jspsych-learning-prompt-btngroup {
+	position: absolute;
+	top: 185px;
+	left: 362px;
+}
+
+#jspsych-selection-learning-btngroup {
+	position: absolute;
+	top: 90px;
+	left: 385px;
+}
+
+#jspsych-comp-test-prompt-btngroup {
+	position: absolute;
+	top: 100px;
+	left: 385px;
+}
+
+#jspsych-free-sort-arena {
+	position: absolute;
+	top: 50px;
+	left: 362px;
+  border: 2px solid #444;
+}

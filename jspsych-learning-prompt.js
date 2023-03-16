@@ -1,35 +1,46 @@
-/**
- * crossPC - learning
- * plugin for learning trials in cross-situational word learning study (production vs. comprehension, crossPC)
-* initial prompt
-* based on:
- * jspsych-button-response
- * Josh de Leeuw
- * Martin Zettersten
- */
+var jsPsychLearningPrompt = (function (jspsych) {
+  "use strict";
 
-jsPsych.plugins['learning-prompt'] = (function() {
+  const info = {
+    name: "learning-prompt",
+    parameters: {
+      parameter_name: {
+        type: jspsych.ParameterType.INT,
+        default: undefined,
+      },
+      parameter_name2: {
+        type: jspsych.ParameterType.IMAGE,
+        default: undefined,
+      },
+    },
+  };
 
-  var plugin = {};
-  
-  jsPsych.pluginAPI.registerPreload('learning', 'im1', 'image');
-  jsPsych.pluginAPI.registerPreload('learning', 'im2', 'image');
-  jsPsych.pluginAPI.registerPreload('learning', 'im3', 'image');
-
-  plugin.trial = function(display_element, trial) {
-	  
+  /**
+   * **PLUGIN-NAME**
+   *
+   * SHORT PLUGIN DESCRIPTION
+   *
+   * @author YOUR NAME
+   * @see {@link https://DOCUMENTATION_URL DOCUMENTATION LINK TEXT}
+   */
+  class LearningPromptPlugin {
+    constructor(jsPsych) {
+      this.jsPsych = jsPsych;
+    }
+    trial(display_element, trial) {
+      
       // default values
       trial.canvas_size = trial.canvas_size || [1024,700];
       trial.image_size = trial.image_size || [150, 150];
-	  trial.location1 = trial.location1 || "bottom";
-	  trial.location2 = trial.location2 || "topRight";
-	  trial.prompt = trial.prompt || "Learn the names for the two aliens!";
-	  trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
+      trial.location1 = trial.location1 || "bottom";
+      trial.location2 = trial.location2 || "topRight";
+      trial.prompt = trial.prompt || "Learn the names for the two aliens!";
+      trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
       trial.response_ends_trial = (typeof trial.response_ends_trial === 'undefined') ? true : trial.response_ends_trial;
       trial.timing_response = trial.timing_response || -1; // if -1, then wait for response forever
       trial.is_html = (typeof trial.is_html === 'undefined') ? false : trial.is_html;
       trial.prompt = (typeof trial.prompt === 'undefined') ? "" : trial.prompt;
-	  trial.timing_post_trial = typeof trial.timing_post_trial == 'undefined' ? 0 : trial.timing_post_trial;
+	    trial.timing_post_trial = typeof trial.timing_post_trial == 'undefined' ? 0 : trial.timing_post_trial; 
 	  
 	  
 	  
@@ -147,7 +158,7 @@ jsPsych.plugins['learning-prompt'] = (function() {
         display_element.html('');
 
         // move on to the next trial
-        jsPsych.finishTrial(trial_data);
+        this.finishTrial(trial_data);
       };
 
       // start timing
@@ -161,8 +172,38 @@ jsPsych.plugins['learning-prompt'] = (function() {
         }, trial.timing_response);
         setTimeoutHandlers.push(t2);
       }
+    }
+  }
+  LearningPromptPlugin.info = info;
 
-    };
+  return LearningPromptPlugin;
+})(jsPsychModule);
 
-    return plugin;
-  })();
+
+
+/**
+ * crossPC - learning
+ * plugin for learning trials in cross-situational word learning study (production vs. comprehension, crossPC)
+* initial prompt
+* based on:
+ * jspsych-button-response
+ * Josh de Leeuw
+ * Martin Zettersten
+ */
+
+// jsPsych.plugins['learning-prompt'] = (function() {
+
+//   var plugin = {};
+  
+//   jsPsych.pluginAPI.registerPreload('learning', 'im1', 'image');
+//   jsPsych.pluginAPI.registerPreload('learning', 'im2', 'image');
+//   jsPsych.pluginAPI.registerPreload('learning', 'im3', 'image');
+
+//   plugin.trial = function(display_element, trial) {
+	  
+      
+
+//     };
+
+//     return plugin;
+//   })();

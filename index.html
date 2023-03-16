@@ -1,300 +1,310 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	
-<head>
-	
-  	<script src="js/jquery.min.js"></script>
-	<script src="js/jquery-ui.min.js"></script>
-  	<script src="js/snap.svg-min.js"></script> 
-  	<script src="js/jspsych.js"></script>
-	<script src="plugins/jspsych-instructions.js"></script>
-  	<script src="jspsych-learning.js"></script>
-	<script src="jspsych-learning-prompt.js"></script>
-	<script src="jspsych-production-test-singlepic.js"></script>
-	<script src="jspsych-comprehension-test-prompt.js"></script>
-	<script src="jspsych-comprehension-test.js"></script>
-	<script src="jspsych-selection-learning.js"></script>
-	<script src="jspsych-audio-check.js"></script>
-  	<script src="plugins/jspsych-button-response.js"></script>
-  	<script src="plugins/jspsych-survey-text.js"></script>
-	<script src="plugins/jspsych-survey-multi-choice.js"></script>
-	<script src="jspsych-production-test-singlepic.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-image-keyboard-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-categorize-html.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-image-button-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-html-button-response.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-survey-html-form.js"></script>
-    <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
-    <script src="plugins/jspsych-survey-multi-select.js"></script>
-    <link rel="stylesheet" href="css/jspsych.css"></link>
-	<link rel="stylesheet" href="css/jquery-ui.css"></link>
-    <link rel="stylesheet" href="css/crossact.css"></link>
-</head>
+  <head>
+    <!-- JS imports -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/snap.svg-min.js"></script>
 
-<body>
-  <div id="jspsych-target"></div>
-</body>
-<script>
+    <!-- jsPsych + Official Plugins -->
+    <script src="https://unpkg.com/jspsych@7.3.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-instructions@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-keyboard-response@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-image-keyboard-response@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-categorize-html@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-image-button-response@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-html-button-response@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-text@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-html-form@1.0.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-multi-choice@1.1.2"></script>
+    <script src="https://unpkg.com/@jspsych/plugin-survey-multi-select@1.1.2"></script>
 
-	// GLOBAL VARIABLES
-var survey3_options = ["Yes",  "Somewhat", "No"];
-var NFCq = ["Extremely uncharacteristic", "Somewhat uncharacteristic", "Uncertain", "Somewhat characteristic", "Extremely characteristic"];
-var Genderq = ["Man", "Woman", "Non-binary", "Other", "Prefer not to answer"];
-var Eduq = ["Some high school", "High school degree", "Some college", "Associates Degree", "Bachelors degree", "Graduate degree"];
-var PolIDq = ["1 = Extremely Liberal", "2", "3", "4 = Neither", "5", "6", "7 = Extremely Conservative"];
-var Relq = ["1 = Not at all Religious", "2", "3", "4", "5", "6", "7 = Extremely Religious"];
-var Incomeq = ["Less than $10,000 USD a year", "$10,000 - $20,000 USD", "$20,000-$40,000 USD", "$40,000-$60,000 USD", "$60,000-$80,000 USD", "$80,000-$100,000 USD", "$100,000 USD a year or more"];
-var Raceq = ["White, not hispanic or latinx", "Black or African American", "Asian", "American Indian or Alaska Native", "Native Hawaiian or Other Pacific Islander", "Hispanic or Latinx", "Two or more", "Not listed"];
-var Demand1q = ["1 = Not at all", "2", "3", "4", "5 = Very much so"];
-var compTypeq = ["Laptop/Desktop", "Ipad/Tablet", "Other"];
-var B5q = ["Completely disagree", "Disagree", " Slightly Disagree ", " Slightly Agree ", "Agree", "Completely agree"];
+    <!-- Martin and Josh's Plugins -->
+    <script src="jspsych-audio-check.js"></script>
+    <script src="jspsych-comprehension-test-prompt.js"></script>
+    <script src="jspsych-comprehension-test.js"></script>
+    <script src="jspsych-learning-prompt.js"></script>
+    <script src="jspsych-learning.js"></script>
+    <script src="jspsych-production-test-singlepic.js"></script>
+    <script src="jspsych-selection-learning.js"></script>
 
+    <!-- CSS -->
+    <link
+      href="https://unpkg.com/jspsych@7.3.2/css/jspsych.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" />
+    <link href="css/crossact.css" rel="stylesheet" type="text/css" />
+  </head>
 
-// ORGANIZE SUBJECT ID & GENERAL PARAMETERS
+  <body>
+    <div id="jspsych-target" class="jspsych-display-element"></div>
+  </body>
+  <script>
 
-// generate a random subject ID (just to be safe)
-//var subject_id = Math.floor(Math.random()*1000000);
-//subject_id="p"+subject_id.toString();
+    // GLOBAL VARIABLES
+    var survey3_options = ["Yes", "Somewhat", "No"];
+    var NFCq = [
+      "Extremely uncharacteristic",
+      "Somewhat uncharacteristic",
+      "Uncertain",
+      "Somewhat characteristic",
+      "Extremely characteristic",
+    ];
+    var Genderq = [
+      "Man",
+      "Woman",
+      "Non-binary",
+      "Other",
+      "Prefer not to answer",
+    ];
+    var Eduq = [
+      "Some high school",
+      "High school degree",
+      "Some college",
+      "Associates Degree",
+      "Bachelors degree",
+      "Graduate degree",
+    ];
+    var PolIDq = [
+      "1 = Extremely Liberal",
+      "2",
+      "3",
+      "4 = Neither",
+      "5",
+      "6",
+      "7 = Extremely Conservative",
+    ];
+    var Relq = [
+      "1 = Not at all Religious",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7 = Extremely Religious",
+    ];
+    var Incomeq = [
+      "Less than $10,000 USD a year",
+      "$10,000 - $20,000 USD",
+      "$20,000-$40,000 USD",
+      "$40,000-$60,000 USD",
+      "$60,000-$80,000 USD",
+      "$80,000-$100,000 USD",
+      "$100,000 USD a year or more",
+    ];
+    var Raceq = [
+      "White, not Hispanic or Latinx",
+      "Black or African American",
+      "Asian",
+      "American Indian or Alaska Native",
+      "Native Hawaiian or Other Pacific Islander",
+      "Hispanic or Latinx",
+      "Two or more",
+      "Not listed",
+    ];
+    var Demand1q = ["1 = Not at all", "2", "3", "4", "5 = Very much so"];
+    var compTypeq = ["Laptop/Desktop", "Ipad/Tablet", "Other"];
+    var B5q = [
+      "Completely disagree",
+      "Disagree",
+      "Slightly Disagree ",
+      "Slightly Agree ",
+      "Agree",
+      "Completely agree",
+    ];
 
-var subject_id = jsPsych.data.getURLVariable('aid'); //change from hitId
-if (!subject_id) {
-	subject_id = 'test'
-}
-console.log(subject_id)
+    // ORGANIZE SUBJECT ID & GENERAL PARAMETERS
 
-//general function for grabbing parameter from a URL
-//function getParamFromURL( name ) {
-//	name = name.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");
-//	var regexS = "[\?&]"+name+"=([^&#]*)";
-//	var regex = new RegExp( regexS );
-//	var results = regex.exec( window.location.href );
-//	if( results == null )
-//		return "";
-//	else
-//		return results[1];
-//}
+    // generate a random subject ID (just to be safe)
+    //var subject_id = Math.floor(Math.random()*1000000);
+    //subject_id="p"+subject_id.toString();
 
-//for Amazon Mechanical Turk (workerId added to link via Qualtrics)
-//save workerID if it is part of the survey URL ?workerId=
-//var workerId = getParamFromURL( 'workerId' );
-//otherwise just use the randomly generated subject ID
-//if (workerId==="") {
-//	workerId=subject_id;
-//};
-//make sure that nobody can enter anything damaging or crazy for workerId
-//workerId.replace(/[^A-Za-z0-9_]/g, "");
- 
-//set condition (tc)
-var condition_temp="h";
-//convert to more descriptive label (masked in URL to avoid biasing participant)
-if (condition_temp=="h") {
-	var condition="high";
-} else if (condition_temp=="m") {
-	var condition="medium"
-} else if (condition_temp=="l") {
-	var condition="low"
-} else {
-	var condition="high"
-};
+    var jsPsych = initJsPsych({
+      use_webaudio: false,
+      on_finish: function () {
+        jsPsych.data.displayData();
+      },
+	  	// display_element: $('#jspsych-target'),
+	  	show_progress_bar: false,
+		fullscreen: true,
+		default_iti: 0,
+    });
 
-// record the condition assignment in the jsPsych data
-// this adds a property called 'subject', a property called workerId, and a condition property
-jsPsych.data.addProperties({
-	subject: subject_id,
-	condition: condition,
-	subject_id: subject_id
-});
+    var subject_id = jsPsych.data.getURLVariable("aid"); //change from hitId
+    if (!subject_id) {
+      subject_id = "test";
+    }
+    console.log(subject_id);
 
-// DEFINE AND RANDOMIZE STIMULI
-//define word items
-var wordItems = ["beppo","finna","guffi", "kita", "noopy", "manu", "sibu", "tesser"];
-//define image items
-var items = [];
-for (i=1; i<=wordItems.length; i++){
-	item = "stims/"+ i + ".png"
-	items.push(item)
-};
-//stim names
-var stimNames = [];
-for (i=0; i<wordItems.length; i++){
-	name = "stim"+ i
-	stimNames.push(name)
-};
-//shuffle images and words	
-var itemsShuffled=jsPsych.randomization.shuffle(items);
-var wordsShuffled = jsPsych.randomization.shuffle(wordItems);
+    //general function for grabbing parameter from a URL
+    //function getParamFromURL( name ) {
+    //	name = name.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");
+    //	var regexS = "[\?&]"+name+"=([^&#]*)";
+    //	var regex = new RegExp( regexS );
+    //	var results = regex.exec( window.location.href );
+    //	if( results == null )
+    //		return "";
+    //	else
+    //		return results[1];
+    //}
 
-//associate words and items (images) in a dictionary
-var stims = {};
-for (i =0; i<items.length; i++) {
-	//convert each item to a dictionary containing the image and the word // use normally
-	curObject = {image: itemsShuffled[i], word: wordsShuffled[i]};
-	//curObject = {image: items[i], word: wordItems[i]}
-	//add this dictionary to the overall stimulus dictionary
-	stims[stimNames[i]] = curObject;
-};
+    //for Amazon Mechanical Turk (workerId added to link via Qualtrics)
+    //save workerID if it is part of the survey URL ?workerId=
+    //var workerId = getParamFromURL( 'workerId' );
+    //otherwise just use the randomly generated subject ID
+    //if (workerId==="") {
+    //	workerId=subject_id;
+    //};
+    //make sure that nobody can enter anything damaging or crazy for workerId
+    //workerId.replace(/[^A-Za-z0-9_]/g, "");
 
+    //set condition (tc)
+    var condition_temp = "h";
+    //convert to more descriptive label (masked in URL to avoid biasing participant)
+    if (condition_temp == "h") {
+      var condition = "high";
+    } else if (condition_temp == "m") {
+      var condition = "medium";
+    } else if (condition_temp == "l") {
+      var condition = "low";
+    } else {
+      var condition = "high";
+    }
 
-// DEFINE TRAINING TRIALS
+    // record the condition assignment in the jsPsych data
+    // this adds a property called 'subject', a property called workerId, and a condition property
+    jsPsych.data.addProperties({
+      subject: subject_id,
+      condition: condition,
+      subject_id: subject_id,
+    });
 
-var ITI = 500;
+    // DEFINE AND RANDOMIZE STIMULI
+    //define word items
+    var wordItems = [
+      "beppo",
+      "finna",
+      "guffi",
+      "kita",
+      "noopy",
+      "manu",
+      "sibu",
+      "tesser",
+    ];
+    //define image items
+    var items = [];
+    for (i = 1; i <= wordItems.length; i++) {
+      item = "stims/" + i + ".png";
+      items.push(item);
+    }
+    //stim names
+    var stimNames = [];
+    for (i = 0; i < wordItems.length; i++) {
+      name = "stim" + i;
+      stimNames.push(name);
+    }
+    //shuffle images and words
+    var itemsShuffled = jsPsych.randomization.shuffle(items);
+    var wordsShuffled = jsPsych.randomization.shuffle(wordItems);
 
+    //associate words and items (images) in a dictionary
+    var stims = {};
+    for (i = 0; i < items.length; i++) {
+      //convert each item to a dictionary containing the image and the word // use normally
+      curObject = {image: itemsShuffled[i], word: wordsShuffled[i]};
+      //curObject = {image: items[i], word: wordItems[i]}
+      //add this dictionary to the overall stimulus dictionary
+      stims[stimNames[i]] = curObject;
+    }
 
-//training trials
-var trainingList = [];
+    // DEFINE TRAINING TRIALS
+    var ITI = 500;
 
+    //training trials
+    var trainingList = [];
 
-// start with a general instruction
-var trial = {
-type: 'instructions',
-pages: [
-  'Consent form goes here. Press the button to consent and begin the experiment, or exit the experiment now if you do not wish to proceed.',
-],
-show_clickable_nav: true
-}
+    // start with a general instruction
+    var trial = {
+		type: jsPsychInstructions,
+		pages: ["Consent form goes here. Press the button to consent and begin the experiment, or exit the experiment now if you do not wish to proceed."],
+		show_clickable_nav: true
+    };
 
-trainingList.push(trial);
+    trainingList.push(trial);
 
+    var trial = {
+    	type: jsPsychInstructions,
+		pages: ['Welcome to this experiment. In this experiment you will read opinions from a random sample of Americans. At the end we will ask you to estimate the percentage of Americans who feel favorably about X. When you are ready to proceed, please click "next".'],
+		show_clickable_nav: true
+    };
 
-var trial = {
-type: 'instructions',
-pages: [
-	'Welcome to this experiment. In this experiment you will read opinions from a random sample of Americans. At the end we will ask you to estimate the percentage of Americans who feel favorably about X. When you are ready to proceed, please click "next".',
-],
-show_clickable_nav: true
-}
-
-trainingList.push(trial);
-
-
-// initial survey
-var survey0 = {
-  type: 'survey-text',
-  questions: ["Please estimate the percentage of Americans who feel favorably about X."],
-  rows: [8,8,8],
-  columns: [70,70,70],
-}
-
-trainingList.push(survey0);
-
-// var numTB = 2 // number of Training Blocks
-// var possibleLocations = ["left","right"];
-// // each block of 10 cross sit exposure trials that each show 3 different aliens, so each block has each alien exactly once
-// // 3 blocks are set up in specifiedstim so that no aliens occurs on the same trial with any other alien more than once over exposure
-// // 0, 9 and 21 are control stimuli that are only ever seen in cross sit trials, never in the production/comprehension/feedback trials
-
-// //define specific stimuli combinations, depending on condition
-// if (condition=="high") {
-// 	var specifiedStim = [[0,1],[0,1],[0,1],[2,3],[2,3],[2,3],[4,5],[4,6],[4,7],[5,6],[5,7],[6,7]];
-// } else if (condition=="low") {
-// 	var specifiedStim = [[0,1],[0,2],[0,3],[1,2],[1,4],[2,5],[3,6],[3,7],[4,5],[4,6],[5,7],[6,7]];
-// } else if (condition=="medium") {
-// 	var specifiedStim = [[0,1],[0,1],[0,2],[2,3],[2,3],[1,3],[4,5],[4,6],[4,7],[5,6],[5,7],[6,7]];
-// } else {
-// 	var specifiedStim = [[0,1],[0,1],[0,1],[2,3],[2,3],[2,3],[4,5],[4,6],[4,7],[5,6],[5,7],[6,7]];
-// }
-
-// var wordOrderDummy = [0,1];
-// var specifiedStimShuffled = jsPsych.randomization.shuffle(specifiedStim); // shuffle this list
-// var numTrialsCTB = 12; // nr of trials per Cross sit training block
-// var trainingNum = 1; // counter for trialnr
-
-// console.log(specifiedStim);
-// console.log(specifiedStimShuffled);
-
-// for (j = 0; j < numTB;  j++){
-// 	// initialize list for this block of training trials
-// 	var trainingCTBList = [];
-// 	// shuffle the block of cross sit training trials
-// 	var CTBlist = specifiedStimShuffled; 
-// 	var CTBlistShuffled = jsPsych.randomization.shuffle(CTBlist);
-// 	// repeated instructions for this type of training trial
-// 	var repInstrTrial = {
-// 		type: 'instructions',
-// 		pages: ["Here are some more learning trials where you see two aliens and hear two names. The names will appear in random order, so you will have to figure out which name goes with each alien over time. Pay close attention and try to learn the names for the aliens!"],
-// 		show_clickable_nav: true
-// 	}
-
-// 	if (j > 0){
-// 		trainingList.push(repInstrTrial);
-// 	};
-	
-// 	// the actual block of Cross sit training trials
-// 	for (i =0; i < numTrialsCTB; i++) {
-// 		trainingNum++;
-// 		var currentStims = CTBlistShuffled[i];
-// 		var locationShuffled = jsPsych.randomization.shuffle(possibleLocations);
-// 		var wordOrderShuffled = jsPsych.randomization.shuffle(wordOrderDummy);
-		
-// 		console.log(stims);
-// 		console.log(currentStims);
-// 		console.log(stimNames);
-		
-// 	 	var prompt = {
-//  			type: 'learning-prompt',
-//  			location1: locationShuffled[0],
-//  			location2: locationShuffled[1],
-//  			im1: stims[stimNames[currentStims[0]]]["image"],
-//  			im2: stims[stimNames[currentStims[1]]]["image"],
-// 		 	choices: ['START'],
-//     		data: {trialNum: trainingNum, trialType: "learning-prompt"}
-//  		};
-		
-// 		trainingCTBList.push(prompt);
-
-// 	 	var trial = {
-//  			type: 'learning',
-//  			location1: locationShuffled[0],
-//  			location2: locationShuffled[1],
-//  			im1: stims[stimNames[currentStims[0]]]["image"],
-//  			im2: stims[stimNames[currentStims[1]]]["image"],
-//     		label1: stims[stimNames[currentStims[wordOrderShuffled[0]]]]["word"],
-// 		 	label2: stims[stimNames[currentStims[wordOrderShuffled[1]]]]["word"],
-//     		data: {trialNum: trainingNum, trialType: "learning"}
-//  		};
-// 		 trainingCTBList.push(trial);
-// 	};
-// 	trainingList=trainingList.concat(trainingCTBList);
-// };
+    trainingList.push(trial);
 
 
-//Selection learning
+    var survey0 = {
+      type: jsPsychSurveyText,
+      questions: [
+        {
+			prompt: "Please estimate the percentage of Americans who feel favorably about X.",
+			required: true,
+			rows: [8, 8, 8],
+			columns: [70, 70, 70]
+        },
+      ],
+    };
 
-var selectList=[];
-var numLabelSelectTrialsPerBlock = 4;
-var numSelectBlocks = 1;
-var selectNum = 1;
+    trainingList.push(survey0);
 
-// start with instructions about the label test
-// put in instructions about being fast here if we are interested in RTs
-var selectionInstr = {
-type: 'instructions',
-pages: ['In this part you will get a chance to sample from the opinions of various Americans. On each trial you will see 8 Americans on the screen. You will get to choose which of the 8 perspectives you would like to learn more about. Click NEXT to get started.'],
-show_clickable_nav: true
-}
+    // Selection learning
 
-selectList.push(selectionInstr);
+    var selectList = [];
+    var numLabelSelectTrialsPerBlock = 4;
+    var numSelectBlocks = 1;
+    var selectNum = 1;
 
-//selection trials
+    // start with instructions about the label test
+    // put in instructions about being fast here if we are interested in RTs
+    var selectionInstr = {
+		type: jsPsychInstructions,
+		pages: ["In this part you will get a chance to sample from the opinions of various Americans. On each trial you will see 8 Americans on the screen. You will get to choose which of the 8 perspectives you would like to learn more about. Click NEXT to get started."],
+		show_clickable_nav: true
+    };
 
-// to balance where the target is on each trial
-var locationsTest = [];
-var locationTestList=[0,1,2,3,4,5,6,7];
+    selectList.push(selectionInstr);
 
-var selectLearningPositions = [["left","right"],["left","right"],["right","left"],["right","left"]];
-var selectionWordOrder = ["choiceFirst","choiceFirst","randomFirst","randomFirst"];
+    // selection trials
 
-var curLocationList=jsPsych.randomization.shuffle(locationTestList);
-var selectPositionsShuffled=jsPsych.randomization.shuffle(selectLearningPositions);
-var selectionWordOrderShuffled=jsPsych.randomization.shuffle(selectionWordOrder);
+    // to balance where the target is on each trial
+    var locationsTest = [];
+    var locationTestList = [0, 1, 2, 3, 4, 5, 6, 7];
 
-for (i =0; i < numSelectBlocks; i++) {
-	
-	for (j =0; j < numLabelSelectTrialsPerBlock; j++) {
-		
-	var select = {
-		type: 'selection-learning',
+    var selectLearningPositions = [
+		["left", "right"],
+		["left", "right"],
+		["right", "left"],
+		["right", "left"],
+	];
+
+	var selectionWordOrder = [
+		"choiceFirst",
+		"choiceFirst",
+		"randomFirst",
+		"randomFirst",
+    ];
+
+    var curLocationList = jsPsych.randomization.shuffle(locationTestList);
+    var selectPositionsShuffled = jsPsych.randomization.shuffle(
+      selectLearningPositions
+    );
+    var selectionWordOrderShuffled =
+      jsPsych.randomization.shuffle(selectionWordOrder);
+
+    for (i = 0; i < numSelectBlocks; i++) {
+      for (j = 0; j < numLabelSelectTrialsPerBlock; j++) {
+        var select = {
+			type: jsPsychSelectionLearning,
 			image1: stims[stimNames[curLocationList[0]]]["image"],
 			image2: stims[stimNames[curLocationList[1]]]["image"],
 			image3: stims[stimNames[curLocationList[2]]]["image"],
@@ -311,420 +321,459 @@ for (i =0; i < numSelectBlocks; i++) {
 			label6: stims[stimNames[curLocationList[5]]]["word"],
 			label7: stims[stimNames[curLocationList[6]]]["word"],
 			label8: stims[stimNames[curLocationList[7]]]["word"],
-		curLocationList: curLocationList,
-				stims: stims,
+			curLocationList: curLocationList,
+			stims: stims,
 			stimNames: stimNames,
-		learningPos: selectPositionsShuffled[j],
-		wordOrder: selectionWordOrderShuffled[j],
-		choices: ['START'],
-    	data: {trialNum: selectNum, trialType: "selection"}
-	};
-	
-	selectList.push(select);
-	selectNum++;
-};
-};
-
-console.log(selectList);
-
-
-
-// DEFINE TEST TRIALS
-
-var testList=[];
-var numLabelTestTrialsPerBlock = 8;
-var testTrialsIndex=[0,1,2,3,4,5,6,7];
-var numTestBlocks = 1;
-var testNum = 1;
-
-// start with instructions about the label test
-// put in instructions about being fast here if we are interested in RTs
-// var labelTestInstr = {
-// type: 'instructions',
-// pages: ['Now we will test how well you learned the words. You will see a name and be asked to choose which of the eight pictured aliens goes with the name. In each trial, click START. The name for one of the aliens will appear on the screen. Click on the alien you think the name refers to. Click NEXT to get started.'],
-// show_clickable_nav: true
-// }
-
-// testList.push(labelTestInstr);
-
-//test trials
-
-// to balance where the target is on each trial
-var locationsTest = [];
-var locationTestList=[0,1,2,3,4,5,6,7];
-
-
-
-// for (i =0; i < numTestBlocks; i++) {
-	
-// 	curTestOrderIndex = jsPsych.randomization.shuffle(testTrialsIndex);
-	
-// 	for (j =0; j < curTestOrderIndex.length; j++) {
-		
-// 		var curTargetIndex=curTestOrderIndex[j];
-// 		var curLocationList=jsPsych.randomization.shuffle(locationTestList);
-		
-// 		var test_prompt = {
-// 			type: 'comprehension-test-prompt',
-// 			image1: stims[stimNames[curLocationList[0]]]["image"],
-// 			image2: stims[stimNames[curLocationList[1]]]["image"],
-// 			image3: stims[stimNames[curLocationList[2]]]["image"],
-// 			image4: stims[stimNames[curLocationList[3]]]["image"],
-// 			image5: stims[stimNames[curLocationList[4]]]["image"],
-// 			image6: stims[stimNames[curLocationList[5]]]["image"],
-// 			image7: stims[stimNames[curLocationList[6]]]["image"],
-// 			image8: stims[stimNames[curLocationList[7]]]["image"],
-// 	    	label: stims[stimNames[curTargetIndex]]["word"],
-// 			targetLocation: curTargetIndex,
-// 			targetImage: stims[stimNames[curTargetIndex]]["image"],
-// 		choices: ['START'],
-// 	    	data: {trialNum: testNum, trialType: "test-prompt"}
-// 	};
-		
-// 	var test = {
-// 		type: 'comprehension-test',
-// 			image1: stims[stimNames[curLocationList[0]]]["image"],
-// 			image2: stims[stimNames[curLocationList[1]]]["image"],
-// 			image3: stims[stimNames[curLocationList[2]]]["image"],
-// 			image4: stims[stimNames[curLocationList[3]]]["image"],
-// 			image5: stims[stimNames[curLocationList[4]]]["image"],
-// 			image6: stims[stimNames[curLocationList[5]]]["image"],
-// 			image7: stims[stimNames[curLocationList[6]]]["image"],
-// 			image8: stims[stimNames[curLocationList[7]]]["image"],
-// 	    	label: stims[stimNames[curTargetIndex]]["word"],
-// 			targetLocation: curTargetIndex,
-// 			targetImage: stims[stimNames[curTargetIndex]]["image"],
-//     	data: {trialNum: testNum, trialType: "test"}
-// 	};
-	
-// 	testList.push(test_prompt);
-// 	testList.push(test);
-// 	testNum++;
-// };
-// };
-
-// DEFINE TEST TRIALS
-
-var prodTestList=[];
-var numProdLabelTestTrialsPerBlock = 8;
-var prodTestTrialsIndex=[0,1,2,3,4,5,6,7];
-var numProdTestBlocks = 1;
-var testProdNum = 1;
-
-// // start with instructions about the label test
-// // put in instructions about being fast here if we are interested in RTs
-// var labelProdTestInstr = {
-// type: 'instructions',
-// pages: ['Next, we will test your knowledge of names of the aliens a different way. On each trial, you will see an alien. Enter the name for the alien into the test box and press enter. Make your best guess if you are unsure. Click NEXT to get started.'],
-// show_clickable_nav: true
-// }
-
-// prodTestList.push(labelProdTestInstr);
-
-
-// for (i =0; i < numTestBlocks; i++) {
-	
-// 	curProdTestOrderIndex = jsPsych.randomization.shuffle(prodTestTrialsIndex);
-	
-// 	for (j =0; j < curProdTestOrderIndex.length; j++) {
-		
-// 		var curTargetIndex=curProdTestOrderIndex[j];
-		
-// 		var prod_test = {
-// 			type: 'production-test-singlepic',
-// 			targetIm: stims[stimNames[curTargetIndex]]["image"],
-// 	    	label: stims[stimNames[curTargetIndex]]["word"],
-// 		choices: ['ENTER'],
-// 	    	data: {trialNum: testProdNum, trialType: "production-test"}
-// 	};
-	
-// 	prodTestList.push(prod_test);
-// 	testProdNum++;
-// };
-// };
-
-// ANOTHER ATTEMPT AT CREATING THE CONTINUE SAMPLING SCREEN. NEED LIKERT PACKAGE IN JSPSYCH.
-// var continueoption = {
-// 	type: 'likert',
-// 	preamble: "<br><br>Do you want to sample from another 8 characters?",
-// 	likert_scale_values: [{value: 1, text: "Yes"},{value: 2, text: "No"}],
-// 	randomize_question_order: true,
-// 	questions: ["After reading various Americans' opinions, please estimate the percentage of Americans who feel favorably about X."]
-// };
-
-// prodTestList.push(continueoption);
-
-// CHANGE THIS TO A YES/NO QUESTION. IF 'YES': PRESENT SAMPLING SCREEN AGAIN WITH DIFFERENT OPTIONS. IF 'NO': ADVANCE TO FINAL SURVEYS.
-var continue_trial = {
-type: 'instructions',
-pages: [
-	'Do you want to read more opinions? If so, please click to continue'
-],
-show_clickable_nav: true
-};
-
-prodTestList.push(continue_trial);
-
-// ANOTHER ATTEMPT AT CREATING THE CONTINUE SAMPLING SCREEN. NEED HTML BUTTON RESPONSE PACKAGE IN JSPSYCH.
-// var continue_trial = {
-// 	type: html-button-response,
-// 	stimulus: '<p style="font-size:48px; color:red;">CONTINUE?</p>',
-// 	choices: [Yes, No],
-// 	prompt: "<p>Would you like to sample again?</p>"
-// };
-
-// prodTestList.push(continue_trial);
-
-
-// final response survey
-
-var survey1 = {
-  type: 'survey-text',
-  questions: ["After reading various Americans' opinions, please estimate the percentage of Americans who feel favorably about X."],
-  rows: [8,8,8],
-  columns: [70,70,70]
-};
-
-prodTestList.push(survey1);
-
-var survey2 = {
-  type: 'survey-text',
-  questions: ["What sampling strategy did you use?"],
-  rows: [8,8,8],
-  columns: [70,70,70]
-};
-
-prodTestList.push(survey2);
-
-
-// FIX THIS and comment it back in once it's fixed
-var survey3 = {
-	type: 'survey-multi-choice',
-	preamble: "<br><br>Do you value the opinion of the following people?",
-	randomize_question_order: true,
-	questions: [{
-		prompt: "Liberals",
-		options: survey3_options,
-		required: true,
-		horizontal: true
-		}, {
-		prompt: "Conservatives",
-		options: survey3_options,
-		required: true,
-		horizontal: true
-		}, ]
-};
-
-prodTestList.push(survey3);
-
-
-var NFC = {
-            type: 'survey-multi-choice',
-            questions: [
-                {prompt: '<p style="text-align: left;font-size:18px;">I would prefer complex to simple problems.</p>', options: NFCq, required: true, horizontal: true,}, 
-                {prompt: '<p style="text-align: left;font-size:18px;">I like to have the responsibility of handling a situation that requires a lot of thinking.</p>', options: NFCq, required: true, horizontal: true},
-                {prompt: '<p style="text-align: left;font-size:18px;">Thinking is not my idea of fun.</p>', options: NFCq, required: true, horizontal: true,}, 
-                {prompt: '<p style="text-align: left;font-size:18px;">I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>', options: NFCq, required: true, horizontal: true},
-                {prompt: '<p style="text-align: left;font-size:18px;">I really enjoy a task that involves coming up with new solutions to problems.</p>', options: NFCq, required: true, horizontal: true},
-                {prompt: '<p style="text-align: left;font-size:18px;">I would prefer a task that is intellectual, difficult, and important to one than is somewhat important but does not require much thought.</p>', options: NFCq, required: true, horizontal: true}
-            ],
-            randomize_question_order: true,
-            preamble: 'Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:',
-            scale_width: 500
-            };
-
-prodTestList.push(NFC);
-
-var demo_Age = {
-        type: 'survey-text',
-        questions: [
-        {prompt: 'How old are you?', columns: 3, required: true, name: 'Age'},
-        {prompt: 'What is your religious affiliation?', columns: 50, name: 'Religious Affiliation'}
-        ],
-        randomize_question_order: true
-        };
-
-prodTestList.push(demo_Age);
-
-var demo_gen = {
-        type: 'survey-multi-choice',
-        questions: [
-            {prompt: '<p style="text-align: left;font-size:18px;">What is your Gender?</p>', options: Genderq, required: true, horizontal: true,}, 
-            {prompt: '<p style="text-align: left;font-size:18px;">Which of the following items BEST describes your ethnic or racial background?</p>', options: Raceq, required: true, horizontal: true},
-            {prompt: '<p style="text-align: left;font-size:18px;">How religious would you consider yourself?</p>', options: Relq, required: true, horizontal: true,}, 
-            {prompt: '<p style="text-align: left;font-size:18px;">What is your household income?</p>', options: Incomeq, required: true, horizontal: true},
-            {prompt: '<p style="text-align: left;font-size:18px;">What is the highest degree or level of school you have completed?</p>', options: Eduq, required: true, horizontal: true}
-          ],
-        randomize_question_order: true,
-        scale_width: 500,
-        preamble: '<p style="text-align: left;font-size:28px;"Using the scales provided, please respond to each question about you as an individual.</p>'
-        };
-
-prodTestList.push(demo_gen);	
-
-var demo_PolIQ = {
-        type: 'survey-multi-choice',
-        questions: [
-            {prompt: '<p style="text-align: left;font-size:18px;">Which response best captures your political beliefs surrounding economic issues?</p>', options: PolIDq, required: true, horizontal: true,}, 
-            {prompt: '<p style="text-align: left;font-size:18px;">Which response best captures your political beliefs surrounding social issues?</p>', options: PolIDq, required: true, horizontal: true},
-            {prompt: '<p style="text-align: left;font-size:18px;">When it comes to overall political issues, you consider yourself to be a:</p>', options: PolIDq, required: true, horizontal: true,}
-        ],
-        randomize_question_order: true,
-        scale_width: 500,
-        preamble: '<p style="text-align: left;font-size:28px;"Please answer the following questions about your political ideology.</p>'
-        };
-
-prodTestList.push(demo_PolIQ);	
-
-var demo_FinalQs = {
-        type: 'survey-multi-choice',
-        questions: [
-            {prompt: '<p style="text-align: left;font-size:18px;">What kind of device did you use to complete this study?</p>', options: compTypeq, required: true, horizontal: true,}, 
-            {prompt: '<p style="text-align: left;font-size:18px;">Did you feel pressure to respond in a particular way to any of the questions?</p>', options: Demand1q, required: true, horizontal: true,}, 
-            {prompt: '<p style="text-align: left;font-size:18px;">Did you feel as though you might be judged for your responses to the questions you answered.</p>', options: Demand1q, required: true, horizontal: true}        
-          ],
-        randomize_question_order: true,
-        scale_width: 500,
-        preamble: '<p style="text-align: left;font-size:28px;"For these final questions, please answer as honestly as you can! The answers to these questions will not affect whether or not you receive credit/payment for participation!</p>'
-        };
-
-prodTestList.push(demo_FinalQs);
-
-var B5= {type: 'survey-multi-choice',
-	questions: [
-			
-    		{prompt: ' I see myself as Extraverted, enthusiastic ', options: B5q, required: true, horizontal: true,}, 
-		{prompt: ' I see myself as Critical, quarrelsome ', options: B5q, required: true, horizontal: true},
-		{prompt: ' I see myself as Dependable, self-disciplined. ', options: B5q, required: true, horizontal: true,}, 
-		{prompt: 'I see myself as Anxious, easily upset ', options: B5q, required: true, horizontal: true},
-		{prompt: ' I see myself as Open to new experiences, complex.', options: B5q, required: true, horizontal: true},
-    		{prompt: ' I see myself as Reserved, quiet.', options: B5q, required: true, horizontal: true,}, 
-   		{prompt: ' I see myself as Sympathetic, warm.', options: B5q, required: true, horizontal: true},
-		{prompt: ' I see myself as Disorganized, careless.', options: B5q, required: true, horizontal: true,}, 
-		{prompt: ' I see myself as Calm, emotionally stable.', options: B5q, required: true, horizontal: true},
-		{prompt: ' I see myself as Conventional, uncreative. ', options: B5q, required: true, horizontal: true},
-		],
-
-		    randomize_question_order: true,
-		    preamble: '<p style="text-align: left;font-size:28px" Here are a number of personality traits that may or may not apply to you. Please choose the options next to each statement to indicate the extent to which you agree or disagree with that statement. You should rate the extent to which the pair of traits applies to you, even if one characteristic applies more strongly than the other. Show how much you agree with the items below. You can work quickly; your first feeling is generally best'
+			learningPos: selectPositionsShuffled[j],
+			wordOrder: selectionWordOrderShuffled[j],
+			choices: ["START"],
+			data: {trialNum: selectNum, trialType: "selection"},
 		};
 
-prodTestList.push(B5);
+        selectList.push(select);
+        selectNum++;
+      }
+    }
 
-//combine all trials into timeline
-timeline=trainingList.concat(selectList);
-timeline=timeline.concat(testList);
-timeline=timeline.concat(prodTestList);
-//timeline = trainingList;
-//timeline = selectList;
-//timeline = prodTestList;
+    // DEFINE TEST TRIALS
 
-// CREATE FINAL EXPERIMENT MESSAGE/ DEBRIEF AFTER DATA SUCCESSFULLY STORED
-// including a random code participants can use to confirm they took the study (for payment on Amazon Mechanical Turk)
+    var testList = [];
+    var numLabelTestTrialsPerBlock = 8;
+    var testTrialsIndex = [0, 1, 2, 3, 4, 5, 6, 7];
+    var numTestBlocks = 1;
+    var testNum = 1;
 
-//create random code for final message
-//start code creation script
-function randLetter() {
-	var a_z = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	var int =  Math.floor((Math.random() * a_z.length));
-	var rand_letter = a_z[int];
-	return rand_letter;
-};
+    // start with instructions about the label test
+    // put in instructions about being fast here if we are interested in RTs
+    // var labelTestInstr = {
+    // type: 'instructions',
+    // pages: ['Now we will test how well you learned the words. You will see a name and be asked to choose which of the eight pictured aliens goes with the name. In each trial, click START. The name for one of the aliens will appear on the screen. Click on the alien you think the name refers to. Click NEXT to get started.'],
+    // show_clickable_nav: true
+    // }
 
-var secretCode = "Crossact" // this is the 'key'
-var code="";
+    // testList.push(labelTestInstr);
 
-for (var i = 0; i < 7; i++){
-	code = code.concat(randLetter());
-};
+    //test trials
 
-code = code.concat(secretCode);
-
-for (var i = 0; i < 10; i++){
-	code = code.concat(randLetter());
-}
-//end code creation script
+    // to balance where the target is on each trial
+    var locationsTest = [];
+    var locationTestList = [0, 1, 2, 3, 4, 5, 6, 7];
 
 
+    // DEFINE TEST TRIALS
 
-//debrief and code message
-var experimentFinal = [];
-var final_instructions = {
-	type: 'instructions',
-	size: 400,
-	pages: [
-		'Thanks for participating!... debrief form goes here.'
-        +"<br>" + "<br>"
-        +'<center>Your completion code for <u>mTurk</u> is</center>'
-        +"<br>"
-        +'<center><u><b style="font-size:20px">'+ code +'</b></u></center>'
-        +"<br>"
-        +'<center>Please copy/paste this code into the mTurk box.</center>'
-        ],
-	show_clickable_nav: false
-};
+    var prodTestList = [];
+    var numProdLabelTestTrialsPerBlock = 8;
+    var prodTestTrialsIndex = [0, 1, 2, 3, 4, 5, 6, 7];
+    var numProdTestBlocks = 1;
+    var testProdNum = 1;
 
-//add instructions trial to experiment
-experimentFinal.push(final_instructions);
+    // CHANGE THIS TO A YES/NO QUESTION. IF 'YES': PRESENT SAMPLING SCREEN AGAIN WITH DIFFERENT OPTIONS. IF 'NO': ADVANCE TO FINAL SURVEYS.
+    var continue_trial = {
+      type: jsPsychInstructions,
+      pages: ["Do you want to read more opinions? If so, please click to continue"],
+      show_clickable_nav: true,
+    };
 
+    prodTestList.push(continue_trial);
 
+    var survey1 = {
+		type: jsPsychSurveyText,
+      	questions: [
+        	{
+				prompt: '<p style="text-align: left; font-size: 28px;">After reading various Americans\' opinions, please estimate the percentage of Americans who feel favorably about X.</p>',
+				name: "AmericansFavorable",
+      			rows: [8, 8, 8],
+      			columns: [70, 70, 70]
+			}
+		]
+    };
 
-// PRELOADING
-// this should be handled within the plugins, but I've gotten mixed results relying on this,
-// so to be extra sure, preload all relevant files prior to starting the experiment
+    prodTestList.push(survey1);
 
- 
-//preload all images
-var imageSet = items;
+    var survey2 = {
+		type: jsPsychSurveyText,
+		questions: [
+			{
+				prompt: '<p style="text-align: left; font-size: 28px;">What sampling strategy did you use?</p>', 
+				name: 'SamplingStrategy',
+				rows: [8, 8, 8], 
+				columns: [70, 70, 70]
+			}
+		]
+    };
 
- 
-//function for tracking loading of audio files
-//useful if there are a lot of audio files 
+    prodTestList.push(survey2);
 
-//run this line instead if we add audio
-//jsPsych.pluginAPI.preloadImages(imageSet, function(){ jsPsych.pluginAPI.preloadAudioFiles(allAudio, function() {startExperiment(); },function(nLoaded) { updateLoadedCount(nLoaded); });});
+    var survey3 = {
+		type: jsPsychSurveyMultiChoice,
+		preamble: '<p style="text-align: left; font-size: 28px;">Do you value the opinion of the following people?</p>',
+		randomize_question_order: true,
+		questions: [
+			{
+				prompt: "Liberals",
+				name: 'LiberalsValueOpinion',
+				options: survey3_options,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: "Conservatives",
+				name: 'ConservativesValueOpinion',
+				options: survey3_options,
+				required: true,
+				horizontal: true,
+			},
+      	],
+    };
 
-jsPsych.pluginAPI.preloadImages(imageSet, function() {startExperiment();});
-  
-  
-// START & RUN EXPERIMENT
-// including unctions that handle storing the data
+    prodTestList.push(survey3);
 
-//function for Javascript-PHP communication
-//function saveData(filename, filedata){
-//	$.ajax({
-//		type:'post',
-//		cache: false,
-//		url: 'save_data.php', // this is the path to the PHP script for storing the data
-//		data: {filename: filename, filedata: filedata}
-//	});
-//};
+    var NFC = {
+		type: jsPsychSurveyMultiChoice,
+		questions: [
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I would prefer complex to simple problems.</p>',
+				name: 'NfC1SimpleComplex',
+				options: NFCq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I like to have the responsibility of handling a situation that requires a lot of thinking.</p>',
+				name: 'NfC2Responsibility',
+				options: NFCq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">Thinking is not my idea of fun.</p>',
+				name: 'NfC3NotFun',
+				options: NFCq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>',
+				name: 'NfC4LittleThought',
+				options: NFCq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left;font-size: 18px;">I really enjoy a task that involves coming up with new solutions to problems.</p>',
+				name: 'NfC5NewSolutions',
+				options: NFCq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I would prefer a task that is intellectual, difficult, and important to one than is somewhat important but does not require much thought.</p>',
+				name: 'NfC6Intellectual',
+				options: NFCq,
+				required: true,
+				horizontal: true,
+			},
+      	],
+		randomize_question_order: true,
+		preamble: '<p style="text-align: left; font-size: 28px;">Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:</p>',
+		scale_width: 500
+    };
 
-//function to initialize the experiment; will be called once all images are preloaded
-function startExperiment(){
-	jsPsych.init({
-		display_element: $('#jspsych-target'),
-		timeline: timeline,
-		show_progress_bar: false,
-		fullscreen: true,
-		default_iti: 0,
-		on_finish: function(data) {
-			//for testing: display data and store locally
-			jsPsych.data.displayData("csv");
-			//jsPsych.data.localSave("CrossPC_"+subject_id+".csv", "csv");
-			//below script is for storing data locally once the experiment is online
-			//saveData("Crossact_"+subject_id+".csv", jsPsych.data.dataAsCSV());
-			
-			//add final instructions after data has been stored
-            jsPsych.init({
-                         display_element: $('#jspsych-target'),
-                         timeline: experimentFinal
-			});
-		}
-	});
-};
-  
-  
-</script>
+    prodTestList.push(NFC);
 
+    var demo_Age = {
+		type: jsPsychSurveyText,
+		questions: [
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">How old are you?</p>', 
+				name: "Age",
+				columns: 3, 
+				required: true
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">"What is your religious affiliation?</p>',
+				name: "ReligiousAffiliation",
+				columns: 50,
+				required: true
+			},
+		],
+      	randomize_question_order: true,
+    };
+
+    prodTestList.push(demo_Age);
+
+    var demo_gen = {
+		type: jsPsychSurveyMultiChoice,
+		questions: [
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">With which gender do you identify?</p>',
+				name: 'Gender',
+				options: Genderq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">Which of the following items BEST describes your ethnic or racial background?</p>',
+				name: 'Race',
+				options: Raceq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">How religious would you consider yourself?</p>',
+				name: "Religiosity",
+				options: Relq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">What is your household income per year?</p>',
+				name: 'Income',
+				options: Incomeq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">What is the highest degree or level of school you have completed?</p>',
+				name: 'Education',
+				options: Eduq,
+				required: true,
+				horizontal: true,
+			},
+		],
+		randomize_question_order: true,
+		scale_width: 500,
+		preamble: '<p style="text-align: left; font-size: 28px;">Using the scales provided, please respond to each question about you as an individual.</p>'
+    };
+
+    prodTestList.push(demo_gen);
+
+    var demo_PolIQ = {
+		type: jsPsychSurveyMultiChoice,
+		questions: [
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">Which response best captures your political beliefs surrounding <strong>economic</strong> issues?</p>',
+				options: PolIDq,
+				name: 'PolIDEconomic',
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">Which response best captures your political beliefs surrounding <strong>social</strong> issues?</p>',
+				options: PolIDq,
+				name: 'PolIDSocial',
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">When it comes to overall political issues, you consider yourself to be a:</p>',
+				name: 'PolIDAffiliation',
+				options: PolIDq,
+				required: true,
+				horizontal: true,
+			},
+		],
+      	randomize_question_order: true,
+      	scale_width: 500,
+      	preamble: '<p style="text-align: left; font-size: 28px;">Please answer the following questions about your political ideology.</p>'
+    };
+
+    prodTestList.push(demo_PolIQ);
+
+    var demo_FinalQs = {
+		type: jsPsychSurveyMultiChoice,
+		questions: [
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">What kind of device did you use to complete this study?</p>',
+				name: 'Device',
+				options: compTypeq,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">Did you feel pressure to respond in a particular way to any of the questions?</p>',
+				name: 'Pressure',
+				options: Demand1q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">Did you feel as though you might be judged for your responses to the questions you answered?</p>',
+				name: 'Judgment',
+				options: Demand1q,
+				required: true,
+				horizontal: true,
+			},
+		],
+		randomize_question_order: true,
+		scale_width: 500,
+		preamble: '<p style="text-align: left; font-size: 28px;"For these final questions, please answer as honestly as you can. The answers to these questions will <strong>not</strong> affect whether or not you receive credit/payment for participation!</p>',
+	};
+
+    prodTestList.push(demo_FinalQs);
+
+    var B5 = {
+		type: jsPsychSurveyMultiChoice,
+		questions: [
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as extraverted, enthusiastic.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as critical, quarrelsome.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as dependable, self-disciplined.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as anxious, easily upset.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as open to new experiences, complex.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as reserved, quiet.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as sympathetic, warm.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as disorganized, careless.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as calm, emotionally stable.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+			{
+				prompt: '<p style="text-align: left; font-size: 18px;">I see myself as conventional, uncreative.</p>',
+				options: B5q,
+				required: true,
+				horizontal: true,
+			},
+		],
+
+		randomize_question_order: true,
+		preamble: '<p style="text-align: left; font-size: 28px">Here are a number of personality traits that may or may not apply to you. Please choose the options next to each statement to indicate the extent to which you agree or disagree with that statement. You should rate the extent to which the <strong>pair</strong> of traits applies to you, even if one characteristic applies more strongly than the other. Show how much you agree with the items below. You can work quickly; your first feeling is generally best.</p>',
+    };
+
+    prodTestList.push(B5);
+
+    //combine all trials into timeline
+    timeline = trainingList.concat(selectList);
+    timeline = timeline.concat(testList);
+    timeline = timeline.concat(prodTestList);
+    //timeline = trainingList;
+    //timeline = selectList;
+    //timeline = prodTestList;
+
+    // CREATE FINAL EXPERIMENT MESSAGE/ DEBRIEF AFTER DATA SUCCESSFULLY STORED
+    // including a random code participants can use to confirm they took the study (for payment on Amazon Mechanical Turk)
+
+    //create random code for final message
+    //start code creation script
+    function randLetter() {
+		var a_z = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		var int = Math.floor(Math.random() * a_z.length);
+		var rand_letter = a_z[int];
+		return rand_letter;
+    }
+
+    var secretCode = "Crossact"; // this is the 'key'
+    var code = "";
+
+    for (var i = 0; i < 7; i++) {
+      	code = code.concat(randLetter());
+    }
+
+    code = code.concat(secretCode);
+
+    for (var i = 0; i < 10; i++) {
+      	code = code.concat(randLetter());
+    }
+    //end code creation script
+
+    //debrief and code message
+    var experimentFinal = [];
+    var final_instructions = {
+		type: jsPsychInstructions,
+		size: 400,
+		pages: [
+			"Thanks for participating!... debrief form goes here." +
+			"<br>" +
+			"<br>" +
+			"<center>Your completion code for <u>mTurk</u> is</center>" +
+			"<br>" +
+			'<center><u><b style="font-size: 20p;">' +
+			code +
+			"</b></u></center>" +
+			"<br>" +
+			"<center>Please copy/paste this code into the mTurk box.</center>",
+		],
+		show_clickable_nav: false,
+    };
+
+    //add instructions trial to experiment
+    experimentFinal.push(final_instructions);
+
+    // PRELOADING
+    // this should be handled within the plugins, but I've gotten mixed results relying on this,
+    // so to be extra sure, preload all relevant files prior to starting the experiment
+
+    //preload all images
+    var imageSet = items;
+
+    //function for tracking loading of audio files
+    //useful if there are a lot of audio files
+
+    //run this line instead if we add audio
+    //jsPsych.pluginAPI.preloadImages(imageSet, function(){ jsPsych.pluginAPI.preloadAudioFiles(allAudio, function() {startExperiment(); },function(nLoaded) { updateLoadedCount(nLoaded); });});
+
+    jsPsych.pluginAPI.preloadImages(imageSet, function () {
+      	startExperiment();
+    });
+
+    // START & RUN EXPERIMENT
+    // including unctions that handle storing the data
+
+    //function for Javascript-PHP communication
+    //function saveData(filename, filedata){
+    //	$.ajax({
+    //		type:'post',
+    //		cache: false,
+    //		url: 'save_data.php', // this is the path to the PHP script for storing the data
+    //		data: {filename: filename, filedata: filedata}
+    //	});
+    //};
+
+    //function to initialize the experiment; will be called once all images are preloaded
+    function startExperiment() {
+      	jsPsych.run(timeline);
+    }
+  </script>
 </html>

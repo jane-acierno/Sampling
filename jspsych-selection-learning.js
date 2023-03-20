@@ -31,12 +31,14 @@ jsPsych.plugins['selection-learning'] = (function() {
       // if any trial variables are functions
       // this evaluates the function and replaces
       // it with the output of the function
-      trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial);
+	  //  trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial);
 	  
 	  display_element.append($("<svg id='jspsych-test-canvas' width=" + trial.canvas_size[0] + " height=" + trial.canvas_size[1] + "></svg>"));
 
       var paper = Snap("#jspsych-test-canvas");	  
 	  
+	  console.log(paper)
+	  console.log(display_element)
 	  
 	  var choice = "NA";
 	  var choiceIm = "NA";

@@ -118,12 +118,15 @@ input[type=number]{
 }
 
 
+/* Removes the default red box outline on the input element when an option is not selected */
+/* 
 input:invalid {
   outline: 2px solid red;
 }
+
 input:focus:invalid {
   color: red;
-}
+} */
 
 #jspsych-learning-prompt-btngroup {
 	position: absolute;

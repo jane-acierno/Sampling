@@ -2,6 +2,9 @@
 <html>
 
 <head>
+  <!-- FontAwesome 6.x -->
+  <script src="https://kit.fontawesome.com/5f6dd17e12.js" crossorigin="anonymous"></script>
+
   <!-- JS imports -->
   <script src="js/jquery.min.js"></script>
   <script src="js/jquery-ui.min.js"></script>
@@ -42,22 +45,22 @@
 <script>
 
   // GLOBAL VARIABLES
-  var survey3_options = ['Yes', 'Somewhat', 'No'];
-  var NFCq = [
+  var survey3Options = ['Yes', 'Somewhat', 'No'];
+  var nfcResponses = [
     "Extremely uncharacteristic",
     "Somewhat uncharacteristic",
     "Uncertain",
     "Somewhat characteristic",
     "Extremely characteristic"
   ];
-  var Genderq = [
+  var genderResponses = [
     "Man",
     "Woman",
     "Non-binary",
     "Other",
     "Prefer not to answer"
   ];
-  var Eduq = [
+  var educationResponses = [
     "Some high school",
     "High school degree",
     "Some college but no degree",
@@ -65,7 +68,7 @@
     "Bachelors degree",
     "Graduate degree"
   ];
-  var PolIDq = [
+  var politicalResponses = [
     "1 (Extremely liberal)",
     "2",
     "3",
@@ -74,7 +77,7 @@
     "6",
     "7 (Extremely conservative)",
   ];
-  var Relq = [
+  var religionResponses = [
     "1 (Not at all religious)",
     "2",
     "3",
@@ -83,7 +86,7 @@
     "6",
     "7 (Extremely religious)"
   ];
-  var Incomeq = [
+  var incomeResponses = [
     "Under $10,000",
     "$10,000-$20,000",
     "$20,000-$40,000",
@@ -92,7 +95,7 @@
     "$80,000-$100,000",
     "Over $100,000"
   ];
-  var Raceq = [
+  var raceEthnicityResponses = [
     "White, not Hispanic or Latinx",
     "Black or African American",
     "Asian",
@@ -102,9 +105,15 @@
     "Two or more",
     "Not listed"
   ];
-  var Demand1q = ["1 = Not at all", "2", "3", "4", "5 = Very much so"];
-  var compTypeq = ["Laptop/Desktop", "iPad/Tablet", "Other"];
-  var B5q = [
+  var demandEffectsResponses = [
+    "1 = Not at all",
+    "2",
+    "3",
+    "4",
+    "5 = Very much so"
+  ];
+  var deviceTypeResponses = ["Laptop/Desktop", "iPad/Tablet", "Other"];
+  var bigFiveResponses = [
     "Completely disagree",
     "Disagree",
     "Slightly disagree",
@@ -188,6 +197,42 @@
     "Test sentence 6.",
     "Test sentence 7.",
     "Test sentence 8.",
+
+    "Test sentence 9.",
+    "Test sentence 10.",
+    "Test sentence 11.",
+    "Test sentence 12.",
+    "Test sentence 13.",
+    "Test sentence 14.",
+    "Test sentence 15.",
+    "Test sentence 16.",
+
+    "Test sentence 9.",
+    "Test sentence 10.",
+    "Test sentence 11.",
+    "Test sentence 12.",
+    "Test sentence 13.",
+    "Test sentence 14.",
+    "Test sentence 15.",
+    "Test sentence 16.",
+
+    "Test sentence 9.",
+    "Test sentence 10.",
+    "Test sentence 11.",
+    "Test sentence 12.",
+    "Test sentence 13.",
+    "Test sentence 14.",
+    "Test sentence 15.",
+    "Test sentence 16.",
+
+    "Test sentence 9.",
+    "Test sentence 10.",
+    "Test sentence 11.",
+    "Test sentence 12.",
+    "Test sentence 13.",
+    "Test sentence 14.",
+    "Test sentence 15.",
+    "Test sentence 16.",
   ];
 
   //define image items
@@ -208,7 +253,7 @@
   var stims = {};
   for (i = 0; i < items.length; i++) {
     //convert each item to a dictionary containing the image and the word // use normally
-    curObject = {image: items[i], word: wordItems[i]};
+    curObject = { image: items[i], word: wordItems[i] };
     //curObject = {image: items[i], word: wordItems[i]}
     //add this dictionary to the overall stimulus dictionary
     stims[stimNames[i]] = curObject;
@@ -229,14 +274,93 @@
   };
   trainingList.push(enter_fullscreen);
 
+  var consentForm = {
+    type: jsPsychSurveyMultiChoice,
+    questions: [
+      {
+        prompt:
+          '<p style="text-align:left;">You are being asked to participate in a research study titled \
+          \"Social Judgment and Decision-Making.\" You were selected to participate in \
+          this project because you are an adult over age 18. This study is sponsored by \
+          Boston College and the John Templeton Foundation. <br><br> \
+          The purpose of this study is to understand how we weigh information about \
+          others. This study will be conducted through this online survey. The survey \
+          should take you between 15-45 minutes to complete. There are no direct \
+          benefits to you, but you may feel gratified knowing that you helped further \
+          the scholarly work in this research area, and we will compensate you for your \
+          participation at a rate of $9.00/hour. In some cases, we will ask you about \
+          your opinions; in other cases, we will ask you to try to answer questions and \
+          prompts accurately. When we ask for the latter, we will also provide \
+          additional compensation for each correct response. That rate will be $0.05 \
+          per correct response. There are no costs to you associated with your \
+          participation. <br><br> \
+          The researchers do not believe participation would entail any risks or \
+          discomforts beyond those ordinarily encountered in everyday life.<br><br> \
+          This Principal Investigator, Dr. Liane Young, will exert all reasonable efforts \
+          to keep your responses and your identity confidential. We will not maintain \
+          within our research data any information that uniquely identifies you, such as \
+          your name, location, or Internet Protocol (IP) address. In any report we \
+          publish, we will not include any information that will make it possible to \
+          identify a participant. Data that includes user-ID information will be collected \
+          and stored via third-party servers like Qualtrics or Pavlovia. Data collected \
+          from the experiment will be coded to remove your name or any other \
+          personal identifiers. All records will be secured in a locked cabinet in our lab. \
+          The Institutional Review Board at Boston College and internal Boston College \
+          auditors may review the research records. State or federal laws or court \
+          orders may also require that information from research study records be \
+          released. Otherwise, the researchers will not release to others any \
+          information that could indicate your identity unless you give your permission, \
+          or unless the researchers become legally required to do so.<br><br> \
+          Although the survey will not prompt you directly to identify yourself by \
+          name, email address or the like, the survey will include several demographic \
+          items that would prompt you to provide certain demographic information, \
+          such as your age, gender, ethnicity, education level and the like. In \
+          combination, responses to such questions could suggest your identity. \
+          Regardless, please know that the researchers will make no purposeful effort \
+          to discern your identity based on such information. Additionally, please note \
+          that you may opt to leave any such questions blank.<br><br> \
+          Your participation is voluntary. If you choose not to participate it will not \
+          affect your relations with Boston College. Some questions on the survey, \
+          such as comprehension questions, may be required in order to complete the \
+          survey and receive compensation. \
+          However, you may still choose to end your participation in the study at any \
+          time. If you have questions or concerns concerning this research you may contact the \
+          Principal Investigator at 617-552-0240 or liane.young@bc.edu. If you have \
+          questions about your rights as a research participant, you may contact the \
+          Office for Research Protections, Boston College, at 617-552-4778 or \
+          irb@bc.edu.<br><br> \
+          If you agree to the statements above and agree to participate in this study, \
+          please press the “Consent given” button below.',
+        options: ["Consent not given", "Consent given"],
+        required: true,
+        horizontal: true
+      }
+    ],
+    preamble: "<h1><strong>Consent Form</strong></h1>"
+  };
+
+  // trainingList.push(consentForm);
+
   // start with a general instruction
   var instructions = {
-    type: jsPsychInstructions,
-    pages: ['<p>Welcome to this experiment!<br><br>First, you will read opinions from a random sample of Americans.<br>Then, we will ask you to estimate the percentage of Americans who feel favorably about X.<br><br>When you are ready to proceed, please click "next".</p>'],
+    type: jsPsychHtmlButtonResponse,
+    stimulus: function () {
+      var consent = jsPsych.data.getLastTrialData().values()[0].consentResponse;
+      if (consent) {
+        return
+        '<p>Welcome to this experiment!<br><br> \
+          First, you will read opinions from a random sample of Americans.<br> \
+          Then, we will ask you to estimate the percentage of Americans who feel favorably about X.<br><br> \
+          When you are ready to proceed, please press the next button.</p>';
+      } else {
+        return '<p>Unfortunately, you did not consent to participate. Please return this study.</p>';
+      }
+    },
     show_clickable_nav: true
   };
 
-  trainingList.push(instructions);
+
+  //trainingList.push(instructions);
 
   var survey0 = {
     type: jsPsychSurveyText,
@@ -250,110 +374,121 @@
     ]
   };
 
-  trainingList.push(survey0);
+  // trainingList.push(survey0);
 
   // Selection learning
   var selectList = [];
-  var numLabelSelectTrialsPerBlock = 8;
+  var numLabelSelectTrialsPerBlock = 40;
   var numSelectBlocks = 1;
   var selectNum = 1;
 
   // put in instructions about being fast here if we are interested in RTs
   var selectionInstruct = {
     type: jsPsychInstructions,
-    pages: ["In this part you will get a chance to sample from the opinions of various Americans. On each trial you will see 8 Americans on the screen. You will get to choose which of the 8 perspectives you would like to learn more about. Click NEXT to get started."],
+    pages: ["<p>In this part, you will have the opportunitiy to sample from the opinions of various Americans. \
+            On each trial you will see 8 Americans on the screen. \
+            You will get to choose which of the 8 perspectives you would like to hear.<br><br> \
+            Click the next button to get started.</p>"],
     show_clickable_nav: true,
   };
 
-  selectList.push(selectionInstruct);
+  // trainingList.push(selectionInstruct);
 
   // selection trials
 
+  
   // to balance where the target is on each trial
   var locationsTest = [];
-  var locationTestList = [...Array(8).keys()];
+  var locationTestList = [...Array(40).keys()];
 
   var curLocationList = jsPsych.randomization.shuffle(locationTestList);
 
   var prodTestList = [];
-  var numProdLabelTestTrialsPerBlock = 8;
-  var prodTestTrialsIndex = [...Array(8).keys()];
+  var numProdLabelTestTrialsPerBlock = 40;
+  var prodTestTrialsIndex = [...Array(40).keys()];
   var numProdTestBlocks = 1;
   var testProdNum = 1;
 
   let trials = []
   let currentBlockTrial = -1;
 
-  for (i = 0; i < numSelectBlocks; i++) {
-    for (j = 0; j < numLabelSelectTrialsPerBlock; j++) {
+  var select = {
+    type: jsPsychSelectionLearning,
+    image1: stims[stimNames[curLocationList[0]]]["image"],
+    image2: stims[stimNames[curLocationList[1]]]["image"],
+    image3: stims[stimNames[curLocationList[2]]]["image"],
+    image4: stims[stimNames[curLocationList[3]]]["image"],
+    image5: stims[stimNames[curLocationList[4]]]["image"],
+    image6: stims[stimNames[curLocationList[5]]]["image"],
+    image7: stims[stimNames[curLocationList[6]]]["image"],
+    image8: stims[stimNames[curLocationList[7]]]["image"],
+    image9: stims[stimNames[curLocationList[8]]]["image"],
+    image10: stims[stimNames[curLocationList[9]]]["image"],
+    image11: stims[stimNames[curLocationList[10]]]["image"],
+    image12: stims[stimNames[curLocationList[11]]]["image"],
+    image13: stims[stimNames[curLocationList[12]]]["image"],
+    image14: stims[stimNames[curLocationList[13]]]["image"],
+    image15: stims[stimNames[curLocationList[14]]]["image"],
+    image16: stims[stimNames[curLocationList[15]]]["image"],
+    image17: stims[stimNames[curLocationList[16]]]["image"],
+    image18: stims[stimNames[curLocationList[17]]]["image"],
+    image19: stims[stimNames[curLocationList[18]]]["image"],
+    image20: stims[stimNames[curLocationList[19]]]["image"],
+    image21: stims[stimNames[curLocationList[20]]]["image"],
+    image22: stims[stimNames[curLocationList[21]]]["image"],
+    image23: stims[stimNames[curLocationList[22]]]["image"],
+    image24: stims[stimNames[curLocationList[23]]]["image"],
+    image25: stims[stimNames[curLocationList[24]]]["image"],
+    image26: stims[stimNames[curLocationList[25]]]["image"],
+    image27: stims[stimNames[curLocationList[26]]]["image"],
+    image28: stims[stimNames[curLocationList[27]]]["image"],
+    image29: stims[stimNames[curLocationList[28]]]["image"],
+    image30: stims[stimNames[curLocationList[29]]]["image"],
+    image31: stims[stimNames[curLocationList[30]]]["image"],
+    image32: stims[stimNames[curLocationList[31]]]["image"],
+    image33: stims[stimNames[curLocationList[32]]]["image"],
+    image34: stims[stimNames[curLocationList[33]]]["image"],
+    image35: stims[stimNames[curLocationList[34]]]["image"],
+    image36: stims[stimNames[curLocationList[35]]]["image"],
+    image37: stims[stimNames[curLocationList[36]]]["image"],
+    image38: stims[stimNames[curLocationList[37]]]["image"],
+    image39: stims[stimNames[curLocationList[38]]]["image"],
+    image40: stims[stimNames[curLocationList[39]]]["image"],
 
-      var select = {
-        type: jsPsychSelectionLearning,
-        image1: stims[stimNames[curLocationList[0]]]["image"],
-        image2: stims[stimNames[curLocationList[1]]]["image"],
-        image3: stims[stimNames[curLocationList[2]]]["image"],
-        image4: stims[stimNames[curLocationList[3]]]["image"],
-        image5: stims[stimNames[curLocationList[4]]]["image"],
-        image6: stims[stimNames[curLocationList[5]]]["image"],
-        image7: stims[stimNames[curLocationList[6]]]["image"],
-        image8: stims[stimNames[curLocationList[7]]]["image"],
-        label1: stims[stimNames[curLocationList[0]]]["word"],
-        label2: stims[stimNames[curLocationList[1]]]["word"],
-        label3: stims[stimNames[curLocationList[2]]]["word"],
-        label4: stims[stimNames[curLocationList[3]]]["word"],
-        label5: stims[stimNames[curLocationList[4]]]["word"],
-        label6: stims[stimNames[curLocationList[5]]]["word"],
-        label7: stims[stimNames[curLocationList[6]]]["word"],
-        label8: stims[stimNames[curLocationList[7]]]["word"],
-        curLocationList: curLocationList,
-        stims: stims,
-        stimNames: stimNames,
-        learningPos: "left",
-        choices: ["Click to Listen!"],
-        data: {
-          trialNum: selectNum, 
-          trialType: "selection"
-        }
-      };
-      
-      var continueTrial = {
-        type: jsPsychHtmlButtonResponse,
-        stimulus: "<p>Would you like to read more opinions?</p>",
-        choices: ["Yes, read more opinions", "No, done reading"],
-        on_finish: 
-          function(data) {
-              console.log(data);
-            }
-      };
+    curLocationList: curLocationList,
+    stims: stims,
+    stimNames: stimNames,
+    learningPos: "left",
+    choices: ["<i class='fa-solid fa-rotate-left'></i> Continue Sampling", "<i class='fa-solid fa-circle-check'></i> Finished Sampling"],
+    data: {
+      trialNum: selectNum,
+      trialType: "selection"
+    },
+  };
 
-      var blockTrial = {
-        timeline: [select, continueTrial],
-        conditional_function: function() {
-          currentBlockTrial = (currentBlockTrial + 1) % numLabelSelectTrialsPerBlock;
-          if (currentBlockTrial === 0) {
-            return true;
-          } else {
-            let data = jsPsych.data.get().last(1).values()[0];
-            return data.response === 0;
-          }
-        }
-      }
+//  var loop_node = {
+//    timeline: [select],
+//    loop_function: function(data){
+//        continueSampling = data.values()[0].choice
+//        console.log(continueSampling)
+//        if (continueSampling === 0) {
+//            return true;  // Keep sampling
+//        } else {
+//            return false;  // Break out of the loop, end the sampling! 
+//        }
+//     }
+//  }
 
-      trials.push(blockTrial);
-      
-      selectNum++;
 
-    }
-  }
 
-      // prodTestList.push(continue_trial);
-      // console.log(prodTestList)
+  trials.push(select);
+
 
   // DEFINE TEST TRIALS
 
   var testList = [];
-  var numLabelTestTrialsPerBlock = 8;
-  var testTrialsIndex = [...Array(8).keys()];
+  var numLabelTestTrialsPerBlock = 40;
+  var testTrialsIndex = [...Array(40).keys()];
   var numTestBlocks = 1;
   var testNum = 1;
 
@@ -373,7 +508,8 @@
     type: jsPsychSurveyText,
     questions: [
       {
-        prompt: '<p style="text-align: left; font-size: 14pt;">After reading various Americans\' opinions, please estimate the percentage of Americans who feel favorably about X.</p>',
+        prompt: '<p style="text-align: left; font-size: 14pt;"> \
+          After reading various Americans\' opinions, please estimate the percentage of Americans who feel favorably about X.</p>',
         name: "AmericansFavorable",
         rows: [8, 8, 8],
         columns: [70, 70, 70]
@@ -405,14 +541,14 @@
       {
         prompt: '<p style="font-size: 12pt;">Liberals</p>',
         name: 'LiberalsValueOpinion',
-        options: survey3_options,
+        options: survey3Options,
         required: true,
         horizontal: true
       },
       {
         prompt: '<p style="font-size: 12pt;">Conservatives</p>',
         name: 'ConservativesValueOpinion',
-        options: survey3_options,
+        options: survey3Options,
         required: true,
         horizontal: true
       }
@@ -421,60 +557,64 @@
 
   prodTestList.push(survey3);
 
-  var NFC = {
+  var nfcQuestions = {
     type: jsPsychSurveyMultiChoice,
     questions: [
       {
         prompt: '<p style="text-align: left; font-size: 12pt;">I would prefer complex to simple problems.</p>',
         name: 'NfC1SimpleComplex',
-        options: NFCq,
+        options: nfcResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I like to have the responsibility of handling a situation that requires a lot of thinking.</p>',
+        prompt: '<p style="text-align: left; font-size: 12pt;"> \
+          I like to have the responsibility of handling a situation that requires a lot of thinking.</p>',
         name: 'NfC2Responsibility',
-        options: NFCq,
+        options: nfcResponses,
         required: true,
         horizontal: true
       },
       {
         prompt: '<p style="text-align: left; font-size: 12pt;">Thinking is not my idea of fun.</p>',
         name: 'NfC3NotFun',
-        options: NFCq,
+        options: nfcResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>',
+        prompt: '<p style="text-align: left; font-size: 12pt;"> \
+          I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>',
         name: 'NfC4LittleThought',
-        options: NFCq,
+        options: nfcResponses,
         required: true,
         horizontal: true
       },
       {
         prompt: '<p style="text-align: left;font-size: 12pt;">I really enjoy a task that involves coming up with new solutions to problems.</p>',
         name: 'NfC5NewSolutions',
-        options: NFCq,
+        options: nfcResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I would prefer a task that is intellectual, difficult, and important to one than is somewhat important but does not require much thought.</p>',
+        prompt: '<p style="text-align: left; font-size: 12pt;"> \
+          I would prefer a task that is intellectual, difficult, and important to one than is somewhat important but does not require much thought.</p>',
         name: 'NfC6Intellectual',
-        options: NFCq,
+        options: nfcResponses,
         required: true,
         horizontal: true
       }
     ],
     randomize_question_order: true,
-    preamble: '<p style="text-align: left; font-size: 14pt;">Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:</p>',
+    preamble: '<p style="text-align: left; font-size: 14pt;"> \
+      Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:</p>',
     scale_width: 500
   };
 
-  prodTestList.push(NFC);
+  prodTestList.push(nfcQuestions);
 
-  var demo_Age = {
+  var ageQuestion = {
     type: jsPsychSurveyText,
     questions: [
       {
@@ -493,187 +633,267 @@
     randomize_question_order: true
   };
 
-  prodTestList.push(demo_Age);
+  prodTestList.push(ageQuestion);
 
-  var demo_gen = {
+  var demographicsQuestions = {
     type: jsPsychSurveyMultiChoice,
     questions: [
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">With which gender do you identify?</p>',
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            With which gender do you identify? \
+          </p>',
         name: 'Gender',
-        options: Genderq,
+        options: genderResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">Which of the following items BEST describes your ethnic or racial background?</p>',
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            Which of the following items BEST describes your ethnic or racial background? \
+          </p>',
         name: 'Race',
-        options: Raceq,
+        options: raceEthnicityResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">How religious would you consider yourself?</p>',
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            How religious would you consider yourself? \
+          </p>',
         name: "Religiosity",
-        options: Relq,
+        options: religionResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">What is your household income per year?</p>',
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            What is your household income per year? \
+          </p>',
         name: 'Income',
-        options: Incomeq,
+        options: incomeResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">What is the highest degree or level of school you have completed?</p>',
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            What is the highest degree or level of school you have completed? \
+          </p>',
         name: 'Education',
-        options: Eduq,
+        options: educationResponses,
         required: true,
         horizontal: true
       },
     ],
     randomize_question_order: true,
     scale_width: 500,
-    preamble: '<p style="text-align: left; font-size: 14pt;">Using the scales provided, please respond to each question about you as an individual.</p>'
+    preamble:
+      '<p style="text-align: left; font-size: 14pt;"> \
+        Using the scales provided, please respond to each question about you as an individual: \
+      </p>'
   };
 
-  prodTestList.push(demo_gen);
+  prodTestList.push(demographicsQuestions);
 
-  var demo_PolIQ = {
+  var demographicsPoliticalQuestions = {
     type: jsPsychSurveyMultiChoice,
     questions: [
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">Which response best captures your political beliefs surrounding <strong>economic</strong> issues?</p>',
-        options: PolIDq,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            Which response best captures your political beliefs surrounding <strong>economic</strong> issues? \
+          </p>',
+        options: politicalResponses,
         name: 'PolIDEconomic',
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">Which response best captures your political beliefs surrounding <strong>social</strong> issues?</p>',
-        options: PolIDq,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            Which response best captures your political beliefs surrounding <strong>social</strong> issues? \
+          </p>',
+        options: politicalResponses,
         name: 'PolIDSocial',
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">Which response best captures your <strong>overall</strong> political beliefs</p>',
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            Which response best captures your <strong>overall</strong> political beliefs? \
+          </p>',
         name: 'PolIDAffiliation',
-        options: PolIDq,
+        options: politicalResponses,
         required: true,
         horizontal: true
       }
     ],
     randomize_question_order: true,
     scale_width: 500,
-    preamble: '<p style="text-align: left; font-size: 14pt;">Please answer the following questions about your political ideology.</p>'
+    preamble:
+      '<p style="text-align: left; font-size: 14pt;"> \
+        Please answer the following questions about your political ideology. \
+      </p>'
   };
 
-  prodTestList.push(demo_PolIQ);
+  prodTestList.push(demographicsPoliticalQuestions);
 
-  var demo_FinalQs = {
+  var demographicsFinalQuestions = {
     type: jsPsychSurveyMultiChoice,
     questions: [
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">What kind of device did you use to complete this study?</p>',
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            What kind of device did you use to complete this study? \
+          </p>',
         name: 'Device',
-        options: compTypeq,
+        options: deviceTypeResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">Did you feel pressure to respond in a particular way to any of the questions?</p>',
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            Did you feel pressure to respond in a particular way to any of the questions? \
+          </p>',
         name: 'Pressure',
-        options: Demand1q,
+        options: demandEffectsResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">Did you feel as though you might be judged for your responses to the questions you answered?</p>',
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            Did you feel as though you might be judged for your responses to the questions you answered? \
+          </p>',
         name: 'Judgment',
-        options: Demand1q,
+        options: demandEffectsResponses,
         required: true,
         horizontal: true
       }
     ],
     randomize_question_order: true,
     scale_width: 500,
-    preamble: '<p style="text-align: left; font-size: 14pt;"For these final questions, please answer as honestly as you can. The answers to these questions will <strong>not</strong> affect whether or not you receive credit/payment for participation!</p>',
+    preamble:
+      '<p style="text-align: left; font-size: 14pt;> \
+        For these final questions, please answer as honestly as you can. \
+        The answers to these questions will <strong>not</strong> affect whether or not you receive credit/payment for participation! \
+      </p>',
   };
 
-  prodTestList.push(demo_FinalQs);
+  prodTestList.push(demographicsFinalQuestions);
 
-  var B5 = {
+  var bigFiveQuestions = {
     type: jsPsychSurveyMultiChoice,
     questions: [
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>extraverted, enthusiastic.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            I see myself as <strong>extraverted, enthusiastic.</strong> \
+          </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>critical, quarrelsome.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            I see myself as <strong>critical, quarrelsome.</strong> \
+          </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>dependable, self-disciplined.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+          I see myself as <strong>dependable, self-disciplined.</strong> \
+        </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>anxious, easily upset.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            I see myself as <strong>anxious, easily upset.</strong> \
+          </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>open to new experiences, complex.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            I see myself as <strong>open to new experiences, complex.</strong> \
+          </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>reserved, quiet.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            I see myself as <strong>reserved, quiet.</strong> \
+          </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>sympathetic, warm.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            I see myself as <strong>sympathetic, warm.</strong> \
+          </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>disorganized, careless.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            I see myself as <strong>disorganized, careless.</strong> \
+          </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>calm, emotionally stable.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            I see myself as <strong>calm, emotionally stable.</strong> \
+          </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       },
       {
-        prompt: '<p style="text-align: left; font-size: 12pt;">I see myself as <strong>conventional, uncreative.</strong></p>',
-        options: B5q,
+        prompt:
+          '<p style="text-align: left; font-size: 12pt;"> \
+            I see myself as <strong>conventional, uncreative.</strong> \
+          </p>',
+        options: bigFiveResponses,
         required: true,
         horizontal: true
       }
     ],
     randomize_question_order: true,
-    preamble: '<p style="text-align: left; font-size: 14pt">Here are a number of personality traits that may or may not apply to you. Please choose the options next to each statement to indicate the extent to which you agree or disagree with that statement. You should rate the extent to which the <strong>pair</strong> of traits applies to you, even if one characteristic applies more strongly than the other. Show how much you agree with the items below. You can work quickly; your first feeling is generally best.</p>'
+    preamble:
+      '<p style="text-align: left; font-size: 14pt"> \
+        Here are a number of personality traits that may or may not apply to you. \
+        Please choose the options next to each statement to indicate the extent to which you agree or disagree with that statement. \
+        You should rate the extent to which the <strong>pair</strong> of traits applies to you, even if one characteristic applies more strongly than the other. \
+        Show how much you agree with the items below. \
+        You can work quickly; your first feeling is generally best. \
+      </p>'
   };
 
-  prodTestList.push(B5);
+  prodTestList.push(bigFiveQuestions);
 
   //combine all trials into timeline
   timeline = trainingList.concat(selectList);
@@ -692,8 +912,8 @@
   function randLetter() {
     var a_z = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     var int = Math.floor(Math.random() * a_z.length);
-    var rand_letter = a_z[int];
-    return rand_letter;
+    var randLetter = a_z[int];
+    return randLetter;
   }
 
   var secretCode = "Crossact"; // this is the 'key'
@@ -712,7 +932,7 @@
 
   //debrief and code message
   var experimentFinal = [];
-  var final_instructions = {
+  var finalInstructions = {
     type: jsPsychInstructions,
     size: 400,
     pages: [
@@ -721,7 +941,7 @@
       "<br>" +
       "<center>Your completion code for <u>mTurk</u> is</center>" +
       "<br>" +
-      '<center><u><b style="font-size: 20p;">' +
+      '<center><u><b style="font-size: 20pt;">' +
       code +
       "</b></u></center>" +
       "<br>" +
@@ -731,15 +951,15 @@
   };
 
   //add instructions trial to experiment
-  experimentFinal.push(final_instructions);
+  experimentFinal.push(finalInstructions);
 
   // Exit fullscreen
-  var enter_fullscreen = {
+  var enterFullscreen = {
     type: jsPsychFullscreen,
     fullscreen_mode: false,
     delay_after: 0
   };
-  trainingList.push(enter_fullscreen);
+  trainingList.push(enterFullscreen);
 
   // PRELOADING
   // this should be handled within the plugins, but I've gotten mixed results relying on this,

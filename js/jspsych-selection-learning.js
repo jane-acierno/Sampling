@@ -1,19 +1,6 @@
 var jsPsychSelectionLearning = (function (jspsych) {
 	"use strict";
-  
-	const info = {
-		name: "selection-learning",
-		parameters: {
-			selection_learning: {
-				type: jspsych.ParameterType.IMAGE,
-				default: ['image1', 'image2', 'image3', 'image4', 'image5', 'image6', 'image7', 'image8'],
-			},
-			selection_learning: {
-				default: ['label1', 'label2', 'label3', 'label4', 'label5', 'label6', 'label7', 'label8'],
-			},
-		},
-	};
-  
+
 	/**
 	 * **SELECTION LEARNING**
 	 *
@@ -22,103 +9,142 @@ var jsPsychSelectionLearning = (function (jspsych) {
 	 * @author Martin Zettersten + Nathan Liang
 	 * @see {@link https://DOCUMENTATION_URL DOCUMENTATION LINK TEXT}
 	 */
+
+	var advance = false;
+
+	const defaultImages = [...Array(40)].map((_, i) => `image${i + 1}`);
+	const defaultLabels = [...Array(40)].map((_, i) => `label${i + 1}`);
+
+	const info = {
+		name: "selection-learning",
+		parameters: {
+			selection_learning: {
+				type: jspsych.ParameterType.IMAGE,
+				default: defaultImages
+			},
+			selection_labels: {
+				type: jspsych.ParameterType.HTML_STRING,
+				default: defaultLabels
+			},
+			choices: {
+				type: jspsych.ParameterType.STRING,
+				pretty_name: "Choices",
+				default: undefined,
+				array: true,
+			}
+		}
+	};
+
 	class SelectionLearningPlugin {
-	  	constructor(jsPsych) {
+		constructor(jsPsych) {
 			this.jsPsych = jsPsych;
 		}
-	  
-	  	trial(display_element, trial) {
+
+		trial(display_element, trial) {
 
 			// default values
-			trial.canvas_size = trial.canvas_size || [1024, 700];
+			trial.canvas_size = trial.canvas_size || [1024, 2048];
 			trial.image_size = trial.image_size || [150, 150];
-			trial.audio = trial.audio || "true";
-			trial.question = trial.question || "Click on the person whose opinion you want to hear next.";
+			trial.question = trial.question || "Click on the person whose opinion you would like to hear next.";
 			trial.timing_post_trial = typeof trial.timing_post_trial == 'undefined' ? 500 : trial.timing_post_trial;
 			trial.duration = trial.duration || 1000;
-			trial.imageArrayKey = trial.imageArrayKey || ["0", "1", "2", "3", "4", "5", "6", "7"];
-			trial.circleArrayKey = trial.circleArrayKey || ["0", "1", "2", "3", "4", "5", "6", "7"];
-			trial.imageArrayIndex = trial.imageArrayIndex || [0, 1, 2, 3, 4, 5, 6, 7];
-			trial.circleArrayIndex = trial.circleArrayIndex || [0, 1, 2, 3, 4, 5, 6, 7];
+			trial.imageArrayKey = trial.imageArrayKey || Array.from({ length: 40 }, (_, i) => i.toString());
+			trial.circleArrayKey = trial.circleArrayKey || Array.from({ length: 40 }, (_, i) => i.toString());
+			trial.imageArrayIndex = trial.imageArrayIndex || Array.from({ length: 40 }, (_, i) => i);
+			trial.circleArrayIndex = trial.circleArrayIndex || Array.from({ length: 40 }, (_, i) => i);
 			trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
-			trial.finalPause = trial.finalPause || 500;
+			trial.finalPause = trial.finalPause || 0;
 
 			display_element.innerHTML += `<svg id='jspsych-test-canvas' width=${trial.canvas_size[0]} height=${trial.canvas_size[1]}></svg>`
 			var paper = Snap("#jspsych-test-canvas");
-			
+
 			var choice = "NA";
 			var choiceIndex = "NA";
 			var choiceKey = "NA";
 			var choiceLabel = "NA";
 			var choiceImage = "NA";
 			var choiceCircle = "NA";
-			
+
 			var rt = "NA";
 			var learningImage = "NA";
 			var learningStartRT = "NA";
 			var trialDuration = "NA";
 			var prompt = "NA";
-			
-			var circle1 = paper.circle(125, 350, 90);
-			var circle2 = paper.circle(325, 350, 90);
-			var circle3 = paper.circle(525, 350, 90);
-			var circle4 = paper.circle(725, 350, 90);
-			var circle5 = paper.circle(125, 550, 90);
-			var circle6 = paper.circle(325, 550, 90);
-			var circle7 = paper.circle(525, 550, 90);
-			var circle8 = paper.circle(725, 550, 90);
-			
-			// create circle set and dict
-			var circleSet = Snap.set(circle1, circle2, circle3, circle4, circle5, circle6, circle7, circle8);
-			var circleDict = {0: circle1, 1: circle2, 2: circle3, 3: circle4, 4: circle5, 5: circle6, 6: circle7, 7: circle8};
-			
+
+			// Create a snap set by pushing to circleSet and populate circleDict with circles 1-40
+
+			// Define the dimensions of the grid
+			var numRows = 10; var numCols = 4;
+
+			// Define the properties of the circles
+			var circleRadius = 90; var circleSpacing = 200;
+
+			// Loop through the rows and columns to create the circles
+			var circles = [];
+
+			for (var row = 0; row < numRows; row++) {
+				for (var col = 0; col < numCols; col++) {
+					var circleIndex = row * numCols + col + 1;
+					var x = 125 + col * circleSpacing;
+					var y = 350 + row * circleSpacing;
+					var circleName = "circle" + circleIndex;
+					window[circleName] = paper.circle(x, y, circleRadius);
+					circles.push(window[circleName]);
+				}
+			}
+
+			var circleSet = Snap.set.apply(null, circles);
+
+
+			var circleDict = {};
+			for (var i = 1; i <= 40; i++) {
+				var circleName = "circle" + i;
+				circleDict[i - 1] = window[circleName];
+			}
+
 			circleSet.attr({
-				fill: "#00ccff",
+				fill: "#0275d8",
 				stroke: "#000",
 				strokeWidth: 5
 			});
-			
-			var imageLocations = {
-				pos1: [50, 275],
-				pos2: [250, 275],
-				pos3: [450, 275],
-				pos4: [650, 275],
-				pos5: [50, 475],
-				pos6: [250, 475],
-				pos7: [450, 475],
-				pos8: [650, 475],
-			};
-			
-			var profileCircle = paper.circle(275, 125, 90);
-			profileCircle.attr({
-				fill: "#FFD3D6",
-				stroke: "#000",
-				strokeWidth: 5,
-				opacity: 0
-			});
 
-			// var sentence = paper.text(575, 125);
-			// sentence.attr({
-			// 	opacity: 0
-			// });
-			
-			var image1 = paper.image(trial.image1, imageLocations["pos1"][0], imageLocations["pos1"][1], trial.image_size[0],trial.image_size[1]);
-			var image2 = paper.image(trial.image2, imageLocations["pos2"][0], imageLocations["pos2"][1], trial.image_size[0],trial.image_size[1]);
-			var image3 = paper.image(trial.image3, imageLocations["pos3"][0], imageLocations["pos3"][1], trial.image_size[0],trial.image_size[1]);
-			var image4 = paper.image(trial.image4, imageLocations["pos4"][0], imageLocations["pos4"][1], trial.image_size[0],trial.image_size[1]);
-			var image5 = paper.image(trial.image5, imageLocations["pos5"][0], imageLocations["pos5"][1], trial.image_size[0],trial.image_size[1]);
-			var image6 = paper.image(trial.image6, imageLocations["pos6"][0], imageLocations["pos6"][1], trial.image_size[0],trial.image_size[1]);
-			var image7 = paper.image(trial.image7, imageLocations["pos7"][0], imageLocations["pos7"][1], trial.image_size[0],trial.image_size[1]);
-			var image8 = paper.image(trial.image8, imageLocations["pos8"][0], imageLocations["pos8"][1], trial.image_size[0],trial.image_size[1]);
-			
-			var imageSet = Snap.set(image1, image2, image3, image4, image5, image6, image7, image8);
-			var imageDict = {0: image1, 1: image2, 2: image3, 3: image4, 4: image5, 5: image6, 6: image7, 7: image8};
-			
+			var imageLocations = {};
+
+			for (var i = 1; i <= 40; i++) {
+				var row = Math.ceil(i / 4);
+				var col = ((i - 1) % 4) + 1;
+				var posX = 200 * col - 150;
+				var posY = 200 * row + 75;
+				imageLocations["pos" + i] = [posX, posY];
+			}
+
+			var images = [];
+
+			for (var i = 1; i <= 40; i++) {
+				window['image' + i] = paper.image(
+					trial['image' + i],
+					imageLocations['pos' + i][0],
+					imageLocations['pos' + i][1],
+					trial.image_size[0],
+					trial.image_size[1]
+				);
+				images.push(window[imageName]);
+			}
+
+			var imageSet = Snap.set.apply(null, images);
+
+
+			var imageDict = {};
+			for (var i = 1; i <= 40; i++) {
+				var imageName = "image" + i;
+				imageDict[i - 1] = window[imageName];
+			}
+
 			var circleImageSet = Snap.set(
-				circle1, circle2, circle3, circle4, circle5, circle6, circle7, circle8, 
-				image1, image2, image3, image4, image5,	image6,	image7,	image8
+				...Object.keys(circleDict).slice(0, 40).map(key => circleDict[key]),
+				...Object.keys(imageDict).slice(0, 40).map(key => imageDict[key]),
 			);
-			
+
 
 			// Prompt Text
 			var prompt = paper.text(425, 235, trial.question);
@@ -126,124 +152,52 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				"text-anchor": "middle",
 				"font-weight": "bold"
 			});
-			
+
 			var start_time = (new Date()).getTime();
 			var trial_data = {};
-			
-			image1.click(function() {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle1.attr({
-					fill: "#FFD3D6"
-				});
-				choiceIndex = 0;
-				init_learning(choiceIndex, rt);
-			});
-	
-			image2.click(function() {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle2.attr({
-					fill: "#FFD3D6"
-				});
-				choiceIndex = 1;
-				init_learning(choiceIndex, rt);
-			});
-	
-			image3.click(function() {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle3.attr({
-					fill: "#FFD3D6"
-				});
-				choiceIndex = 2;
-				init_learning(choiceIndex, rt);
-			});
-	
-			image4.click(function() {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle4.attr({
-					fill: "#FFD3D6"
-				});
-				choiceIndex = 3;
-				init_learning(choiceIndex, rt);
-			});
-	
-			image5.click(function() {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle5.attr({
-					fill: "#FFD3D6"
-				});
-				choiceIndex = 4;
-				init_learning(choiceIndex, rt);
-			});
-	
-			image6.click(function() {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle6.attr({
-					fill: "#FFD3D6"
-				});
-				choiceIndex = 5;
-				init_learning(choiceIndex, rt);
-			});
-	
-			image7.click(function() {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle7.attr({
-					fill: "#FFD3D6"
-				});
-				choiceIndex = 6;
-				init_learning(choiceIndex, rt);
-			});
-	
-			image8.click(function() {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle8.attr({
-					fill: "#FFD3D6"
-				});
-				choiceIndex = 7;
-				init_learning(choiceIndex, rt);
-			});
-			
-			const init_learning = (choiceIndex, rt) => {
-				image1.unclick();
-				image2.unclick();
-				image3.unclick();
-				image4.unclick();
-				image5.unclick();
-				image6.unclick();
-				image7.unclick();
-				image8.unclick();
-				
+
+
+
+
+
+			let profileImage;
+			let profileCircle;
+			let sentence;
+
+			const initLearning = (choiceIndex, rt) => {
+
 				// choice info
 				choiceLabel = trial.stims[trial.stimNames[trial.curLocationList[choiceIndex]]]["word"];
 				choice = trial.stims[trial.stimNames[trial.curLocationList[choiceIndex]]]["image"];
 				choiceKey = trial.imageArrayIndex[choiceIndex];
 				choiceImage = imageDict[choiceKey];
 				choiceCircle = circleDict[choiceKey];
-			
-				
+
+				// create circles
+				profileCircle = paper.circle(275, 125, 90);
+
+				profileCircle.attr({
+					fill: "#5cb85c",
+					stroke: "#000",
+					strokeWidth: 5,
+					opacity: 0,
+				});
+
 				// create images
-				var profileImage = paper.image(
-					choice, 
+				profileImage = paper.image(
+					choice,
 					200, 50,
 					trial.image_size[0],
 					trial.image_size[1]
 				);
 
 				// define words
-				var sentence = paper.text(425, 125, choiceLabel);
+				sentence = paper.text(425, 125, choiceLabel);
 				sentence.attr({
 					opacity: 0,
 					"text-anchor": "right",
 					"font-weight": "bold"
 				});
-
 
 				// learning event
 				learningImage = Snap.set(
@@ -251,33 +205,35 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					sentence
 				);
 
-				learningImage.attr({opacity: 0});
-				
-				setTimeout(function() {
+				learningImage.attr({ opacity: 0 });
+
+				setTimeout(function () {
 
 					// fade out choices
-					prompt.animate({opacity: 0}, 500, mina.linear);
-					
+					prompt.animate({ opacity: 0 }, 500, mina.linear);
+
 					circleImageSet.animate(
-						{opacity: 0.2}, 500, mina.linear, function() {
-							
-							//fade in learning images
+						{ opacity: 0.2 }, 500, mina.linear, function () {
+
+							// fade in learning images
 							learningImage.animate(
-								{opacity: 1}, 500, mina.linear, function() {
-									setTimeout(function() {sentence.animate({opacity: 1}, 500, mina.linear, playLearningTrial())});
+								{ opacity: 1 }, 500, mina.linear, function () {
+									playLearningTrial();
 								}
 							);
 						}
 					);
+
 				}, 500);
+
+
 			};
-	
-	
-			function playLearningTrial () {
-				
+
+			function playLearningTrial() {
+
 				var learningStartTime = (new Date()).getTime();
 
-				
+
 				// introduce learning instruction
 				var learningInstr = paper.text(425, 20, trial.learningText);
 				learningInstr.attr({
@@ -285,7 +241,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					"text-anchor": "middle",
 					"font-weight": "bold"
 				});
-				
+
 				// define words
 				var sentence = paper.text(425, 125, choiceLabel);
 				sentence.attr({
@@ -293,7 +249,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					"text-anchor": "middle",
 					"font-weight": "bold"
 				});
-
 
 				//display buttons
 				var buttons = [];
@@ -303,54 +258,476 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					} else {
 						console.error('Error in selection-learning plugin. The length of the button_html array does not equal the length of the choices array');
 					}
-				} 
+				}
 				else {
 					for (var i = 0; i < trial.choices.length; i++) {
 						buttons.push(trial.button_html);
 					}
 				}
 
-				display_element.innerHTML += `<div id="jspsych-selection-learning-btngroup" class="center-content block-center"></div>`;
-				for (var i = 0; i < trial.choices.length; i++) {
-					var str = buttons[i].replace(/%choice%/g, trial.choices[i]);
-					$('#jspsych-selection-learning-btngroup').append(
-						$(str).attr('id', 'jspsych-selection-learning-button-' + i).data('choice', i).addClass('jspsych-selection-learning-button').on('click', function(e) {
-							// disable all the buttons after a response
-							$('.jspsych-selection-learning-button').off('click').attr('disabled', 'disabled');
-							// hide button
-							$('.jspsych-selection-learning-button').hide();
-							var choice = $('#' + this.id).data('choice');
-							
-							var curTime = Date.now();
-							var learningStartRT = curTime - learningStartTime;
-							
-							endTrial();
-						})
-					);
-				};
+				setTimeout(function () {
+					var divElement = document.createElement('div');
+					divElement.id = 'jspsych-selection-learning-btngroup';
+					divElement.className = 'center-content block-center';
+
+					divElement.style.textAlign = "center";
+					divElement.style.margin = "200px";
+					// TODO: Prevent multiple clicks
+
+
+					// var svgElement = document.getElementById("jspsych-target");
+					// var upperDisplayElement = svgElement.parentNode;
+
+					var referenceElement = display_element.firstChild;
+					display_element.insertBefore(divElement, referenceElement)
+
+					for (var l = 0; l < trial.choices.length; l++) {
+						var str = buttons[l].replace(/%choice%/, trial.choices[l]);
+						$('#jspsych-selection-learning-btngroup').append(
+							$(str).attr('id', 'jspsych-selection-learning-button-' + l).data('choice', l).addClass('jspsych-selection-learning-button').on('click', function (e) {
+								// disable all the buttons after a response
+								$('.jspsych-selection-learning-button').off('click').attr('disabled', 'disabled');
+								// hide button
+								$('.jspsych-selection-learning-button').hide();
+								choice = $('#' + this.id).data('choice');
+
+
+								var curTime = Date.now();
+								var learningStartRT = curTime - learningStartTime;
+
+							})
+						);
+					};
+					$('#jspsych-selection-learning-button-0').on('click', function (e) {
+						circleImageSet.animate(
+							{ opacity: 1 }, 500, mina.linear, function () {
+
+								// fade in learning images
+								learningImage.remove();
+
+								setTimeout(function () {
+									prompt.animate({ opacity: 1 }, 500, mina.linear);
+								}, 500);
+							}
+						);
+
+					});
+
+					$('#jspsych-selection-learning-button-1').on('click', function (e) {
+						endTrial();
+					});
+
+				}, 1000);
 			};
-	
-	
-			function playAudio(sentence) {
-													
-				// label1.animate({opacity: 1}, 500, mina.linear, function() {
-				// 	label1.animate({opacity: 1}, 500, mina.linear, function() {
-				// 		label1.animate({opacity: 0}, 500, mina.linear, function() {
-				// 			label2.animate({opacity: 1}, 500, mina.linear, function() {
-				// 				label2.animate({opacity: 1}, 500, mina.linear, function() {
-				// 					label2.animate({opacity: 0}, 500, mina.linear, endTrial());
-				// 				});
-				// 			});
-				// 		});
-				// 	});
-				// });
-				sentence.animate({opacity: 0}, 500, mina.linear, endTrial());
-			};
+
+			image1.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle1.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 0;
+				initLearning(choiceIndex, rt);
+			});
+
+			image2.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle2.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 1;
+				initLearning(choiceIndex, rt);
+			});
+
+			image3.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle3.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 2;
+				initLearning(choiceIndex, rt);
+			});
+
+			image4.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle4.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 3;
+				initLearning(choiceIndex, rt);
+			});
+
+			image5.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle5.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 4;
+				initLearning(choiceIndex, rt);
+			});
+
+			image6.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle6.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 5;
+				initLearning(choiceIndex, rt);
+			});
+
+			image7.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle7.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 6;
+				initLearning(choiceIndex, rt);
+			});
+
+			image8.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle8.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 7;
+				initLearning(choiceIndex, rt);
+			});
+
+			image9.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle9.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 8;
+				initLearning(choiceIndex, rt);
+			});
+
+			image10.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle10.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 9;
+				initLearning(choiceIndex, rt);
+			});
+
+
+			image11.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle11.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 10;
+				initLearning(choiceIndex, rt);
+			});
+
+			image12.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle12.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 11;
+				initLearning(choiceIndex, rt);
+			});
+
+			image13.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle13.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 12;
+				initLearning(choiceIndex, rt);
+			});
+
+			image14.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle14.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 13;
+				initLearning(choiceIndex, rt);
+			});
+
+			image15.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle15.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 14;
+				initLearning(choiceIndex, rt);
+			});
+
+			image16.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle16.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 15;
+				initLearning(choiceIndex, rt);
+			});
+
+			image17.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle17.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 16;
+				initLearning(choiceIndex, rt);
+			});
+
+			image18.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle18.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 17;
+				initLearning(choiceIndex, rt);
+			});
+
+			image19.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle19.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 18;
+				initLearning(choiceIndex, rt);
+			});
+
+			image20.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle20.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 10;
+				initLearning(choiceIndex, rt);
+			});
+
+			image21.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle21.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 20;
+				initLearning(choiceIndex, rt);
+			});
+
+			image22.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle22.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 21;
+				initLearning(choiceIndex, rt);
+			});
+
+			image23.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle23.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 22;
+				initLearning(choiceIndex, rt);
+			});
+
+			image24.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle24.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 23;
+				initLearning(choiceIndex, rt);
+			});
+
+			image25.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle25.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 24;
+				initLearning(choiceIndex, rt);
+			});
+
+			image26.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle26.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 25;
+				initLearning(choiceIndex, rt);
+			});
+
+			image27.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle27.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 26;
+				initLearning(choiceIndex, rt);
+			});
+
+			image28.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle28.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 27;
+				initLearning(choiceIndex, rt);
+			});
+
+			image29.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle29.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 28;
+				initLearning(choiceIndex, rt);
+			});
+
+			image30.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle30.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 29;
+				initLearning(choiceIndex, rt);
+			});
+
+
+			image31.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle31.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 30;
+				initLearning(choiceIndex, rt);
+			});
+
+			image32.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle32.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 31;
+				initLearning(choiceIndex, rt);
+			});
+
+			image33.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle33.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 32;
+				initLearning(choiceIndex, rt);
+			});
+
+			image34.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle34.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 33;
+				initLearning(choiceIndex, rt);
+			});
+
+			image35.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle35.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 34;
+				initLearning(choiceIndex, rt);
+			});
+
+			image36.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle36.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 35;
+				initLearning(choiceIndex, rt);
+			});
+
+			image37.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle37.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 36;
+				initLearning(choiceIndex, rt);
+			});
+
+			image38.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle38.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 37;
+				initLearning(choiceIndex, rt);
+			});
+
+			image39.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle39.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 38;
+				initLearning(choiceIndex, rt);
+			});
+
+			image40.click(function () {
+				var end_time = (new Date()).getTime();
+				rt = end_time - start_time;
+				circle40.attr({
+					fill: "#5cb85c"
+				});
+				choiceIndex = 39;
+				initLearning(choiceIndex, rt);
+			});
+
 
 			const endTrial = () => {
 				var final_time = (new Date()).getTime();
 				trialDuration = final_time - start_time;
 				var trial_data = {
+					"choiceLabel": choiceLabel,
 					"image1": trial.image1,
 					"image2": trial.image2,
 					"image3": trial.image3,
@@ -359,23 +736,22 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					"image6": trial.image6,
 					"image7": trial.image7,
 					"image8": trial.image8,
-					"choice": choiceIndex,
 					"learningLocationChoice": trial.learningPos[0],
-					"choiceLabel": choiceLabel,
 					"rt": rt,
 					"learningStartRT": learningStartRT,
 					"trialDuration": trialDuration
 				};
-		
-				setTimeout(function(){
-					
+
+				setTimeout(function () {
 					this.jsPsych.finishTrial(trial_data);
-				}, trial.finalPause); 
-				
+				}, trial.finalPause);
 			};
-		}
-	}
+		};
+	};
+
 	SelectionLearningPlugin.info = info;
-  
+
 	return SelectionLearningPlugin;
 })(jsPsychModule);
+
+

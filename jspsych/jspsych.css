@@ -521,3 +521,17 @@
 #jspsych-data-display {
   text-align: left;
 }
+
+
+
+/* CUSTOM */
+#jspsych-survey-text-form, #jspsych-html-button-response {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.jspsych-btn.jspsych-selection-learning-button {
+  margin: 10px
+} 

@@ -320,14 +320,20 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				}, 1000);
 			};
 
+			var image1Clicked = false;
 			image1.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle1.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 0;
-				initLearning(choiceIndex, rt);
+				if (image1Clicked == false) {
+					var end_time = (new Date()).getTime();
+					rt = end_time - start_time;
+					circle1.attr({
+						fill: "#5cb85c"
+					});
+					choiceIndex = 0;
+					initLearning(choiceIndex, rt);
+					image1Clicked = true;
+				} else {
+					alert("You've already read this person's opinion!")
+				}
 			});
 
 			image2.click(function () {

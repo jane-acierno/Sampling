@@ -603,7 +603,7 @@
       delay_after: 0
     };
     
-    // timeline.push(enter_fullscreen);
+    timeline.push(enter_fullscreen);
 
     var consentForm = {
       type: jsPsychSurveyMultiChoice,
@@ -689,7 +689,7 @@
       }
     };
 
-    //timeline.push(consentForm);
+    timeline.push(consentForm);
 
 
     // EPISTEMIC INSTRUCTIONS //
@@ -814,7 +814,7 @@
       },
     }
 
-    //timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3)
+    timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3)
 
     // MORAL INSTRUCTIONS //
     
@@ -973,9 +973,9 @@
       show_clickable_nav: true
     };
     
-    //timeline.push(moralInstructions1, moralInstructions2, moralInstructions3)
+    timeline.push(moralInstructions1, moralInstructions2, moralInstructions3)
 
-    //timeline.push(curiosityInstructions)
+    timeline.push(curiosityInstructions)
 
     const epistemicInstructions4 = {
       type: jsPsychSurveyMultiChoice,
@@ -1100,6 +1100,8 @@
         console.log(temp)
       },
     }
+    
+    timeline.push(prePredictionsEpistemic)
 
     // Moral Pre-Predictions
     const moralInstructions4 = {
@@ -1154,6 +1156,8 @@
           To make sure you fully understand the instructions for this study, please answer the questions below: 
         </p>`,
     };
+
+    timeline.push(moralInstructions4)
 
     const prePredictionsMoral = {
       type: jsPsychSurveyHtmlForm,
@@ -1243,7 +1247,7 @@
       },
     }
 
-    //timeline.push(prePredictionsMoral)
+    timeline.push(prePredictionsMoral)
 
     // Selection Learning
     var selectList = [];
@@ -1266,7 +1270,6 @@
     };
 
 
-    // selection trials
 
 
     // to balance where the target is on each trial
@@ -1505,7 +1508,7 @@
       ],
     };
 
-    timeline.push(valueOpinionQuestion);
+    timeline.push(postPredictionsMoral);
 
     var nfcQuestions = {
       type: jsPsychSurveyMultiChoice,

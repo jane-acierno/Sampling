@@ -88,16 +88,8 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			// You can access `canvasWidth` here or anywhere else in the code
 			function logTrialImageSize() {
 				console.log(trial.image_size);
-			  }
-			  
-			  // Call logTrialImageSize whenever you want to check the updated value
-			setTimeout(function(){
-				logTrialImageSize();
-				setTimeout(function(){
-					logTrialImageSize();
-				}, 1000)
-				
-			}, 1000)
+			}
+
 
 			var choice = "NA";
 			var choiceIndex = "NA";

@@ -307,6 +307,9 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					divElement.style.margin = "200px";
 					// TODO: Prevent multiple clicks
 
+					var referenceElement = display_element.firstChild;
+					display_element.insertBefore(divElement, referenceElement)
+
 					for (var l = 0; l < trial.choices.length; l++) {
 						var str = buttons[l].replace(/%choice%/, trial.choices[l]);
 						$('#jspsych-selection-learning-btngroup').append(

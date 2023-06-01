@@ -814,7 +814,7 @@
       },
     }
 
-    timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3)
+//    timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3)
 
     // MORAL INSTRUCTIONS //
     
@@ -928,8 +928,8 @@
           <span style="position: absolute; left: 0; font-size: 10pt;">
             Believe Taylor Swift is <strong>morally bad</strong>
           </span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">B
-            elieve Taylor Swift is <strong>morally good</strong>
+          <span style="position: absolute; right: 0; font-size: 10pt;">
+            Believe Taylor Swift is <strong>morally good</strong>
           </span>
         </div>
           <br><br><br>`
@@ -973,9 +973,6 @@
       show_clickable_nav: true
     };
     
-    timeline.push(moralInstructions1, moralInstructions2, moralInstructions3)
-
-    timeline.push(curiosityInstructions)
 
     const epistemicInstructions4 = {
       type: jsPsychSurveyMultiChoice,
@@ -1032,6 +1029,15 @@
     const prePredictionsEpistemic = {
       type: jsPsychSurveyHtmlForm,
       preamble: `
+      <div class="quote">
+        <strong>
+          <h2>Statement #1:</h2>
+          <p>"Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."</p>
+        </strong>
+      </div>
+      <p style="text-align: left">Before you see what other people think about the statement, we want to know what you think:</p>
+      <br>`,
+      html:`
         <label for="pre-slider-epistemic-estimate-percent">
           What percentage of people in the U.S. do you estimate 
           believe that this claim is true vs. think this is false?<br>
@@ -1101,7 +1107,7 @@
       },
     }
     
-    timeline.push(prePredictionsEpistemic)
+    //timeline.push(prePredictionsEpistemic)
 
     // Moral Pre-Predictions
     const moralInstructions4 = {
@@ -1157,7 +1163,7 @@
         </p>`,
     };
 
-    timeline.push(moralInstructions4)
+    //timeline.push(moralInstructions4)
 
     const prePredictionsMoral = {
       type: jsPsychSurveyHtmlForm,
@@ -1247,8 +1253,8 @@
       },
     }
 
-    timeline.push(prePredictionsMoral)
-
+    //timeline.push(prePredictionsMoral)
+    //timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3)
     // Selection Learning
     var selectList = [];
     var numLabelSelectTrialsPerBlock = 100;
@@ -1269,8 +1275,10 @@
       show_clickable_nav: true,
     };
 
-
-
+    timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3)
+    timeline.push(moralInstructions1, moralInstructions2, moralInstructions3)
+    timeline.push(curiosityInstructions)
+    timeling.push(epistemicInstructions4, moralInstructions4)
 
     // to balance where the target is on each trial
     var locationsTest = [];
@@ -1390,7 +1398,6 @@
       },
     }
 
-    timeline.push(postPredictionsEpistemic)
 
     // Moral Post-Predictions //
     const postPredictionsMoral = {

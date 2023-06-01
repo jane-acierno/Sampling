@@ -57,6 +57,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 
 			// default values
+			trial.image_size = [150, 150];
 			trial.question = trial.question || "Click on the person whose opinion you would like to hear next.";
 			trial.timing_post_trial = typeof trial.timing_post_trial == 'undefined' ? 500 : trial.timing_post_trial;
 			trial.duration = trial.duration || 1000;	
@@ -67,28 +68,28 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
 			trial.finalPause = trial.finalPause || 0;
 
-			display_element.innerHTML += `<svg id='jspsych-test-canvas' width=100% height="5012px"></svg>`
+			display_element.innerHTML += `<svg id='jspsych-test-canvas' width=150% height="5012px"></svg>`
 			var paper = Snap("#jspsych-test-canvas");
 
 			  
 			var canvasWidth;
 
 			// Function to get the canvas width
-			function getCanvasWidth() {
-				canvasWidth = document.getElementById('jspsych-test-canvas').clientWidth;
-				trial.image_size = [canvasWidth / 5, canvasWidth / 5];
-			}
+			// function getCanvasWidth() {
+			// 	canvasWidth = document.getElementById('jspsych-test-canvas').clientWidth;
+			// 	trial.image_size = [canvasWidth / 5, canvasWidth / 5];
+			// }
 
 			// Event listener for window resize
-			window.addEventListener('resize', getCanvasWidth);
+			// window.addEventListener('resize', getCanvasWidth);
 
 			// Call the function once to check if the element is available immediately
-			getCanvasWidth();
+			// getCanvasWidth();
 
 			// You can access `canvasWidth` here or anywhere else in the code
-			function logTrialImageSize() {
-				console.log(trial.image_size);
-			}
+			// function logTrialImageSize() {
+			// 	console.log(trial.image_size);
+			// }
 
 
 			var choice = "NA";
@@ -110,7 +111,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			var numRows = 20; var numCols = 5;
 
 			// Define the properties of the circles
-			var circleRadius = 60; var circleSpacing = 120;
+			var circleRadius = 90; var circleSpacing = 200;
 
 			// Loop through the rows and columns to create the circles
 			var circles = [];
@@ -118,7 +119,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			for (var row = 0; row < numRows; row++) {
 				for (var col = 0; col < numCols; col++) {
 					var circleIndex = row * numCols + col + 1;
-					var x = 100 + col * circleSpacing;
+					var x = 125 + col * circleSpacing;
 					var y = 350 + row * circleSpacing;
 					var circleName = "circle" + circleIndex;
 					window[circleName] = paper.circle(x, y, circleRadius);
@@ -305,13 +306,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					divElement.style.textAlign = "center";
 					divElement.style.margin = "200px";
 					// TODO: Prevent multiple clicks
-
-
-					// var svgElement = document.getElementById("jspsych-target");
-					// var upperDisplayElement = svgElement.parentNode;
-
-					var referenceElement = display_element.firstChild;
-					display_element.insertBefore(divElement, referenceElement)
 
 					for (var l = 0; l < trial.choices.length; l++) {
 						var str = buttons[l].replace(/%choice%/, trial.choices[l]);

@@ -12,8 +12,8 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 	var advance = false;
 
-	const defaultImages = [...Array(40)].map((_, i) => `image${i + 1}`);
-	const defaultLabels = [...Array(40)].map((_, i) => `label${i + 1}`);
+	const defaultImages = [...Array(100)].map((_, i) => `image${i + 1}`);
+	const defaultLabels = [...Array(100)].map((_, i) => `label${i + 1}`);
 
 	const info = {
 		name: "selection-learning",
@@ -42,20 +42,33 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 		trial(display_element, trial) {
 
+			// Instructions
+			display_element.innerHTML +=
+				`<div id="jspsych-instructions">
+					<div style="margin-top: 50px; padding: 20px; background-color: #eee; border: black 2px solid; border-radius: 5px;">
+					<strong>
+						<h2>Sampling Task:</h2>
+						<p>Now you can see what other people think. Click on any of the people below to see whether that person thinks the action described in the statement above is morally good or morally bad.</p>
+					</strong>
+					</div>
+					<!-- <p id='prompt'><strong>Click on the person whose opinion you would like to read next.</strong></p> -->
+					<br>
+				</div>`
+
+
 			// default values
-			trial.canvas_size = trial.canvas_size || [1024, 2048];
 			trial.image_size = trial.image_size || [150, 150];
 			trial.question = trial.question || "Click on the person whose opinion you would like to hear next.";
 			trial.timing_post_trial = typeof trial.timing_post_trial == 'undefined' ? 500 : trial.timing_post_trial;
-			trial.duration = trial.duration || 1000;
-			trial.imageArrayKey = trial.imageArrayKey || Array.from({ length: 40 }, (_, i) => i.toString());
-			trial.circleArrayKey = trial.circleArrayKey || Array.from({ length: 40 }, (_, i) => i.toString());
-			trial.imageArrayIndex = trial.imageArrayIndex || Array.from({ length: 40 }, (_, i) => i);
-			trial.circleArrayIndex = trial.circleArrayIndex || Array.from({ length: 40 }, (_, i) => i);
+			trial.duration = trial.duration || 1000;	
+			trial.imageArrayKey = trial.imageArrayKey || Array.from({ length: 100 }, (_, i) => i.toString());
+			trial.circleArrayKey = trial.circleArrayKey || Array.from({ length: 100 }, (_, i) => i.toString());
+			trial.imageArrayIndex = trial.imageArrayIndex || Array.from({ length: 100 }, (_, i) => i);
+			trial.circleArrayIndex = trial.circleArrayIndex || Array.from({ length: 100 }, (_, i) => i);
 			trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
 			trial.finalPause = trial.finalPause || 0;
 
-			display_element.innerHTML += `<svg id='jspsych-test-canvas' width=${trial.canvas_size[0]} height=${trial.canvas_size[1]}></svg>`
+			display_element.innerHTML += `<svg id='jspsych-test-canvas' width=150% height="5012px"></svg>`
 			var paper = Snap("#jspsych-test-canvas");
 
 			var choice = "NA";
@@ -71,10 +84,10 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			var trialDuration = "NA";
 			var prompt = "NA";
 
-			// Create a snap set by pushing to circleSet and populate circleDict with circles 1-40
+			// Create a snap set by pushing to circleSet and populate circleDict with circles 1-100
 
 			// Define the dimensions of the grid
-			var numRows = 10; var numCols = 4;
+			var numRows = 20; var numCols = 5;
 
 			// Define the properties of the circles
 			var circleRadius = 90; var circleSpacing = 200;
@@ -97,7 +110,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 
 			var circleDict = {};
-			for (var i = 1; i <= 40; i++) {
+			for (var i = 1; i <= 100; i++) {
 				var circleName = "circle" + i;
 				circleDict[i - 1] = window[circleName];
 			}
@@ -110,9 +123,9 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			var imageLocations = {};
 
-			for (var i = 1; i <= 40; i++) {
-				var row = Math.ceil(i / 4);
-				var col = ((i - 1) % 4) + 1;
+			for (var i = 1; i <= 100; i++) {
+				var row = Math.ceil(i / 5);
+				var col = ((i - 1) % 5) + 1;
 				var posX = 200 * col - 150;
 				var posY = 200 * row + 75;
 				imageLocations["pos" + i] = [posX, posY];
@@ -120,7 +133,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			var images = [];
 
-			for (var i = 1; i <= 40; i++) {
+			for (var i = 1; i <= 100; i++) {
 				window['image' + i] = paper.image(
 					trial['image' + i],
 					imageLocations['pos' + i][0],
@@ -135,14 +148,14 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 
 			var imageDict = {};
-			for (var i = 1; i <= 40; i++) {
+			for (var i = 1; i <= 100; i++) {
 				var imageName = "image" + i;
 				imageDict[i - 1] = window[imageName];
 			}
 
 			var circleImageSet = Snap.set(
-				...Object.keys(circleDict).slice(0, 40).map(key => circleDict[key]),
-				...Object.keys(imageDict).slice(0, 40).map(key => imageDict[key]),
+				...Object.keys(circleDict).slice(0, 100).map(key => circleDict[key]),
+				...Object.keys(imageDict).slice(0, 100).map(key => imageDict[key]),
 			);
 
 
@@ -158,17 +171,16 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 
 
-
-
 			let profileImage;
 			let profileCircle;
 			let sentence;
 
+
 			const initLearning = (choiceIndex, rt) => {
 
 				// choice info
-				choiceLabel = trial.stims[trial.stimNames[trial.curLocationList[choiceIndex]]]["word"];
-				choice = trial.stims[trial.stimNames[trial.curLocationList[choiceIndex]]]["image"];
+				choiceLabel = trial.stims[trial.stimNames[trial.currentLocationList[choiceIndex]]]["word"];
+				choice = trial.stims[trial.stimNames[trial.currentLocationList[choiceIndex]]]["image"];
 				choiceKey = trial.imageArrayIndex[choiceIndex];
 				choiceImage = imageDict[choiceKey];
 				choiceCircle = circleDict[choiceKey];
@@ -320,413 +332,24 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				}, 1000);
 			};
 
-			var image1Clicked = false;
-			image1.click(function () {
-				if (image1Clicked == false) {
+			var images = Array.from({length: 100}, (_, i) => eval(`image${i+1}`));
+			var circles = Array.from({length: 100}, (_, i) => eval(`circle${i+1}`));
+
+
+			for (var i = 0; i < images.length; i++) {
+				(function (index) {
+					images[index].click(function () {
 					var end_time = (new Date()).getTime();
-					rt = end_time - start_time;
-					circle1.attr({
+					var rt = end_time - start_time;
+					circles[index].attr({
 						fill: "#5cb85c"
 					});
-					choiceIndex = 0;
+					var choiceIndex = index;
 					initLearning(choiceIndex, rt);
-					image1Clicked = true;
-				} else {
-					alert("You've already read this person's opinion!")
-				}
-			});
-
-			image2.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle2.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 1;
-				initLearning(choiceIndex, rt);
-			});
-
-			image3.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle3.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 2;
-				initLearning(choiceIndex, rt);
-			});
-
-			image4.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle4.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 3;
-				initLearning(choiceIndex, rt);
-			});
-
-			image5.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle5.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 4;
-				initLearning(choiceIndex, rt);
-			});
-
-			image6.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle6.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 5;
-				initLearning(choiceIndex, rt);
-			});
-
-			image7.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle7.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 6;
-				initLearning(choiceIndex, rt);
-			});
-
-			image8.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle8.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 7;
-				initLearning(choiceIndex, rt);
-			});
-
-			image9.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle9.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 8;
-				initLearning(choiceIndex, rt);
-			});
-
-			image10.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle10.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 9;
-				initLearning(choiceIndex, rt);
-			});
-
-
-			image11.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle11.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 10;
-				initLearning(choiceIndex, rt);
-			});
-
-			image12.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle12.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 11;
-				initLearning(choiceIndex, rt);
-			});
-
-			image13.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle13.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 12;
-				initLearning(choiceIndex, rt);
-			});
-
-			image14.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle14.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 13;
-				initLearning(choiceIndex, rt);
-			});
-
-			image15.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle15.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 14;
-				initLearning(choiceIndex, rt);
-			});
-
-			image16.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle16.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 15;
-				initLearning(choiceIndex, rt);
-			});
-
-			image17.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle17.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 16;
-				initLearning(choiceIndex, rt);
-			});
-
-			image18.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle18.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 17;
-				initLearning(choiceIndex, rt);
-			});
-
-			image19.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle19.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 18;
-				initLearning(choiceIndex, rt);
-			});
-
-			image20.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle20.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 10;
-				initLearning(choiceIndex, rt);
-			});
-
-			image21.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle21.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 20;
-				initLearning(choiceIndex, rt);
-			});
-
-			image22.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle22.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 21;
-				initLearning(choiceIndex, rt);
-			});
-
-			image23.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle23.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 22;
-				initLearning(choiceIndex, rt);
-			});
-
-			image24.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle24.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 23;
-				initLearning(choiceIndex, rt);
-			});
-
-			image25.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle25.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 24;
-				initLearning(choiceIndex, rt);
-			});
-
-			image26.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle26.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 25;
-				initLearning(choiceIndex, rt);
-			});
-
-			image27.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle27.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 26;
-				initLearning(choiceIndex, rt);
-			});
-
-			image28.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle28.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 27;
-				initLearning(choiceIndex, rt);
-			});
-
-			image29.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle29.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 28;
-				initLearning(choiceIndex, rt);
-			});
-
-			image30.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle30.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 29;
-				initLearning(choiceIndex, rt);
-			});
-
-
-			image31.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle31.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 30;
-				initLearning(choiceIndex, rt);
-			});
-
-			image32.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle32.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 31;
-				initLearning(choiceIndex, rt);
-			});
-
-			image33.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle33.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 32;
-				initLearning(choiceIndex, rt);
-			});
-
-			image34.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle34.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 33;
-				initLearning(choiceIndex, rt);
-			});
-
-			image35.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle35.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 34;
-				initLearning(choiceIndex, rt);
-			});
-
-			image36.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle36.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 35;
-				initLearning(choiceIndex, rt);
-			});
-
-			image37.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle37.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 36;
-				initLearning(choiceIndex, rt);
-			});
-
-			image38.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle38.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 37;
-				initLearning(choiceIndex, rt);
-			});
-
-			image39.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle39.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 38;
-				initLearning(choiceIndex, rt);
-			});
-
-			image40.click(function () {
-				var end_time = (new Date()).getTime();
-				rt = end_time - start_time;
-				circle40.attr({
-					fill: "#5cb85c"
-				});
-				choiceIndex = 39;
-				initLearning(choiceIndex, rt);
-			});
+					});
+				})(i);
+			}
+			
 
 
 			const endTrial = () => {
@@ -749,7 +372,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				};
 
 				setTimeout(function () {
-					this.jsPsych.finishTrial(trial_data);
+					jsPsych.finishTrial(trial_data);
 				}, trial.finalPause);
 			};
 		};
@@ -759,5 +382,3 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 	return SelectionLearningPlugin;
 })(jsPsychModule);
-
-

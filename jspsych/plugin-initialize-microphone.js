@@ -83,7 +83,7 @@ var jsPsychInitializeMicrophone = (function (jspsych) {
         showMicrophoneSelection(display_element, trial) {
             let html = `
       ${trial.device_select_message}
-      <select name="mic" id="which-mic" style="font-size:14px; font-family: 'Open Sans', 'Arial', sans-serif; padding: 4px;">
+      <select name="mic" id="which-mic" style="font-size:14px; font-family: 'Roboto', sans-serif; padding: 4px;">
       </select>
       <p><button class="jspsych-btn" id="btn-select-mic">${trial.button_label}</button></p>`;
             display_element.innerHTML = html;

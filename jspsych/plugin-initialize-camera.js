@@ -121,7 +121,7 @@ var jsPsychInitializeCamera = (function (jspsych) {
         showCameraSelection(display_element, trial) {
             let html = `
       ${trial.device_select_message}
-      <select name="camera" id="which-camera" style="font-size:14px; font-family: 'Open Sans', 'Arial', sans-serif; padding: 4px;">
+      <select name="camera" id="which-camera" style="font-size:14px; font-family: 'Roboto', sans-serif; padding: 4px;">
       </select>
       <p><button class="jspsych-btn" id="btn-select-camera">${trial.button_label}</button></p>`;
             display_element.innerHTML = html;

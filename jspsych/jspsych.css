@@ -323,23 +323,22 @@
 }
 
 .jspsych-content-wrapper {
-  display: flex;
-  margin: auto;
-  flex: 1 1 100%;
   width: 100%;
-}
-
-.jspsych-content {
-  max-width: 95%;
-  /* this is mainly an IE 10-11 fix */
-  width: 50%;
-  height: 50%;
-  text-align: center;
-  margin: auto;
-  /* display: flex; */
+  height: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.jspsych-content {
+  /* max-width: 10%; */
+  /* this is mainly an IE 10-11 fix */
+  width: 50%;
+  height: 50%;
+  justify-content: center;
+  /* align-items: center; */
+  /* text-align: center; */
   min-height: 100vh;
   /* this is for overflowing content */
 }
@@ -369,7 +368,7 @@
 .jspsych-btn {
   display: inline-block;
   padding: 6px 12px;
-  margin: 0px;
+  margin: 0px 8px 18px;
   font-size: 14px;
   font-weight: 400;
   font-family: "Open Sans", "Arial", sans-serif;
@@ -377,7 +376,7 @@
   line-height: 1.4;
   text-align: center;
   white-space: nowrap;
-  vertical-align: middle;
+  vertical-align: bottom;
   background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -525,13 +524,42 @@
 
 
 /* CUSTOM */
-#jspsych-survey-text-form, #jspsych-html-button-response {
+
+.jspsych-btn.jspsych-selection-learning-button {
+  margin: 10px;
+} 
+
+
+/* FULLSCREEN PLUGIN */
+#jspsych-fullscreen-txt {
+  position: absolute; 
+  top: 42.5% !important; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* INSTRUCTIONS */
+/* .jspsych-instructions-nav {
+  position: absolute; 
+  top: 65% !important; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+} */
+
+/* GLOBAL */
+.jspsych-center {
+  z-index: 1;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.jspsych-btn.jspsych-selection-learning-button {
-  margin: 10px
-} 
+.quote {
+  margin-top: 50px; 
+  padding: 20px; 
+  background-color: #eee; 
+  border: black 2px solid; 
+  border-radius: 5px;
+  font-weight: bold;
+}

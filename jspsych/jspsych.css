@@ -525,9 +525,6 @@
 
 /* CUSTOM */
 
-.jspsych-btn.jspsych-selection-learning-button {
-  margin: 10px;
-} 
 
 
 /* FULLSCREEN PLUGIN */
@@ -562,4 +559,99 @@
   border: black 2px solid; 
   border-radius: 5px;
   font-weight: bold;
+}
+
+.grid-container-wrapper {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  margin: 50px 0 100px 0; 
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: minmax(50px, auto);
+  gap: 50px;
+}
+
+#trial-presentation-space {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-auto-rows: minmax(250px, auto);
+  gap: 50px;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+}
+
+#sampling-prompt {
+  padding-top: 50px;
+}
+
+#avatar-container {
+  display: flex;
+  justify-self: end;
+}
+
+.avatar-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #0275d8;
+  border: 5px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.avatar-photo {
+  width: 125px;
+  height: 125px;
+}
+
+#statement {
+  justify-self: start;
+  text-align: left;
+  line-height: 1.5;
+}
+
+.fade-in {
+  opacity: 0; /* Start with 0 opacity */
+  animation: fadeInAnimation 1s forwards; /* Animation name and duration */
+}
+
+@keyframes fadeInAnimation {
+  0% { opacity: 0; } /* Start with 0 opacity */
+  100% { opacity: 1; } /* End with 1 opacity */
+}
+
+.fade-out {
+  opacity: 1; /* Start with full opacity */
+  animation: fadeOutAnimation 1s forwards; /* Animation name and duration */
+}
+
+@keyframes fadeOutAnimation {
+  0% { opacity: 1; } /* Start with full opacity */
+  100% { opacity: 0; } /* End with 0 opacity */
+}
+
+.fade-out-partial {
+  opacity: 1; /* Start with full opacity */
+  animation: fadeOutAnimationPartial 1s forwards; /* Animation name and duration */
+}
+
+@keyframes fadeOutAnimationPartial {
+  0% { opacity: 1; } /* Start with full opacity */
+  100% { opacity: 0.3; } /* End with 0 opacity */
+}
+
+
+/* Multiple Choice */
+.jspsych-survey-multi-choice-question {
+  text-align: left; font-size: 12pt;
+}
+
+.jspsych-survey-multi-choice-preamble {
+  text-align: left; font-size: 14pt;
 }

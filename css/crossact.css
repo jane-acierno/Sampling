@@ -118,16 +118,8 @@ input:focus:invalid {
   color: red;
 } */
 
-#jspsych-learning-prompt-btngroup {
-	position: absolute;
-	top: 185px;
-	left: 362px;
-}
-
 #jspsych-selection-learning-btngroup {
-	position: absolute;
-	top: 90px;
-	left: 385px;
+	margin-top: 20px;
 }
 
 #jspsych-comp-test-prompt-btngroup {

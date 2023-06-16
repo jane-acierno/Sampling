@@ -6,7 +6,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 	 *
 	 * SHORT PLUGIN DESCRIPTION
 	 *
-	 * @author Martin Zettersten + Nathan Liang
+	 * @author Nathan Liang
 	 * @see {@link https://DOCUMENTATION_URL DOCUMENTATION LINK TEXT}
 	 */
 
@@ -41,276 +41,138 @@ var jsPsychSelectionLearning = (function (jspsych) {
 		}
 
 		trial(display_element, trial) {
-
 			// Instructions
-			display_element.innerHTML +=
-				`<div id="jspsych-instructions">
-					<div style="margin-top: 50px; padding: 20px; background-color: #eee; border: black 2px solid; border-radius: 5px;">
-					<strong>
-						<h2>Sampling Task:</h2>
-						<p>Now you can see what other people think. Click on any of the people below to see whether that person thinks the action described in the statement above is morally good or morally bad.</p>
-					</strong>
+			display_element.innerHTML += `
+				<div id="jspsych-instructions">
+					<div class="quote">
+						<strong>
+							<h2>Sampling Task:</h2>
+							<p>
+								Now you can see what other people think. 
+								Click on any of the people below to see whether that person thinks the action 
+								described in the statement above is morally good or morally bad.
+							</p>
+						</strong>
 					</div>
-					<!-- <p id='prompt'><strong>Click on the person whose opinion you would like to read next.</strong></p> -->
-					<br>
-				</div>`
+				</div>
 
+				<div id="trial-presentation-space"></div>
+
+				<div id="prompt-container"></div>
+				
+				<div class="grid-container-wrapper">
+					<div class="grid-container" id="avatar-grid"></div>
+				</div>`;
+
+			// Generate circles
+			const avatarCircleContainer = $('#avatar-grid');
+			for (let i = 0; i < 100; i++) {
+				const avatarCircle = $(`<div class='avatar-circle' id='circle${i + 1}'></div>`);
+				avatarCircleContainer.append(avatarCircle);
+			}
+
+			for (let i = 0; i < 100; i++) {
+				const circleId = $(`#circle${i + 1}`);
+				const avatarPhoto = $(`<img class='avatar-photo' src='/avatars/${i + 1}.png'>`);
+				circleId.append(avatarPhoto);
+			}
+
+			const samplingPromptContainer = $('#prompt-container');
+			samplingPromptContainer.html(`<strong id="samplingPrompt">CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO HEAR NEXT</strong><br>(SCROLL TO VIEW MORE)`);
 
 			// default values
-			trial.image_size = [150, 150];
-			trial.question = trial.question || "Click on the person whose opinion you would like to hear next.";
-			trial.timing_post_trial = typeof trial.timing_post_trial == 'undefined' ? 500 : trial.timing_post_trial;
-			trial.duration = trial.duration || 1000;	
-			trial.imageArrayKey = trial.imageArrayKey || Array.from({ length: 100 }, (_, i) => i.toString());
-			trial.circleArrayKey = trial.circleArrayKey || Array.from({ length: 100 }, (_, i) => i.toString());
-			trial.imageArrayIndex = trial.imageArrayIndex || Array.from({ length: 100 }, (_, i) => i);
-			trial.circleArrayIndex = trial.circleArrayIndex || Array.from({ length: 100 }, (_, i) => i);
+
 			trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
-			trial.finalPause = trial.finalPause || 0;
 
-			display_element.innerHTML += `<svg id='jspsych-test-canvas' width=150% height="5012px"></svg>`
-			var paper = Snap("#jspsych-test-canvas");
-
-			  
-			var canvasWidth;
-
-			// Function to get the canvas width
-			// function getCanvasWidth() {
-			// 	canvasWidth = document.getElementById('jspsych-test-canvas').clientWidth;
-			// 	trial.image_size = [canvasWidth / 5, canvasWidth / 5];
-			// }
-
-			// Event listener for window resize
-			// window.addEventListener('resize', getCanvasWidth);
-
-			// Call the function once to check if the element is available immediately
-			// getCanvasWidth();
-
-			// You can access `canvasWidth` here or anywhere else in the code
-			// function logTrialImageSize() {
-			// 	console.log(trial.image_size);
-			// }
-
-
-			var choice = "NA";
-			var choiceIndex = "NA";
-			var choiceKey = "NA";
 			var choiceLabel = "NA";
-			var choiceImage = "NA";
-			var choiceCircle = "NA";
-
-			var rt = "NA";
-			var learningImage = "NA";
+			var choice = 'NA'
 			var learningStartRT = "NA";
 			var trialDuration = "NA";
-			var prompt = "NA";
-
-			// Create a snap set by pushing to circleSet and populate circleDict with circles 1-100
-
-			// Define the dimensions of the grid
-			var numRows = 20; var numCols = 5;
-
-			// Define the properties of the circles
-			var circleRadius = 90; var circleSpacing = 200;
-
-			// Loop through the rows and columns to create the circles
-			var circles = [];
-
-			for (var row = 0; row < numRows; row++) {
-				for (var col = 0; col < numCols; col++) {
-					var circleIndex = row * numCols + col + 1;
-					var x = 125 + col * circleSpacing;
-					var y = 350 + row * circleSpacing;
-					var circleName = "circle" + circleIndex;
-					window[circleName] = paper.circle(x, y, circleRadius);
-					circles.push(window[circleName]);
-				}
-			}
-
-			var circleSet = Snap.set.apply(null, circles);
-
-
-			var circleDict = {};
-			for (var i = 1; i <= 100; i++) {
-				var circleName = "circle" + i;
-				circleDict[i - 1] = window[circleName];
-			}
-
-			circleSet.attr({
-				fill: "#0275d8",
-				stroke: "#000",
-				strokeWidth: 5
-			});
-
-			var imageLocations = {};
-
-			for (var i = 1; i <= 100; i++) {
-				var row = Math.ceil(i / 5);
-				var col = ((i - 1) % 5) + 1;
-				var posX = 200 * col - 150;
-				var posY = 200 * row + 75;
-				imageLocations["pos" + i] = [posX, posY];
-			}
-
-			var images = [];
-
-			for (var i = 1; i <= 100; i++) {
-				window['image' + i] = paper.image(
-					trial['image' + i],
-					imageLocations['pos' + i][0],
-					imageLocations['pos' + i][1],
-					trial.image_size[0],
-					trial.image_size[1]
-				);
-				images.push(window[imageName]);
-			}
-
-			var imageSet = Snap.set.apply(null, images);
-
-
-			var imageDict = {};
-			for (var i = 1; i <= 100; i++) {
-				var imageName = "image" + i;
-				imageDict[i - 1] = window[imageName];
-			}
-
-			var circleImageSet = Snap.set(
-				...Object.keys(circleDict).slice(0, 100).map(key => circleDict[key]),
-				...Object.keys(imageDict).slice(0, 100).map(key => imageDict[key]),
-			);
-
-
-			// Prompt Text
-			var prompt = paper.text(425, 235, trial.question);
-			prompt.attr({
-				"text-anchor": "middle",
-				"font-weight": "bold"
-			});
+			var selections = []
+			var rt_array = [];
 
 			var start_time = (new Date()).getTime();
-			var trial_data = {};
+
+			const initLearning = (circleIndex) => {
+				let tic = (new Date()).getTime();
+
+				const trialPresentationSpace = $('#trial-presentation-space');
+
+				const avatarContainer = document.createElement('div');
+				avatarContainer.id = 'avatar-container';
+				trialPresentationSpace.append(avatarContainer);
+
+				// Create a new circle to hold the chosen avatar
+				// Add it to the presentation space
+				const avatarCircleSelection = document.createElement('div');
+				avatarCircleSelection.className = 'avatar-circle fade-in';
+				avatarCircleSelection.id = `circle` + circleIndex;
+				avatarContainer.append(avatarCircleSelection);
+
+				// Create copy of the chosen avatar photo
+				// Add it inside the avatar circle
+				const avatarPhotoSelection = document.createElement('img');
+				avatarPhotoSelection.src = "/avatars/" + circleIndex + ".png"
+				avatarPhotoSelection.className = 'avatar-photo fade-in';
+				avatarCircleSelection.append(avatarPhotoSelection)
+
+				choiceLabel = trial.avatarNames['avatar' + circleIndex]["statement"];
+
+				const statement = document.createElement('div');
+				statement.id = "statement";
+				// Fade in option
+				// statement.className = "fade-in";
+				// statement.innerHTML = `<strong>${choiceLabel}</strong>`;
+				trialPresentationSpace.append(statement);
 
 
 
-			let profileImage;
-			let profileCircle;
-			let sentence;
+				// Typewriter effect
+				let i = 0;
+				function typeWriter() {
+					if (i < choiceLabel.length) {
+						$("#statement").append(`<strong style="font-size: 28pt;">${choiceLabel.charAt(i)}</strong>`);
+						i++;
+						setTimeout(typeWriter, 40);
+					}
+				}
 
+				typeWriter();
 
-			const initLearning = (choiceIndex, rt) => {
+				// const samplingPrompt = $('#samplingPrompt');
+				// samplingPrompt.addClass('fade-out')
+				samplingPromptContainer.empty()
 
-				// choice info
-				choiceLabel = trial.stims[trial.stimNames[trial.currentLocationList[choiceIndex]]]["word"];
-				choice = trial.stims[trial.stimNames[trial.currentLocationList[choiceIndex]]]["image"];
-				choiceKey = trial.imageArrayIndex[choiceIndex];
-				choiceImage = imageDict[choiceKey];
-				choiceCircle = circleDict[choiceKey];
-
-				// create circles
-				profileCircle = paper.circle(275, 125, 90);
-
-				profileCircle.attr({
-					fill: "#5cb85c",
-					stroke: "#000",
-					strokeWidth: 5,
-					opacity: 0,
-				});
-
-				// create images
-				profileImage = paper.image(
-					choice,
-					200, 50,
-					trial.image_size[0],
-					trial.image_size[1]
-				);
-
-				// define words
-				sentence = paper.text(425, 125, choiceLabel);
-				sentence.attr({
-					opacity: 0,
-					"text-anchor": "right",
-					"font-weight": "bold"
-				});
-
-				// learning event
-				learningImage = Snap.set(
-					profileCircle, profileImage, // outline circle + profile picture
-					sentence
-				);
-
-				learningImage.attr({ opacity: 0 });
+				avatarCircleContainer.addClass('fade-out-partial');
 
 				setTimeout(function () {
 
 					// fade out choices
-					prompt.animate({ opacity: 0 }, 500, mina.linear);
 
-					circleImageSet.animate(
-						{ opacity: 0.2 }, 500, mina.linear, function () {
+					// fade out prompt
 
-							// fade in learning images
-							learningImage.animate(
-								{ opacity: 1 }, 500, mina.linear, function () {
-									playLearningTrial();
-								}
-							);
+					const learningStartTime = (new Date()).getTime();
+
+					//display buttons
+					let buttons = [];
+					if (Array.isArray(trial.button_html)) {
+						if (trial.button_html.length == trial.choices.length) {
+							buttons = trial.button_html;
 						}
-					);
-
-				}, 500);
-
-
-			};
-
-			function playLearningTrial() {
-
-				var learningStartTime = (new Date()).getTime();
-
-
-				// introduce learning instruction
-				var learningInstr = paper.text(425, 20, trial.learningText);
-				learningInstr.attr({
-					opacity: 1,
-					"text-anchor": "middle",
-					"font-weight": "bold"
-				});
-
-				// define words
-				var sentence = paper.text(425, 125, choiceLabel);
-				sentence.attr({
-					opacity: 0,
-					"text-anchor": "middle",
-					"font-weight": "bold"
-				});
-
-				//display buttons
-				var buttons = [];
-				if (Array.isArray(trial.button_html)) {
-					if (trial.button_html.length == trial.choices.length) {
-						buttons = trial.button_html;
-					} else {
-						console.error('Error in selection-learning plugin. The length of the button_html array does not equal the length of the choices array');
 					}
-				}
-				else {
-					for (var i = 0; i < trial.choices.length; i++) {
-						buttons.push(trial.button_html);
+					else {
+						for (let i = 0; i < trial.choices.length; i++) {
+							buttons.push(trial.button_html);
+						}
 					}
-				}
 
-				setTimeout(function () {
-					var divElement = document.createElement('div');
-					divElement.id = 'jspsych-selection-learning-btngroup';
-					divElement.className = 'center-content block-center';
+					const selectionButtons = document.createElement('div');
+					selectionButtons.id = 'jspsych-selection-learning-btngroup';
+					selectionButtons.className = 'center-content block-center';
 
-					divElement.style.textAlign = "center";
-					divElement.style.margin = "200px";
-					// TODO: Prevent multiple clicks
+					samplingPromptContainer.append(selectionButtons)
 
-					var referenceElement = display_element.firstChild;
-					display_element.insertBefore(divElement, referenceElement)
-
-					for (var l = 0; l < trial.choices.length; l++) {
+					for (let l = 0; l < trial.choices.length; l++) {
 						var str = buttons[l].replace(/%choice%/, trial.choices[l]);
 						$('#jspsych-selection-learning-btngroup').append(
 							$(str).attr('id', 'jspsych-selection-learning-button-' + l).data('choice', l).addClass('jspsych-selection-learning-button').on('click', function (e) {
@@ -321,76 +183,89 @@ var jsPsychSelectionLearning = (function (jspsych) {
 								choice = $('#' + this.id).data('choice');
 
 
-								var curTime = Date.now();
-								var learningStartRT = curTime - learningStartTime;
+								const curTime = Date.now();
+								const learningStartRT = curTime - learningStartTime;
 
 							})
 						);
 					};
 					$('#jspsych-selection-learning-button-0').on('click', function (e) {
-						circleImageSet.animate(
-							{ opacity: 1 }, 500, mina.linear, function () {
+						let toc = (new Date()).getTime();
+						let rt = toc - tic;
+						rt_array.push(rt);
 
-								// fade in learning images
-								learningImage.remove();
+						// Fade the prompt back in
+						samplingPromptContainer.html('<p id="samplingPrompt"><strong>CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO HEAR NEXT</strong><br>(SCROLL TO VIEW MORE)</p>');
+						// samplingPrompt.attr('class', 'fade-in');
+						trialPresentationSpace.empty();
 
-								setTimeout(function () {
-									prompt.animate({ opacity: 1 }, 500, mina.linear);
-								}, 500);
-							}
-						);
+						// Fade the grid back in
+						avatarCircleContainer.removeClass('fade-out-partial');
+						avatarCircleContainer.addClass('fade-in');
+						reattachEventListeners();
 
 					});
 
 					$('#jspsych-selection-learning-button-1').on('click', function (e) {
 						endTrial();
 					});
-
-				}, 1000);
+				}, 5000);
 			};
 
-			var images = Array.from({length: 100}, (_, i) => eval(`image${i+1}`));
-			var circles = Array.from({length: 100}, (_, i) => eval(`circle${i+1}`));
+			const clickHandlers = {};
+
+			for (let i = 1; i <= 100; i++) {
+				(function (i) {
+					let circleIndex = i
+					let isLearningInProgress = false; // Flag variable
 
 
-			for (var i = 0; i < images.length; i++) {
-				(function (index) {
-					images[index].click(function () {
-					var end_time = (new Date()).getTime();
-					var rt = end_time - start_time;
-					circles[index].attr({
-						fill: "#5cb85c"
-					});
-					var choiceIndex = index;
-					initLearning(choiceIndex, rt);
-					});
+					const clickHandler = function () {
+						selections.push(circleIndex);
+						if (!isLearningInProgress && !this.classList.contains('disabled')) {
+							isLearningInProgress = true; // Set flag to indicate learning is in progress
+
+							// Disable other circles
+							for (let j = 1; j <= 100; j++) {
+								if (j !== i) {
+									$("#circle" + j).addClass('disabled');
+								}
+							}
+
+							$("#circle" + circleIndex).css("background-color", "#5cb85c");
+							initLearning(circleIndex);
+						}
+					};
+
+					$("#circle" + circleIndex).on('click', clickHandler);
+					clickHandlers[i] = clickHandler;
+
+					start_time = (new Date()).getTime(); // Store the start time
 				})(i);
 			}
-			
+
+			// Function to reattach event listeners
+			function reattachEventListeners() {
+				for (let i = 1; i <= 100; i++) {
+					$("#circle" + i)
+					.removeClass('disabled')
+					.on('click', clickHandlers[i]);
+				}
+			}
 
 
 			const endTrial = () => {
-				var final_time = (new Date()).getTime();
+				const final_time = (new Date()).getTime();
 				trialDuration = final_time - start_time;
-				var trial_data = {
+				const trial_data = {
+					"selections": selections,
 					"choiceLabel": choiceLabel,
-					"image1": trial.image1,
-					"image2": trial.image2,
-					"image3": trial.image3,
-					"image4": trial.image4,
-					"image5": trial.image5,
-					"image6": trial.image6,
-					"image7": trial.image7,
-					"image8": trial.image8,
-					"learningLocationChoice": trial.learningPos[0],
-					"rt": rt,
+					"rt_array": rt_array,
 					"learningStartRT": learningStartRT,
 					"trialDuration": trialDuration
 				};
 
-				setTimeout(function () {
-					jsPsych.finishTrial(trial_data);
-				}, trial.finalPause);
+				jsPsych.finishTrial(trial_data);
 			};
 		};
 	};

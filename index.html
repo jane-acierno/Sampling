@@ -2,13 +2,15 @@
 <html>
 
 <head>
+  <title>Prolific Experiment</title>
   <!-- FontAwesome 6.x -->
   <script src="https://kit.fontawesome.com/5f6dd17e12.js" crossorigin="anonymous"></script>
 
   <!-- JS imports -->
   <script src="js/jquery.min.js"></script>
   <script src="js/jquery-ui.min.js"></script>
-  <script src="js/snap.svg-min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.slim.min.js"
+    integrity="sha256-tG5mcZUtJsZvyKAxYLVXrmjKBVLd6VpVccqz/r4ypFE=" crossorigin="anonymous"></script>
 
   <!-- jsPsych 7.x + Official Plugins -->
   <script src="jspsych/jspsych.js"></script>
@@ -46,12 +48,58 @@
   <script>
     // DEFINE GLOBAL VARIABLES
     let timeline = [];
-      
-    // randomly assign a condition
-  //  var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
-//    jsPsych.data.addProperties({
- //     condition: condition_assignment
-  //  });
+
+    const jsPsych = initJsPsych({
+      use_webaudio: false,
+      on_finish: function (data) {
+        initJsPsych({
+          display_element: 'jspsych-target',
+          timeline: experimentFinal
+        });
+        jsPsych.data.displayData('csv')
+      },
+      display_element: 'jspsych-target',
+      show_progress_bar: false,
+      default_iti: 0,
+    });
+
+    let participantCondition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
+    console.log(participantCondition)
+
+    let subject_id = jsPsych.data.getURLVariable('aid'); //change from hitId
+    if (!subject_id) {
+      subject_id = "test";
+    }
+
+    //general function for grabbing parameter from a URL
+    //function getParamFromURL( name ) {
+    //	name = name.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");
+    //	var regexS = "[\?&]"+name+"=([^&#]*)";
+    //	var regex = new RegExp( regexS );
+    //	var results = regex.exec( window.location.href );
+    //	if( results == null )
+    //		return "";
+    //	else
+    //		return results[1];
+    //}
+
+    //for Amazon Mechanical Turk (workerId added to link via Qualtrics)
+    //save workerID if it is part of the survey URL ?workerId=
+    //var workerId = getParamFromURL( 'workerId' );
+    //otherwise just use the randomly generated subject ID
+    //if (workerId==="") {
+    //	workerId=subject_id;
+    //};
+    //make sure that nobody can enter anything damaging or crazy for workerId
+    //workerId.replace(/[^A-Za-z0-9_]/g, "");
+
+
+    // record the condition assignment in the jsPsych data
+    // this adds a property called 'subject', a property called workerId, and a condition property
+    jsPsych.data.addProperties({
+      subject_id: subject_id,
+      participantCondition: participantCondition
+    });
 
     // Survey Options
     const valueOpinionOptions = [
@@ -128,7 +176,7 @@
       "Asian",
       "American Indian or Alaska Native",
       "Native Hawaiian or Other Pacific Islander",
-      "Hispanic or Latinx",
+      "Hispanic or Latino/a/x",
       "Two or more",
       "Not listed"
     ];
@@ -151,81 +199,667 @@
 
     // Personality: The Big Five
     const bigFiveResponses = [
-      "Completely disagree",
+      "Completely Disagree",
       "Disagree",
-      "Slightly disagree",
-      "Slightly agree",
+      "Slightly Disagree",
+      "Slightly Agree",
       "Agree",
-      "Completely agree"
+      "Completely Agree"
     ];
 
-    // ORGANIZE SUBJECT ID & GENERAL PARAMETERS
+    // ENTER FULLSCREEN //
 
-    const jsPsych = initJsPsych({
-      use_webaudio: false,
+    const enterFullscreen = {
+      type: jsPsychFullscreen,
+      name: 'enter_fullscreen',
+      fullscreen_mode: true,
+      delay_after: 0
+    };
+
+    timeline.push(enterFullscreen)
+
+    // CONSENT FORM //
+
+    const consentForm = {
+      type: jsPsychSurveyMultiChoice,
+      questions: [
+        {
+          name: 'consent',
+          prompt: `
+            <p style="text-align:left;">
+              You are being asked to participate in a research study titled 
+              "Social Judgment and Decision-Making." You were selected to participate in 
+              this project because you are an adult over age 18. This study is sponsored by 
+              Boston College and the John Templeton Foundation.<br><br> 
+
+              The purpose of this study is to understand how we weigh information about 
+              others. This study will be conducted through this online survey. The survey 
+              should take you between 15–45 minutes to complete. There are no direct 
+              benefits to you, but you may feel gratified knowing that you helped further 
+              the scholarly work in this research area, and we will compensate you for your 
+              participation at a rate of $9.00/hour. In some cases, we will ask you about 
+              your opinions; in other cases, we will ask you to try to answer questions and 
+              prompts accurately. When we ask for the latter, we will also provide 
+              additional compensation for each correct response. That rate will be $0.05 
+              per correct response. There are no costs to you associated with your 
+              participation.<br><br> 
+
+              The researchers do not believe participation would entail any risks or 
+              discomforts beyond those ordinarily encountered in everyday life.<br><br>
+
+              This Principal Investigator, Dr. Liane Young, will exert all reasonable efforts 
+              to keep your responses and your identity confidential. We will not maintain 
+              within our research data any information that uniquely identifies you, such as 
+              your name, location, or Internet Protocol (IP) address. In any report we 
+              publish, we will not include any information that will make it possible to 
+              identify a participant. Data that includes user-ID information will be collected 
+              and stored via third-party servers like Qualtrics or Pavlovia. Data collected 
+              from the experiment will be coded to remove your name or any other 
+              personal identifiers. All records will be secured in a locked cabinet in our lab. 
+              The Institutional Review Board at Boston College and internal Boston College 
+              auditors may review the research records. State or federal laws or court 
+              orders may also require that information from research study records be 
+              released. Otherwise, the researchers will not release to others any 
+              information that could indicate your identity unless you give your permission, 
+              or unless the researchers become legally required to do so.<br><br> 
+
+              Although the survey will not prompt you directly to identify yourself by 
+              name, email address or the like, the survey will include several demographic 
+              items that would prompt you to provide certain demographic information, 
+              such as your age, gender, ethnicity, education level and the like. In 
+              combination, responses to such questions could suggest your identity. 
+              Regardless, please know that the researchers will make no purposeful effort 
+              to discern your identity based on such information. Additionally, please note 
+              that you may opt to leave any such questions blank.<br><br>
+
+              Your participation is voluntary. If you choose not to participate it will not 
+              affect your relations with Boston College. Some questions on the survey, 
+              such as comprehension questions, may be required in order to complete the 
+              survey and receive compensation. However, you may still choose to end 
+              your participation in the study at any time. If you have questions or concerns 
+              concerning this research you may contact the Principal Investigator at +1 (617) 552-0240 
+              or <a href="mailto:liane.young@bc.edu">liane.young@bc.edu</a>. If you have 
+              questions about your rights as a research participant, you may contact the
+              Office for Research Protections, Boston College, at +1 (617) 552-4778 or
+              <a href="mailto:irb@bc.edu">irb@bc.edu</a>.<br><br>
+
+              If you agree to the statements above and agree to participate in this study,
+              please press the “Consent given” button below.
+            </p>`,
+          options: ["Consent not given", "Consent given"],
+          horizontal: true,
+          required: true,
+        }
+      ],
+      preamble: '<h1><strong>Consent Form</strong></h1>',
       on_finish: function (data) {
-        initJsPsych({
-          display_element: 'jspsych-target',
-          timeline: experimentFinal
-        });
+        if (jsPsych.data.get().last(1).values()[0].response.consent == "Consent not given") {
+          jsPsych.endExperiment(`
+            <p style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%);">
+              You did not consent to participate in this study.<br>
+              Please return this study in Prolific.
+            </p>`
+          );
+        }
+      }
+    };
+
+    timeline.push(consentForm);
+
+    // EPISTEMIC INSTRUCTIONS //
+
+    const epistemicInstructions1 = {
+      type: jsPsychInstructions,
+      name: 'epistemic_instructions_1',
+      pages: [`
+        <h1><strong>Instructions</strong></h1>
+        <p style="text-align: left;">Welcome to this experiment!
+          On the following pages, you will see a series of statements describing actions taken by well-known people,
+          such as prominent people and historical figures. 
+          <strong>All of these are real people.</strong>
+          
+          Your task is to estimate, for each statement, what percentage of people
+          in the U.S. believe it is true or believe that it is false.<br><br>
+
+          We found out what percentage of people in the U.S. believe each statement in a previous study.
+          For that study, we made sure to recruit a nationally representative sample so that the views of those 
+          participants should accurately represent the views of people in the <em>U.S. more broadly.</em><br><br>
+
+          To help you make your estimates, you will have the opportunity to see what people
+          in that previous study thought about the statements. You will see avatars representing
+          people who participated in that study. Every time you click on an avatar, you will see 
+          whether that one person thought that particular statement was true or false. You can view 
+          the opinions of as many people as you like before making your estimate.<br><br>
+          
+          These statements are all structured the same way. They will make a claim about something 
+          a real person from history did (or did not) do, and then some of the outcomes of that supposed action.
+          Your job is to evaluate just whether the person did or did not do the action. You should not evaluate
+          how likely the outcomes of those actions are to be true or false.
+        </p>`
+      ],
+      show_clickable_nav: true
+    }
+
+    const epistemicInstructions2 = {
+      type: jsPsychSurveyMultiChoice,
+      questions: [
+        {
+          prompt: "Do you understand the instructions?",
+          name: 'epistemic_instructions_2',
+          options: ['Yes', 'No'],
+          required: true,
+          horizontal: true
+        },
+      ],
+      preamble: `
+        <div class="quote">
+          <h2>Example Claim</h2>
+          "Taylor Swift is secretly the president of the United States,
+          which has had a devastating influence on the nation's economy,
+          leading to widespread poverty and social unrest."
+        </div><br>
+        <p>
+          For example, if you saw the above statement, your job would be 
+          to evaluate what percentage of people you think believe that
+          <em>"Taylor Swift is secretly the president of the United States..."</em>
+          is a true (or false) statement, ignoring this part of the sentence:
+          <em>"...this has had a devastating influence on the nation's economy,
+          leading to widespread poverty and social unrest."</em>
+        </p>`
+    };
+
+    const epistemicInstructions3 = {
+      type: jsPsychSurveyHtmlForm,
+      name: 'epistemic_instructions_3',
+      preamble: `
+        <div class="quote">
+            <h2>Example Claim</h2>
+            <p>
+              "Taylor Swift is secretly the president of the United States,
+              which has had a devastating influence on the nation's economy,
+              leading to widespread poverty and social unrest."
+            </p>
+        </div><br>
+      `,
+      html: `
+        <label for="practice-slider-epistemic-estimate-percent">
+          As practice, please estimate what percentage of people in the U.S. believe that this claim is either true or false?<br><br>
+          <strong><code>(slide to adjust)</code></strong>
+        </label>
+        <div style="position: relative;">
+          <input 
+            name="practice-slider-epistemic-estimate-percent" 
+            type="range" 
+            class="jspsych-slider disabled-slider" 
+            value="50" min="0" max="100" step="1" 
+            id="practice-slider-epistemic-estimate-percent"
+            oninput="
+            
+              let rawRating = parseFloat(this.value);
+              let downRating = (100 - rawRating).toString() + '%';
+              let upRating = rawRating.toString() + '%';
+            
+              $('#slider-downRating').text(downRating);
+              $('#slider-upRating').text(upRating);
+          "
+          >
+          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
+          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
+          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this claim is <strong>false</strong></span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this claim is <strong>true</strong></span>
+        </div>
+          <br><br><br>`
+      ,
+      button_label: 'Next',
+      data: {
+        task: 'Estimate',
       },
-      display_element: 'jspsych-target',
-      show_progress_bar: false,
-      default_iti: 0,
-    });
+      on_finish: function (data) {
+        const sliderValues = data.response;
 
-    let subject_id = jsPsych.data.getURLVariable('aid'); //change from hitId
-    if (!subject_id) {
-      subject_id = "test";
-    }
-    console.log(subject_id);
-
-    //general function for grabbing parameter from a URL
-    //function getParamFromURL( name ) {
-    //	name = name.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");
-    //	var regexS = "[\?&]"+name+"=([^&#]*)";
-    //	var regex = new RegExp( regexS );
-    //	var results = regex.exec( window.location.href );
-    //	if( results == null )
-    //		return "";
-    //	else
-    //		return results[1];
-    //}
-
-    //for Amazon Mechanical Turk (workerId added to link via Qualtrics)
-    //save workerID if it is part of the survey URL ?workerId=
-    //var workerId = getParamFromURL( 'workerId' );
-    //otherwise just use the randomly generated subject ID
-    //if (workerId==="") {
-    //	workerId=subject_id;
-    //};
-    //make sure that nobody can enter anything damaging or crazy for workerId
-    //workerId.replace(/[^A-Za-z0-9_]/g, "");
-
-    //set condition (tc)
-    var condition_temp = "h";
-    //convert to more descriptive label (masked in URL to avoid biasing participant)
-    if (condition_temp == "h") {
-      var condition = "high";
-    } else if (condition_temp == "m") {
-      var condition = "medium";
-    } else if (condition_temp == "l") {
-      var condition = "low";
-    } else {
-      var condition = "high";
+        let epistemicPracticeEstimate = Number(sliderValues['practice-slider-epistemic-estimate-percent']);
+      },
     }
 
-    // record the condition assignment in the jsPsych data
-    // this adds a property called 'subject', a property called workerId, and a condition property
-    jsPsych.data.addProperties({
-      subject: subject_id,
-      condition: condition,
-      subject_id: subject_id,
-    });
 
-    // <!-- DEFINE STIMULI --> //
+    // MORAL INSTRUCTIONS //
 
-    const factStatements = [
+    const moralInstructions1 = {
+      type: jsPsychInstructions,
+      name: 'moral_instructions_1',
+      pages: [`
+        <h1><strong>Instructions</strong></h1>
+        <p style="text-align: left;">Welcome to this experiment! 
+          On the following pages, you will see a series of statements describing 
+          actions taken by well-known people, such as prominent people and historical figures.
+          <strong>All of these are real people.</strong>
+          Some of these actions are generally considered morally good actions, 
+          while others are generally considered morally bad actions.<br><br> 
+
+          Some of these actions are generally considered morally good actions, 
+          while others are generally considered morally bad actions.<br><br> 
+
+          Your task is to estimate, for each action, what percentage of people
+          in the U.S. consider it a morally good action.<br><br> 
+
+          We found out what percentage of people in the U.S. consider each action 
+          a morally good action in a previous study. For that study, we made sure to
+          recruit a nationally representative sample so that the views of those participants 
+          should accurately represent the views of people in the <em>U.S. more broadly.</em><br><br> 
+
+          To help you make your estimates, you will have the opportunity to see what people in 
+          that previous study thought about the statements. You will see avatars for 100 people 
+          who participated in that study. Every time you click on an avatar you will see whether 
+          that person thought the action described in the statement was morally good or morally bad. 
+          You can view the opinions of as many people as you like before making your estimate.<br><br> 
+           
+          These statements are all structured the same way. They will make a claim about something a 
+          real person from history did (or did not) do, and then some of the outcomes of that supposed action. 
+          Your job is to evaluate whether other people would think the outcomes of that supposedly true 
+          action are morally good or morally bad. You should not evaluate how likely the claim about the 
+          person is true or false. Instead, you should always imagine it is true, and then evaluate whether 
+          people would think that person was morally good or bad based on the outcomes of the action. 
+        </p>`
+      ],
+      show_clickable_nav: true
+    };
+
+    const moralInstructions2 = {
+      type: jsPsychSurveyMultiChoice,
+      questions: [
+        {
+          prompt: "Do you understand the instructions?",
+          name: 'moral_instructions_2',
+          options: ['Yes', 'No'],
+          required: true,
+          horizontal: true
+        },
+      ],
+      preamble: `
+        <p></p>
+        <div class="quote">
+          <h2>Example Claim</h2>
+          "Taylor Swift is secretly the president of the United States,
+          this has had a devastating influence on the nation's economy,
+          leading to widespread poverty and social unrest."
+        </div><br><br>
+        <p>
+          For example, if you saw the above statement, your job would be to evaluate what 
+          percentage of people you think believe that <em>"...this has had a devastating influence 
+          on the nation's economy, leading to widespread poverty and social unrest"</em>
+          makes Taylor Swift a morally good (or morally bad) person, ignoring this part of the sentence: 
+          <em>"Taylor Swift is secretly the president of the United States..."</em>
+        </p>`
+    };
+
+    const moralInstructions3 = {
+      type: jsPsychSurveyHtmlForm,
+      name: 'moral_instructions_3',
+      preamble: `
+        <div class="quote">
+          <strong>
+            <h2>Example Claim</h2>
+            <p>
+              "Taylor Swift is secretly the president of the United States,
+              which has had a devastating influence on the nation's economy,
+              leading to widespread poverty and social unrest."
+            </p>
+          </strong>
+        </div><br>
+      `,
+      html: `
+        <label for="practice-slider-moral-estimate-percent">
+          As practice, please estimate what percentage of people in the U.S. believe, based on these outcomes, that Taylor Swift is morally good or morally bad?<br><br>
+          <strong><code>(slide to adjust)</code></strong>
+        </label>
+        <div style="position: relative;">
+          <input 
+            name="practice-slider-moral-estimate-percent" 
+            type="range" 
+            class="jspsych-slider disabled-slider" 
+            value="50" min="0" max="100" step="1" 
+            id="practice-slider-moral-estimate-percent"
+            oninput="
+            
+              let rawRating = parseFloat(this.value);
+              let downRating = (100 - rawRating).toString() + '%';
+              let upRating = rawRating.toString() + '%';
+            
+              $('#slider-downRating').text(downRating);
+              $('#slider-upRating').text(upRating);
+          "
+          >
+          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
+          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
+          <span style="position: absolute; left: 0; font-size: 10pt;">
+            Believe Taylor Swift is <strong>morally bad</strong>
+          </span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">
+            Believe Taylor Swift is <strong>morally good</strong>
+          </span>
+        </div>
+          <br><br><br>`
+      ,
+      button_label: 'Next',
+      data: {
+        task: 'Estimate',
+      },
+      on_finish: function (data) {
+        const sliderValues = data.response;
+
+        let moralPracticeEstimate = Number(sliderValues['practice-slider-moral-estimate-percent']);
+      },
+    }
+
+    if (participantCondition === 'epistemic') {
+      timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3);
+    } else if (participantCondition === 'moral') {
+      timeline.push(moralInstructions1, moralInstructions2, moralInstructions3);
+    }
+
+    // CURIOSITY //
+
+    const curiosityInstructions = {
+      type: jsPsychInstructions,
+      name: 'curiosity_instructions',
+      pages: [`
+        <p>
+          We will ask you several other questions about these statements,
+          including how curious you are to learn more about what other people think about them.
+          When answering questions about curiosity, sometimes people say that they are curious
+          about <em>everything</em> when they actually differ slightly in how curious they are.<br><br>
+          
+          When answering the question of how curious you are, keep in mind that you shouldn't
+          say you are extremely curious about all of them. Make sure to reserve answering that way
+          for the options you are the absolute most curious to learn about.
+        </p>`
+      ],
+      show_clickable_nav: true
+    };
+
+    timeline.push(curiosityInstructions)
+
+    // Instructions Continued //
+    const epistemicInstructions4 = {
+      type: jsPsychSurveyMultiChoice,
+      questions: [
+        {
+          name: 'epistemic_comp_check_1',
+          prompt: `
+            <strong>
+              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
+              For each statement, your task is to:
+            </strong>`,
+          options: [
+            "Estimate the percentage of people in the U.S. who believe the statement is true",
+            "Estimate the percentage of people in the U.S. who believe the actions that the historical figures took were morally good",
+            "Estimate the percentage of people in the U.S. who agree with me about the statement",
+            "Estimate the percentage of people in the U.S. who have heard this statement before"
+          ],
+          required: true
+        },
+        {
+          name: 'epistemic_comp_check_2',
+          prompt: `
+            <strong>
+              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
+              You will earn a bonus for each statement if your estimate is within __ percent of the true number:
+            </strong>`,
+          options: ["5%", "10%", "15%", "20%"],
+          horizontal: true,
+          required: true
+        },
+      ],
+      preamble: `
+        <h1>Instructions</h1> 
+        <p style="text-align: left;"> 
+          The experiment will begin on the next page.<br><br>
+
+          As a reminder, you will see a series of statements and be asked to
+          estimate how many people think it is true (vs. false).<br><br>
+          
+          We will first ask you a few questions about the statement you will see 
+          and what you think before you get to see any information about what others think. 
+          Then you will see a page of many different avatars that each represent real 
+          participants' true vs. false opinions about the statement.<br><br>
+          
+          <strong>
+            You are free to review as many opinions as you would like before providing us 
+            your final estimate of the percentage of people in the U.S. 
+            consider the statement to be true (vs. false).
+          </strong>
+        </p>`,
+    };
+
+    const moralInstructions4 = {
+      type: jsPsychSurveyMultiChoice,
+      questions: [
+        {
+          name: 'moral_comp_check_1',
+          prompt: `
+            <strong>
+              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
+              For each statement, your task is to:
+            </strong>`,
+          options: [
+            "Estimate the percentage of people in the U.S. who believe the statement is true",
+            "Estimate the percentage of people in the U.S. who believe the actions that the historical figures took were morally good",
+            "Estimate the percentage of people in the U.S. who agree with me about the statement",
+            "Estimate the percentage of people in the U.S. who have heard this statement before"
+          ],
+          required: true
+        },
+        {
+          name: 'moral_comp_check_2',
+          prompt: `
+            <strong>
+              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
+              You will earn a bonus for each statement if your estimate is within __ percent of the true number:
+            </strong>`,
+          options: ["5%", "10%", "15%", "20%"],
+          horizontal: true,
+          required: true
+        },
+      ],
+      preamble: `
+        <h1>Instructions</h1> 
+        <p style="text-align: left;"> 
+          The experiment will begin on the next page.
+          
+          As a reminder, you will see a series of statements and be asked to estimate 
+          how many people think the outcome of the action in the statement is morally good (vs. morally bad).<br><br>
+
+          We will first ask you a few questions about the statement you will see and what you think 
+          before you get to see any information about what others think. Then, you will see a page 
+          of many different avatars that each represent real participants' morally good vs. morally bad 
+          opinions about the outcomes of the action in the statement you read.<br><br>
+
+          <strong>
+            You are free to review as many opinions as you would like before providing us 
+            your final estimate of the percentage of people in the U.S. who consider 
+            the outcome of the action to be morally good (vs. morally bad).
+          </strong>
+
+          To make sure you fully understand the instructions for this study, please answer the questions below: 
+        </p>`,
+    };
+
+    if (participantCondition === 'epistemic') {
+      timeline.push(epistemicInstructions4);
+    } else if (participantCondition === 'moral') {
+      timeline.push(moralInstructions4);
+    }
+
+    // Epistemic Pre-Predictions //
+    const prePredictionsEpistemic = {
+      type: jsPsychSurveyHtmlForm,
+      preamble: `
+        <div class="quote">
+          <strong>
+            <h2>Statement #1:</h2>
+            <p>"Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."</p>
+          </strong>
+        </div>
+        <p style="text-align: left">Before you see what other people think about the statement, we want to know what you think:</p>
+        <br>`,
+      html: `
+        <label for="pre-slider-epistemic-estimate-percent">
+          What percentage of people in the U.S. do you estimate believe that this claim is true vs. think this is false?<br><br>
+          <strong><code>(slide to adjust)</code></strong>
+        </label>
+        <div style="position: relative;">
+          <input 
+            name="pre-slider-epistemic-estimate-percent" 
+            type="range" 
+            class="jspsych-slider disabled-slider" 
+            value="50" min="0" max="100" step="1" 
+            id="pre-slider-epistemic-estimate-percent"
+            oninput="
+            
+              let rawRating = parseFloat(this.value);
+              let downRating = (100 - rawRating).toString() + '%';
+              let upRating = rawRating.toString() + '%';
+            
+              $('#slider-downRating').text(downRating);
+              $('#slider-upRating').text(upRating);
+          ">
+          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
+          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
+          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this claim is <strong>false</strong></span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this claim is <strong>true</strong></span>
+        </div><br><br><br>
+
+        <label for="pre-slider-epistemic-confidence">How confident are you in this estimate?</label>
+        <div style="position: relative;">
+          <input name="pre-slider-epistemic-confidence" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-epistemic-confidence">
+          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all confident</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Completely confident</span>
+        </div>
+        <br><br><br>
+
+        <label for="pre-slider-epistemic-action">How likely do you think it is that this claim is true or false?</label>
+        <div style="position: relative;">
+          <input name="pre-slider-epistemic-action" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-epistemic-action">
+          <span style="position: absolute; left: 0; font-size: 10pt;">Definitely false</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Definitely true</span>
+        </div>
+        <br><br><br>
+
+        <label for="pre-slider-epistemic-curious">How curious are you to learn about what other people think about this statement?</label>
+        <div style="position: relative;">
+          <input name="pre-slider-epistemic-curious" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-epistemic-curious">
+          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all curious</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely curious</span>
+        </div>
+        <br><br><br>`,
+      button_label: 'Next',
+      data: {
+        task: 'Estimate'
+      },
+      on_finish: function (data) {
+        const sliderValues = data.response;
+
+        let epistemicPreEstimate = Number(sliderValues['pre-slider-epistemic-estimate-percent']);
+        let epistemicPreConfidence = Number(sliderValues['pre-slider-epistemic-confidence']);
+        let epistemicPreAction = Number(sliderValues['pre-slider-epistemic-action']);
+        let epistemicPrePerson = Number(sliderValues['pre-slider-epistemic-person']);
+        let epistemicPreCurious = Number(sliderValues['pre-slider-epistemic-curious']);
+      },
+    }
+
+    // Moral Pre-Predictions //
+    const prePredictionsMoral = {
+      type: jsPsychSurveyHtmlForm,
+      preamble: `
+        <div class="quote">
+          <strong>
+            <h2>Statement #1:</h2>
+            <p>"Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."</p>
+          </strong>
+        </div>
+        <p style="text-align: left">Before you see what other people think about the statement, we want to know what you think:</p>
+        <br>`,
+      html: `
+        <label for="pre-slider-moral-estimate-percent">
+          What percentage of people in the U.S. do you estimate consider this action morally good or morally bad?<br><br>
+          <strong><code>(slide to adjust)</code></strong>
+        </label>
+        <div style="position: relative;">
+          <input 
+            name="pre-slider-moral-estimate-percent" 
+            type="range" 
+            class="jspsych-slider disabled-slider" 
+            value="50" min="0" max="100" step="1" 
+            id="pre-slider-moral-estimate-percent"
+            oninput="
+            
+              let rawRating = parseFloat(this.value);
+              let downRating = (100 - rawRating).toString() + '%';
+              let upRating = rawRating.toString() + '%';
+            
+              $('#slider-downRating').text(downRating);
+              $('#slider-upRating').text(upRating);
+          "
+          >
+          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
+          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
+          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this action is <strong>morally bad</strong></span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this action is <strong>morally good</strong></span>
+        </div><br><br><br>
+
+        <label for="pre-slider-moral-confidence">How confident are you in this estimate?</label>
+        <div style="position: relative;">
+          <input name="pre-slider-moral-confidence" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-moral-confidence">
+          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all confident</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Completely confident</span>
+        </div>
+        <br><br><br>
+
+        <label for="pre-slider-moral-action">How morally good or morally bad do you think this <em>action</em> is?</label>
+        <div style="position: relative;">
+          <input name="pre-slider-moral-action" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-moral-action">
+          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
+        </div>
+        <br><br><br>
+
+        <label for="pre-slider-moral-person">How morally good or morally bad do you think this <em>person</em> is?</label>
+        <div style="position: relative;">
+          <input name="pre-slider-moral-person" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-moral-person">
+          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
+        </div>
+        <br><br><br>
+
+        <label for="pre-slider-moral-curious">How curious are you to learn about what other people think about this statement?</label>
+        <div style="position: relative;">
+          <input name="pre-slider-moral-curious" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-moral-curious">
+          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all curious</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely curious</span>
+        </div>
+        <br><br><br>`,
+      button_label: 'Next',
+      data: {
+        task: 'Estimate'
+      },
+      on_finish: function (data) {
+        const sliderValues = data.response;
+
+        let moralPreEstimate = Number(sliderValues['pre-slider-moral-estimate-percent']);
+        let moralPreConfidence = Number(sliderValues['pre-slider-moral-confidence']);
+        let moralPreAction = Number(sliderValues['pre-slider-moral-action']);
+        let moralPrePerson = Number(sliderValues['pre-slider-moral-person']);
+        let moralPreCurious = Number(sliderValues['pre-slider-moral-curious']);
+      },
+    }
+
+    if (participantCondition === 'epistemic') {
+      timeline.push(prePredictionsEpistemic);
+    } else if (participantCondition === 'moral') {
+      timeline.push(prePredictionsMoral);
+    }
+
+    const epistemicStatements = [
       `"Norman Borlaug, fathering the Green Revolution, increased crop yields worldwide but contributed to environmental degradation."`
     ]
 
@@ -233,7 +867,7 @@
       `"Fritz Haber, developing the Haber-Bosch process, revolutionized agriculture but also enabled the creation of deadly chemical weapons."`
     ]
 
-    const factTrueResponsesArray = [
+    const epistemicTrueResponsesArray = [
       `"I reckon this is right."`,
       `"Looks true to me."`,
       `"I feel like this is on point."`,
@@ -338,9 +972,7 @@
       `"I can roll with this being true."`
     ];
 
-    const currentFactTrueResponsesArray = jsPsych.randomization.shuffle(factTrueResponsesArray);
-
-    const factFalseResponsesArray = [
+    const epistemicFalseResponsesArray = [
       `"This is false."`,
       `"I reckon this is off."`,
       `"Doesn't look right to me."`,
@@ -445,8 +1077,6 @@
       `"I'm not picking up what this is putting down."`
     ];
 
-    const currentFactFalseResponsesArray = jsPsych.randomization.shuffle(factFalseResponsesArray);
-
     const moralGoodResponsesArray = [
       `"I think this person is morally good."`,
       `"This person seems morally good to me."`,
@@ -505,8 +1135,6 @@
       `"They're about as morally good as you can get."`
     ]
 
-    const currentMoralGoodResponsesArray = jsPsych.randomization.shuffle(moralGoodResponsesArray);
-
     const moralBadResponsesArray = [
       `"I think this person is morally bad."`,
       `"This person seems morally bad to me."`,
@@ -562,762 +1190,46 @@
       `"They're morally off the rails, for sure."`
     ]
 
-    const currentMoralBadResponsesArray = jsPsych.randomization.shuffle(moralBadResponsesArray);
-
-
-    //define image items
-    var items = [];
-    for (i = 1; i <= factTrueResponsesArray.length; i++) {
-      item = "stims/" + i + ".png";
-      items.push(item);
-    }
-
-    //stim names
-    var stimNames = [];
-    for (i = 0; i < factTrueResponsesArray.length; i++) {
-      name = "stim" + i;
-      stimNames.push(name);
-    }
+    const avatarNames = Array.from({ length: 100 }, (_, i) => "avatar" + i);
+    const avatarPhotos = Array.from({ length: 100 }, (_, i) => `avatars/${i + 1}.png`);
 
     //associate words and items (images) in a dictionary
-    var stims = {};
-    for (i = 0; i < items.length; i++) {
+    let avatarDictionary = {};
+    for (let i = 0; i < 100; i++) {
+
       // convert each item to a dictionary containing the image and the word // use normally
-      curObject = { image: items[i], word: factTrueResponsesArray[i] };
+      avatarData = { 
+        photo: avatarPhotos[i], 
+        statement: epistemicTrueResponsesArray[i] 
+      };
+
       // add this dictionary to the overall stimulus dictionary
-      stims[stimNames[i]] = curObject;
+      avatarDictionary[avatarNames[i]] = avatarData;
     }
-
-    // DEFINE TRAINING TRIALS
-    var ITI = 500;
-
-    //training trials
-    var trainingList = [];
-
-
-    // Go fullscreen
-    var enter_fullscreen = {
-      type: jsPsychFullscreen,
-      name: 'enter_fullscreen',
-      fullscreen_mode: true,
-      delay_after: 0
-    };
-    
-    timeline.push(enter_fullscreen);
-
-    var consentForm = {
-      type: jsPsychSurveyMultiChoice,
-      questions: [
-        {
-          name: 'consent',
-          prompt: `
-            <p style="text-align:left;">
-              You are being asked to participate in a research study titled 
-              "Social Judgment and Decision-Making." You were selected to participate in 
-              this project because you are an adult over age 18. This study is sponsored by 
-              Boston College and the John Templeton Foundation.<br><br> 
-
-              The purpose of this study is to understand how we weigh information about 
-              others. This study will be conducted through this online survey. The survey 
-              should take you between 15–45 minutes to complete. There are no direct 
-              benefits to you, but you may feel gratified knowing that you helped further 
-              the scholarly work in this research area, and we will compensate you for your 
-              participation at a rate of $9.00/hour. In some cases, we will ask you about 
-              your opinions; in other cases, we will ask you to try to answer questions and 
-              prompts accurately. When we ask for the latter, we will also provide 
-              additional compensation for each correct response. That rate will be $0.05 
-              per correct response. There are no costs to you associated with your 
-              participation.<br><br> 
-
-              The researchers do not believe participation would entail any risks or 
-              discomforts beyond those ordinarily encountered in everyday life.<br><br>
-
-              This Principal Investigator, Dr. Liane Young, will exert all reasonable efforts 
-              to keep your responses and your identity confidential. We will not maintain 
-              within our research data any information that uniquely identifies you, such as 
-              your name, location, or Internet Protocol (IP) address. In any report we 
-              publish, we will not include any information that will make it possible to 
-              identify a participant. Data that includes user-ID information will be collected 
-              and stored via third-party servers like Qualtrics or Pavlovia. Data collected 
-              from the experiment will be coded to remove your name or any other 
-              personal identifiers. All records will be secured in a locked cabinet in our lab. 
-              The Institutional Review Board at Boston College and internal Boston College 
-              auditors may review the research records. State or federal laws or court 
-              orders may also require that information from research study records be 
-              released. Otherwise, the researchers will not release to others any 
-              information that could indicate your identity unless you give your permission, 
-              or unless the researchers become legally required to do so.<br><br> 
-
-              Although the survey will not prompt you directly to identify yourself by 
-              name, email address or the like, the survey will include several demographic 
-              items that would prompt you to provide certain demographic information, 
-              such as your age, gender, ethnicity, education level and the like. In 
-              combination, responses to such questions could suggest your identity. 
-              Regardless, please know that the researchers will make no purposeful effort 
-              to discern your identity based on such information. Additionally, please note 
-              that you may opt to leave any such questions blank.<br><br>
-
-              Your participation is voluntary. If you choose not to participate it will not 
-              affect your relations with Boston College. Some questions on the survey, 
-              such as comprehension questions, may be required in order to complete the 
-              survey and receive compensation. However, you may still choose to end 
-              your participation in the study at any time. If you have questions or concerns 
-              concerning this research you may contact the Principal Investigator at +1 (617) 552-0240 
-              or <a href="mailto:liane.young@bc.edu">liane.young@bc.edu</a>. If you have 
-              questions about your rights as a research participant, you may contact the
-              Office for Research Protections, Boston College, at +1 (617) 552-4778 or
-              <a href="mailto:irb@bc.edu">irb@bc.edu</a>.<br><br>
-
-              If you agree to the statements above and agree to participate in this study,
-              please press the “Consent given” button below.
-            </p>`,
-          options: ["Consent not given", "Consent given"],
-          horizontal: true,
-          required: true,
-        }
-      ],
-      preamble: '<h1><strong>Consent Form</strong></h1>',
-      on_finish: function (data) {
-        if (jsPsych.data.get().last(1).values()[0].response.consent == "Consent not given") {
-          jsPsych.endExperiment(`
-            <p style="left: 50%; top: 50%; position: absolute; transform: translate(-50%, -50%);">
-              You did not consent to participate in this study.<br>
-              Please return this study in Prolific.
-            </p>`
-          );
-        }
-      }
-    };
-
-    timeline.push(consentForm);
-
-
-    // EPISTEMIC INSTRUCTIONS //
-    
-    const epistemicInstructions1 = {
-      type: jsPsychInstructions,
-      name: 'epistemic_instructions_1',
-      pages: [`
-        <h1><strong>Instructions</strong></h1>
-        <p style="text-align: left;">Welcome to this experiment!
-          On the following pages, you will see a series of statements describing actions taken by well-known people,
-          such as celebrities and historical figures. Some of these statements are true, while others are false.<br><br>
-          
-          Your task is to estimate, for each statement, what percentage of people
-          in the U.S. believe it is true or believe that it is false.<br><br>
-
-          We found out what percentage of people in the U.S. believe each statement in a previous study.
-          For that study, we made sure to recruit a nationally representative sample so that the views of those 
-          participants should accurately represent the views of people in the <em>U.S. more broadly.</em><br><br>
-
-          To help you make your estimates, you will have the opportunity to see what people
-          in that previous study thought about the statements. You will see avatars representing
-          people who participated in that study. Every time you click on an avatar, you will see 
-          whether that one person thought that particular statement was true or false. You can view 
-          the opinions of as many people as you like before making your estimate.<br><br>
-          
-          These statements are all structured the same way. They will make a claim about something 
-          a real person from history did (or did not) do, and then some of the outcomes of that supposed action.
-          Your job is to evaluate just whether the person did or did not do the action. You should not evaluate
-          how likely the outcomes of those actions are to be true or false.
-        </p>`
-      ],
-      show_clickable_nav: true
-    }
-  
-    const epistemicInstructions2 = {
-      type: jsPsychSurveyMultiChoice,
-      questions: [
-        {
-          prompt: "Do you understand the instructions?", 
-          name: 'epistemic_instructions_2', 
-          options: ['Yes', 'No'], 
-          required: true,
-          horizontal: true
-        }, 
-      ],
-      preamble: `
-        <div class="quote">
-          <h2>Example Claim</h2>
-          "Taylor Swift is secretly the president of the United States,
-          which has had a devastating influence on the nation's economy,
-          leading to widespread poverty and social unrest."
-        </div><br>
-        <p>
-          For example, if you saw the above statement, your job would be 
-          to evaluate what percentage of people you think believe that
-          <em>"Taylor Swift is secretly the president of the United States..."</em>
-          is a true (or false) statement, ignoring this part of the sentence:
-          <em>"...this has had a devastating influence on the nation's economy,
-          leading to widespread poverty and social unrest."</em>
-        </p>`
-    };
-
-    const epistemicInstructions3 = {
-      type: jsPsychSurveyHtmlForm,
-      name: 'epistemic_instructions_3',
-      preamble: `
-        <div class="quote">
-            <h2>Example Claim</h2>
-            <p>
-              "Taylor Swift is secretly the president of the United States,
-              which has had a devastating influence on the nation's economy,
-              leading to widespread poverty and social unrest."
-            </p>
-        </div><br>
-      `,
-      html:`
-        <label for="practice-slider-epistemic-estimate-percent">
-          As practice, please estimate what percentage of people in the U.S. 
-          believe that this claim is either true or false?<br>
-          (slide to adjust)
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="practice-slider-epistemic-estimate-percent" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="practice-slider-epistemic-estimate-percent"
-            oninput="
-            
-              let rawRating = parseFloat(this.value);
-              let downRating = rawRating.toString() + '%';
-              let upRating = (100 - rawRating).toString() + '%';
-            
-              document.getElementById('slider-downRating').textContent = downRating;
-              document.getElementById('slider-upRating').textContent = upRating;
-          "
-          >
-          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this claim is <strong>false</strong></span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this claim is <strong>true</strong></span>
-        </div>
-          <br><br><br>`
-        ,
-      button_label: 'Next',
-      data: {
-        task: 'Estimate',
-      },
-      on_finish: function(data){
-        // store values
-        var temp0 = data.response;
-        // extract the response for the first slider
-        var temp = Number(temp0.first);                         
-        data.responseLeft = temp;
-        console.log(temp)
-        // extract the response for the second slider
-        var temp = Number(temp0.second);                  
-        data.responseRight = temp;
-        console.log(temp)
-      },
-    }
-
-//    timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3)
-
-    // MORAL INSTRUCTIONS //
-    
-    const moralInstructions1 = {
-      type: jsPsychInstructions,
-      name: 'moral_instructions_1',
-      pages: [`
-        <h1><strong>Instructions</strong></h1>
-        <p style="text-align: left;">Welcome to this experiment! 
-          On the following pages, you will see a series of statements describing 
-          actions taken by well-known people, such as celebrities and historical figures. 
-          Some of these actions are generally considered morally good actions, 
-          while others are generally considered morally bad actions.<br><br> 
-
-          Some of these actions are generally considered morally good actions, 
-          while others are generally considered morally bad actions.<br><br> 
-
-          Your task is to estimate, for each action, what percentage of people
-          in the U.S. consider it a morally good action.<br><br> 
-
-          We found out what percentage of people in the U.S. consider each action 
-          a morally good action in a previous study. For that study, we made sure to
-          recruit a nationally representative sample so that the views of those participants 
-          should accurately represent the views of people in the <em>U.S. more broadly.</em><br><br> 
-
-          To help you make your estimates, you will have the opportunity to see what people in 
-          that previous study thought about the statements. You will see avatars for 100 people 
-          who participated in that study. Every time you click on an avatar you will see whether 
-          that person thought the action described in the statement was morally good or morally bad. 
-          You can view the opinions of as many people as you like before making your estimate.<br><br> 
-           
-          These statements are all structured the same way. They will make a claim about something a 
-          real person from history did (or did not) do, and then some of the outcomes of that supposed action. 
-          Your job is to evaluate whether other people would think the outcomes of that supposedly true 
-          action are morally good or morally bad. You should not evaluate how likely the claim about the 
-          person is true or false. Instead, you should always imagine it is true, and then evaluate whether 
-          people would think that person was morally good or bad based on the outcomes of the action. 
-        </p>`
-      ],
-      show_clickable_nav: true
-    };
-
-    const moralInstructions2 = {
-      type: jsPsychSurveyMultiChoice,
-      questions: [
-        {
-          prompt: "Do you understand the instructions?", 
-          name: 'moral_instructions_2', 
-          options: ['Yes', 'No'], 
-          required: true,
-          horizontal: true
-        }, 
-      ],
-      preamble: `
-        <p></p>
-        <div class="quote">
-          <h2>Example Claim</h2>
-          "Taylor Swift is secretly the president of the United States,
-          this has had a devastating influence on the nation's economy,
-          leading to widespread poverty and social unrest."
-        </div><br><br>
-        <p>
-          For example, if you saw the above statement, your job would be to evaluate what 
-          percentage of people you think believe that <em>"...this has had a devastating influence 
-          on the nation's economy, leading to widespread poverty and social unrest" 
-          makes Taylor Swift a morally good (or morally bad) person, ignoring this part of the sentence: 
-          <em>"Taylor Swift is secretly the president of the United States..."</em>
-        </p>`
-    };
-
-    const moralInstructions3 = {
-      type: jsPsychSurveyHtmlForm,
-      name: 'moral_instructions_3',
-      preamble: `
-        <div class="quote">
-          <strong>
-            <h2>Example Claim</h2>
-            <p>
-              "Taylor Swift is secretly the president of the United States,
-              which has had a devastating influence on the nation's economy,
-              leading to widespread poverty and social unrest."
-            </p>
-          </strong>
-        </div><br>
-      `,
-      html:`
-        <label for="practice-slider-moral-estimate-percent">
-          As practice, please estimate what percentage of people in the U.S. believe, 
-          based on these outcomes, that Taylor Swift is morally good or morally bad?<br>
-          (slide to adjust)
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="practice-slider-moral-estimate-percent" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="practice-slider-moral-estimate-percent"
-            oninput="
-            
-              let rawRating = parseFloat(this.value);
-              let downRating = rawRating.toString() + '%';
-              let upRating = (100 - rawRating).toString() + '%';
-            
-              document.getElementById('slider-downRating').textContent = downRating;
-              document.getElementById('slider-upRating').textContent = upRating;
-          "
-          >
-          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span style="position: absolute; left: 0; font-size: 10pt;">
-            Believe Taylor Swift is <strong>morally bad</strong>
-          </span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">
-            Believe Taylor Swift is <strong>morally good</strong>
-          </span>
-        </div>
-          <br><br><br>`
-        ,
-      button_label: 'Next',
-      data: {
-        task: 'Estimate',
-      },
-      on_finish: function(data){
-        // store values
-        var temp0 = data.response;
-        // extract the response for the first slider
-        var temp = Number(temp0.first);                         
-        data.responseLeft = temp;
-        console.log(temp)
-        // extract the response for the second slider
-        var temp = Number(temp0.second);                  
-        data.responseRight = temp;
-        console.log(temp)
-      },
-    }
-
-
-    // CURIOSITY //
-
-    const curiosityInstructions = {
-      type: jsPsychInstructions,
-      name: 'curiosity_instructions',
-      pages: [`
-        <p>
-          We will ask you several other questions about these statements,
-          including how curious you are to learn more about what other people think about them.
-          When answering questions about curiosity, sometimes people say that they are curious
-          about <em>everything</em> when they actually differ slightly in how curious they are.<br><br>
-          
-          When answering the question of how curious you are, keep in mind that you shouldn't
-          say you are extremely curious about all of them. Make sure to reserve answering that way
-          for the options you are the absolute most curious to learn about.
-        </p>`
-      ],
-      show_clickable_nav: true
-    };
-    
-
-    const epistemicInstructions4 = {
-      type: jsPsychSurveyMultiChoice,
-      questions: [
-        {
-          name: 'epistemic_comp_check_1',
-          prompt: `
-            <strong>
-              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
-              For each statement, your task is to:
-            </strong>`,
-          options: [
-            "Estimate the percentage of people in the U.S. who believe the statement is true",
-            "Estimate the percentage of people in the U.S. who believe the actions that the historical figures took were morally good",
-            "Estimate the percentage of people in the U.S. who agree with me about the statement",
-            "Estimate the percentage of people in the U.S. who have heard this statement before"
-          ],
-          required: true
-        },
-        {
-          name: 'epistemic_comp_check_2',
-          prompt: `
-            <strong>
-              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
-              You will earn a bonus for each statement if your estimate is within __ percent of the true number:
-            </strong>`,
-          options: ["5%", "10%", "15%", "20%"],
-          horizontal: true,
-          required: true,
-        },
-      ],
-      preamble: `
-        <h1>Instructions</h1> 
-        <p style="text-align: left;"> 
-          The experiment will begin on the next page.<br><br>
-
-          As a reminder, you will see a series of statements and be asked to
-          estimate how many people think it is true (vs. false).<br><br>
-          
-          We will first ask you a few questions about the statement you will see 
-          and what you think before you get to see any information about what others think. 
-          Then you will see a page of many different avatars that each represent real 
-          participants' true vs. false opinions about the statement.<br><br>
-          
-          <strong>
-            You are free to review as many opinions as you would like before providing us 
-            your final estimate of the percentage of people in the U.S. 
-            consider the statement to be true (vs. false).
-          </strong>
-        </p>`,
-    };
-
-    // Epistemic Pre-Predictions
-    const prePredictionsEpistemic = {
-      type: jsPsychSurveyHtmlForm,
-      preamble: `
-      <div class="quote">
-        <strong>
-          <h2>Statement #1:</h2>
-          <p>"Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."</p>
-        </strong>
-      </div>
-      <p style="text-align: left">Before you see what other people think about the statement, we want to know what you think:</p>
-      <br>`,
-      html:`
-        <label for="pre-slider-epistemic-estimate-percent">
-          What percentage of people in the U.S. do you estimate 
-          believe that this claim is true vs. think this is false?<br>
-          (slide to adjust)
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-epistemic-estimate-percent" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-epistemic-estimate-percent"
-            oninput="
-            
-              let rawRating = parseFloat(this.value);
-              let downRating = rawRating.toString() + '%';
-              let upRating = (100 - rawRating).toString() + '%';
-            
-              document.getElementById('slider-downRating').textContent = downRating;
-              document.getElementById('slider-upRating').textContent = upRating;
-          "
-          >
-          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this claim is <strong>false</strong></span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this claim is <strong>true</strong></span>
-        </div><br><br><br>
-
-        <label for="pre-slider-epistemic-confidence">How confident are you in this estimate?</label>
-        <div style="position: relative;">
-          <input name="pre-slider-epistemic-confidence" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-epistemic-confidence">
-          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all confident</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Completely confident</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-epistemic-action">How likely do you think it is that this claim is true or false?</label>
-        <div style="position: relative;">
-          <input name="pre-slider-epistemic-action" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-epistemic-action">
-          <span style="position: absolute; left: 0; font-size: 10pt;">Definitely false</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Definitely true</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-moral-curious">How curious are you to learn about what other people think about this statement?</label>
-        <div style="position: relative;">
-          <input name="pre-slider-epistemic-curious" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-epistemic-curious">
-          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all curious</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely curious</span>
-        </div>
-        <br><br><br>`,
-      button_label: 'Next',
-      data: {
-        task: 'Estimate',
-      },
-      on_finish: function(data){
-        // store values
-        var temp0 = data.response;
-        // extract the response for the first slider
-        var temp = Number(temp0.first);                         
-        data.responseLeft = temp;
-        console.log(temp)
-        // extract the response for the second slider
-        var temp = Number(temp0.second);                  
-        data.responseRight = temp;
-        console.log(temp)
-      },
-    }
-    
-    //timeline.push(prePredictionsEpistemic)
-
-    // Moral Pre-Predictions
-    const moralInstructions4 = {
-      type: jsPsychSurveyMultiChoice,
-      questions: [
-        {
-          name: 'moral_comp_check_1',
-          prompt: `
-            <strong>
-              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
-              For each statement, your task is to:
-            </strong>`,
-          options: [
-            "Estimate the percentage of people in the U.S. who believe the statement is true",
-            "Estimate the percentage of people in the U.S. who believe the actions that the historical figures took were morally good",
-            "Estimate the percentage of people in the U.S. who agree with me about the statement",
-            "Estimate the percentage of people in the U.S. who have heard this statement before"
-          ],
-          required: true
-        },
-        {
-          name: 'moral_comp_check_2',
-          prompt: `
-            <strong>
-              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
-              You will earn a bonus for each statement if your estimate is within __ percent of the true number:
-            </strong>`,
-          options: ["5%", "10%", "15%", "20%"],
-          horizontal: true,
-          required: true,
-        },
-      ],
-      preamble: `
-        <h1>Instructions</h1> 
-        <p style="text-align: left;"> 
-          The experiment will begin on the next page.
-          
-          As a reminder, you will see a series of statements and be asked to estimate 
-          how many people think the outcome of the action in the statement is morally good (vs. morally bad).<br><br>
-
-          We will first ask you a few questions about the statement you will see and what you think 
-          before you get to see any information about what others think. Then, you will see a page 
-          of many different avatars that each represent real participants' morally good vs. morally bad 
-          opinions about the outcomes of the action in the statement you read.<br><br>
-
-          <strong>
-            You are free to review as many opinions as you would like before providing us 
-            your final estimate of the percentage of people in the U.S. who consider 
-            the outcome of the action to be morally good (vs. morally bad).
-          </strong>
-
-          To make sure you fully understand the instructions for this study, please answer the questions below: 
-        </p>`,
-    };
-
-    //timeline.push(moralInstructions4)
-
-    const prePredictionsMoral = {
-      type: jsPsychSurveyHtmlForm,
-      preamble: `
-        <div class="quote">
-          <strong>
-            <h2>Statement #1:</h2>
-            <p>"Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."</p>
-          </strong>
-        </div>
-        <p style="text-align: left">Before you see what other people think about the statement, we want to know what you think:</p>
-        <br>`,
-      html:`
-        <label for="pre-slider-moral-estimate-percent">
-          What percentage of people in the U.S. do you estimate consider this action morally good or morally bad?<br>
-          (slide to adjust)
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-estimate-percent" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-estimate-percent"
-            oninput="
-            
-              let rawRating = parseFloat(this.value);
-              let downRating = rawRating.toString() + '%';
-              let upRating = (100 - rawRating).toString() + '%';
-            
-              document.getElementById('slider-downRating').textContent = downRating;
-              document.getElementById('slider-upRating').textContent = upRating;
-          "
-          >
-          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this action is <strong>morally bad</strong></span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this action is <strong>morally good</strong></span>
-        </div><br><br><br>
-
-        <label for="pre-slider-moral-confidence">How confident are you in this estimate?</label>
-        <div style="position: relative;">
-          <input name="pre-slider-moral-confidence" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-moral-confidence">
-          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all confident</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Completely confident</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-moral-action">How morally good or morally bad do you think this <em>action</em> is?</label>
-        <div style="position: relative;">
-          <input name="pre-slider-moral-action" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-moral-action">
-          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-moral-person">How morally good or morally bad do you think this <em>person</em> is?</label>
-        <div style="position: relative;">
-          <input name="pre-slider-moral-person" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-moral-person">
-          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-moral-curious">How curious are you to learn about what other people think about this statement?</label>
-        <div style="position: relative;">
-          <input name="pre-slider-moral-curious" type="range" class="jspsych-slider" value="50" min="0" max="100" step="1" id="pre-slider-moral-curious">
-          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all curious</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely curious</span>
-        </div>
-        <br><br><br>`,
-      button_label: 'Next',
-      data: {
-        task: 'Estimate',
-      },
-      on_finish: function(data){
-        // store values
-        var temp0 = data.response;
-        // extract the response for the first slider
-        var temp = Number(temp0.first);                         
-        data.responseLeft = temp;
-        console.log(temp)
-        // extract the response for the second slider
-        var temp = Number(temp0.second);                  
-        data.responseRight = temp;
-        console.log(temp)
-      },
-    }
-
-    //timeline.push(prePredictionsMoral)
-    //timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3)
-    // Selection Learning
-    var selectList = [];
-    var numLabelSelectTrialsPerBlock = 100;
-    const numSelectBlocks = 1;
-    const selectNum = 1;
-
-    // put in instructions about being fast here if we are interested in RTs
-    var selectionInstruct = {
-      type: jsPsychInstructions,
-      pages: [`
-        <p> 
-          In this part, you will have the opportunitiy to sample from the opinions of various Americans. 
-          On each trial you will see 8 Americans on the screen. 
-          You will get to choose which of the 8 perspectives you would like to hear.<br><br> 
-          Click the next button to get started. 
-        </p>`
-      ],
-      show_clickable_nav: true,
-    };
-
-    timeline.push(epistemicInstructions1, epistemicInstructions2, epistemicInstructions3)
-    timeline.push(moralInstructions1, moralInstructions2, moralInstructions3)
-    timeline.push(curiosityInstructions)
-    timeline.push(epistemicInstructions4, moralInstructions4)
 
     // to balance where the target is on each trial
-    var locationsTest = [];
-    var locationTestList = [...Array(100).keys()];
+    const currentLocationList = [...Array(100).keys()];
 
-    var currentLocationList = jsPsych.randomization.shuffle(locationTestList);
-
-    var prodTestList = [];
-    var numProdLabelTestTrialsPerBlock = 100;
-    var prodTestTrialsIndex = [...Array(100).keys()];
-    var numProdTestBlocks = 1;
-    var testProdNum = 1;
-
-    let currentBlockTrial = -1;
-
-    var select = {
+    let select = {
       type: jsPsychSelectionLearning,
       currentLocationList: currentLocationList,
-      stims: stims,
-      stimNames: stimNames,
-      learningPos: "left",
+      avatarNames: avatarDictionary,
       choices: [
         "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;Read more",
         "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
       ],
       data: {
-        trialNum: selectNum,
         trialType: "selection"
       }
     };
-    
-    for (var i = 1; i <= 100; i++) {
-      var imageProperty = 'image' + i;
-      var imageIndex = currentLocationList[i - 1];
-      var imageValue = stims[stimNames[imageIndex]]?.image;
-    
+
+    for (let i = 1; i <= 100; i++) {
+      let imageProperty = 'image' + i;
+      let imageIndex = currentLocationList[i - 1];
+      let imageValue = avatarDictionary[avatarNames[imageIndex]].image;
+
       select = Object.assign(select, { [imageProperty]: imageValue });
     }
-    
 
     timeline.push(select);
 
@@ -1332,15 +1244,16 @@
           </strong>
         </div>
         <p style="text-align: left">
-          Now that you've had the chance to see what other people think about the statement, we want to know what you think.<br>
+          Now that you've had the chance to see what other people 
+          think about the statement, we want to know what you think.<br><br>
+          
           <strong>Note: the accuracy of your answer to the first question below will be used to determine your bonus.</strong>
         </p>
         <br>`,
-      html:`
+      html: `
         <label for="post-slider-epistemic-estimate-percent">
-          What percentage of people in the U.S. do you estimate 
-          believe that this claim is true vs. think this is false?<br>
-          (slide to adjust)
+          What percentage of people in the U.S. do you estimate believe that this claim is true vs. think this is false?<br><br>
+          <strong><code>(slide to adjust)</code></strong>
         </label>
         <div style="position: relative;">
           <input 
@@ -1352,11 +1265,11 @@
             oninput="
             
               let rawRating = parseFloat(this.value);
-              let downRating = rawRating.toString() + '%';
-              let upRating = (100 - rawRating).toString() + '%';
+              let downRating = (100 - rawRating).toString() + '%';
+              let upRating = rawRating.toString() + '%';
             
-              document.getElementById('slider-downRating').textContent = downRating;
-              document.getElementById('slider-upRating').textContent = upRating;
+              $('#slider-downRating').text(downRating);
+              $('#slider-upRating').text(upRating);
           "
           >
           <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
@@ -1382,22 +1295,18 @@
         <br><br><br>`,
       button_label: 'Next',
       data: {
-        task: 'Estimate',
+        task: 'Estimate'
       },
-      on_finish: function(data){
-        // store values
-        var temp0 = data.response;
-        // extract the response for the first slider
-        var temp = Number(temp0.first);                         
-        data.responseLeft = temp;
-        console.log(temp)
-        // extract the response for the second slider
-        var temp = Number(temp0.second);                  
-        data.responseRight = temp;
-        console.log(temp)
+      on_finish: function (data) {
+        const sliderValues = data.response;
+
+        let epistemicPostEstimate = Number(sliderValues['post-slider-epistemic-estimate-percent']);
+        let epistemicPostConfidence = Number(sliderValues['post-slider-epistemic-confidence']);
+        let epistemicPostAction = Number(sliderValues['post-slider-epistemic-action']);
+        let epistemicPostPerson = Number(sliderValues['post-slider-epistemic-person']);
+        
       },
     }
-
 
     // Moral Post-Predictions //
     const postPredictionsMoral = {
@@ -1410,14 +1319,16 @@
           </strong>
         </div>
         <p style="text-align: left">
-          Now that you've had the chance to see what other people think about the statement, we want to know what you think.<br>
+          Now that you've had the chance to see what other people 
+          think about the statement, we want to know what you think.<br><br>
+
           <strong>Note: the accuracy of your answer to the first question below will be used to determine your bonus.</strong>
         </p>
         <br>`,
-      html:`
+      html: `
         <label for="post-slider-moral-estimate-percent">
-          What percentage of people in the U.S. do you estimate consider this action morally good or morally bad?<br>
-          (slide to adjust)
+          What percentage of people in the U.S. do you estimate consider this action morally good or morally bad?<br><br>
+          <strong><code>(slide to adjust)</code></strong>
         </label>
         <div style="position: relative;">
           <input 
@@ -1429,11 +1340,11 @@
             oninput="
             
               let rawRating = parseFloat(this.value);
-              let downRating = rawRating.toString() + '%';
-              let upRating = (100 - rawRating).toString() + '%';
+              let downRating = (100 - rawRating).toString() + '%';
+              let upRating = rawRating.toString() + '%';
             
-              document.getElementById('slider-downRating').textContent = downRating;
-              document.getElementById('slider-upRating').textContent = upRating;
+              $('#slider-downRating').text(downRating);
+              $('#slider-upRating').text(upRating);
           "
           >
           <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
@@ -1467,33 +1378,26 @@
         <br><br><br>`,
       button_label: 'Next',
       data: {
-        task: 'Estimate',
+        task: 'Estimate'
       },
-      on_finish: function(data){
-        // store values
-        var temp0 = data.response;
-        // extract the response for the first slider
-        var temp = Number(temp0.first);                         
-        data.responseLeft = temp;
-        console.log(temp)
-        // extract the response for the second slider
-        var temp = Number(temp0.second);                  
-        data.responseRight = temp;
-        console.log(temp)
+      on_finish: function (data) {
+        const sliderValues = data.response;
+
+        let moralPostEstimate = Number(sliderValues['post-slider-moral-estimate-percent']);
+        let moralPostConfidence = Number(sliderValues['post-slider-moral-confidence']);
+        let moralPostAction = Number(sliderValues['post-slider-moral-action']);
+        let moralPostPerson = Number(sliderValues['post-slider-moral-person']);
       },
     }
 
-    timeline.push(postPredictionsMoral)
+    if (participantCondition === 'epistemic') {
+      timeline.push(postPredictionsEpistemic);
+    } else if (participantCondition === 'moral') {
+      timeline.push(postPredictionsMoral);
+    }
 
     // DEFINE TEST TRIALS
-
-    var testList = [];
-    var numLabelTestTrialsPerBlock = 100;
-    var testTrialsIndex = [...Array(100).keys()];
-    var numTestBlocks = 1;
-    var testNum = 1;
-
-    var valueOpinionQuestion = {
+    const valueOpinionQuestions = {
       type: jsPsychSurveyMultiChoice,
       preamble: '<p style="text-align: left; font-size: 14pt;">Do you value the opinion of the following people?</p>',
       randomize_question_order: true,
@@ -1515,21 +1419,21 @@
       ],
     };
 
-    timeline.push(postPredictionsMoral);
+    timeline.push(valueOpinionQuestions);
 
-    var nfcQuestions = {
+    const nfcQuestions = {
       type: jsPsychSurveyMultiChoice,
       questions: [
         {
           name: 'nfc_1_simple_complex',
-          prompt: '<p style="text-align: left; font-size: 12pt;">I would prefer complex to simple problems.</p>',
+          prompt: '<p class="jspsych-survey-multi-choice-question">I would prefer complex to simple problems.</p>',
           options: nfcResponses,
           required: true,
           horizontal: true
         },
         {
           name: 'nfc_2_responsibility',
-          prompt: `<p style="text-align: left; font-size: 12pt;">
+          prompt: `<p class="jspsych-survey-multi-choice-question">
               I like to have the responsibility of handling a situation that requires a lot of thinking.</p>`,
           options: nfcResponses,
           required: true,
@@ -1537,14 +1441,14 @@
         },
         {
           name: 'nfc_3_not_fun',
-          prompt: '<p style="text-align: left; font-size: 12pt;">Thinking is not my idea of fun.</p>',
+          prompt: '<p class="jspsych-survey-multi-choice-question">Thinking is not my idea of fun.</p>',
           options: nfcResponses,
           required: true,
           horizontal: true
         },
         {
           name: 'nfc_4_little_thought',
-          prompt: `<p style="text-align: left; font-size: 12pt;">
+          prompt: `<p class="jspsych-survey-multi-choice-question">
               I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>`,
           options: nfcResponses,
           required: true,
@@ -1559,7 +1463,7 @@
         },
         {
           name: 'nfc_6_intellectual',
-          prompt: `<p style="text-align: left; font-size: 12pt;">
+          prompt: `<p class="jspsych-survey-multi-choice-question">
               I would prefer a task that is intellectual, difficult, and important to one than is somewhat important but does not require much thought.</p>`,
           options: nfcResponses,
           required: true,
@@ -1567,41 +1471,32 @@
         }
       ],
       randomize_question_order: true,
-      preamble: `<p style="text-align: left; font-size: 14pt;"> \
+      preamble: `<p class="jspsych-survey-multi-choice-preamble"> \
           Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:</p>`,
       scale_width: 500
     };
 
     timeline.push(nfcQuestions);
 
-    var ageQuestion = {
+    const demographicsQuestions = {
       type: jsPsychSurveyText,
       questions: [
         {
           name: "age",
-          prompt: '<p style="text-align: left !important; font-size: 12pt;">How old are you?</p>',
+          prompt: '<p class="jspsych-survey-multi-choice-question">How old are you?</p>',
           columns: 3,
           required: true
         },
         {
           name: "religious_affiliation",
-          prompt: '<p style="text-align: left !important; font-size: 12pt;">What is your religious affiliation?</p>',
+          prompt: '<p class="jspsych-survey-multi-choice-question">What is your religious affiliation?</p>',
           columns: 50,
           required: true
-        }
-      ],
-      randomize_question_order: true
-    };
-
-    timeline.push(ageQuestion);
-
-    var demographicsQuestions = {
-      type: jsPsychSurveyMultiChoice,
-      questions: [
+        },
         {
           name: 'gender',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 With which gender do you identify? \
               </p>',
           options: genderResponses,
@@ -1611,8 +1506,8 @@
         {
           name: 'race_ethnicity',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
-                Which of the following items BEST describes your ethnic or racial background? \
+            '<p class="jspsych-survey-multi-choice-question"> \
+                Which of the following items <strong>best</strong> describes your ethnic or racial background? \
               </p>',
           options: raceEthnicityResponses,
           required: true,
@@ -1621,7 +1516,7 @@
         {
           name: 'religiosity',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 How religious would you consider yourself? \
               </p>',
           options: religionResponses,
@@ -1631,7 +1526,7 @@
         {
           name: 'income',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 What is your household income per year? \
               </p>',
           options: incomeResponses,
@@ -1641,7 +1536,7 @@
         {
           name: 'education',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 What is the highest degree or level of school you have completed? \
               </p>',
           options: educationResponses,
@@ -1652,20 +1547,20 @@
       randomize_question_order: true,
       scale_width: 500,
       preamble:
-        '<p style="text-align: left; font-size: 14pt;"> \
+        '<p class="jspsych-survey-multi-choice-preamble"> \
             Using the scales provided, please respond to each question about you as an individual: \
           </p>'
     };
 
-    prodTestList.push(demographicsQuestions);
+    timeline.push(demographicsQuestions);
 
-    var demographicsPoliticalQuestions = {
+    const demographicsPoliticalQuestions = {
       type: jsPsychSurveyMultiChoice,
       questions: [
         {
           name: 'political_ideology_economic',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 Which response best captures your political beliefs surrounding <strong>economic</strong> issues? \
               </p>',
           options: politicalResponses,
@@ -1675,7 +1570,7 @@
         {
           name: 'political_ideology_social',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 Which response best captures your political beliefs surrounding <strong>social</strong> issues? \
               </p>',
           options: politicalResponses,
@@ -1685,7 +1580,7 @@
         {
           name: 'political_ideology_overall',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 Which response best captures your <strong>overall</strong> political beliefs? \
               </p>',
           options: politicalResponses,
@@ -1694,22 +1589,21 @@
         }
       ],
       randomize_question_order: true,
-      scale_width: 500,
       preamble:
-        '<p style="text-align: left; font-size: 14pt;"> \
-            Please answer the following questions about your political ideology. \
+        '<p class="jspsych-survey-multi-choice-question"> \
+            Please answer the following questions about your political ideology: \
           </p>'
     };
 
     timeline.push(demographicsPoliticalQuestions);
 
-    var demographicsFinalQuestions = {
+    const demandDeviceQuestions = {
       type: jsPsychSurveyMultiChoice,
       questions: [
         {
           name: 'device',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 What kind of device did you use to complete this study? \
               </p>',
           options: deviceTypeResponses,
@@ -1719,7 +1613,7 @@
         {
           name: 'pressure',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 Did you feel pressure to respond in a particular way to any of the questions? \
               </p>',
           options: demandEffectsResponses,
@@ -1729,7 +1623,7 @@
         {
           name: 'judgment',
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 Did you feel as though you might be judged for your responses to the questions you answered? \
               </p>',
           options: demandEffectsResponses,
@@ -1740,21 +1634,21 @@
       randomize_question_order: true,
       scale_width: 500,
       preamble:
-        '<p style="text-align: left; font-size: 14pt;> \
+        '<p class="jspsych-survey-multi-choice-preamble"> \
             For these final questions, please answer as honestly as you can. \
             The answers to these questions will <strong>not</strong> affect whether or not you receive credit/payment for participation! \
-          </p>',
+          </p>'
     };
 
-    timeline.push(demographicsFinalQuestions);
+    timeline.push(demandDeviceQuestions);
 
-    var bigFiveQuestions = {
+    const bigFiveQuestions = {
       type: jsPsychSurveyMultiChoice,
       questions: [
         {
           name: "extraversion_1",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 I see myself as <strong>extraverted, enthusiastic.</strong> \
               </p>',
           options: bigFiveResponses,
@@ -1762,9 +1656,9 @@
           horizontal: true
         },
         {
-          name: "agreeableness_2r",
+          name: "agreeableness_2_r",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 I see myself as <strong>critical, quarrelsome.</strong> \
               </p>',
           options: bigFiveResponses,
@@ -1774,7 +1668,7 @@
         {
           name: "conscientiousness_3",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
               I see myself as <strong>dependable, self-disciplined.</strong> \
             </p>',
           options: bigFiveResponses,
@@ -1782,9 +1676,9 @@
           horizontal: true
         },
         {
-          name: "emotional_stability_4r",
+          name: "emotional_stability_4_r",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 I see myself as <strong>anxious, easily upset.</strong> \
               </p>',
           options: bigFiveResponses,
@@ -1794,7 +1688,7 @@
         {
           name: "openness_5",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 I see myself as <strong>open to new experiences, complex.</strong> \
               </p>',
           options: bigFiveResponses,
@@ -1802,9 +1696,9 @@
           horizontal: true
         },
         {
-          name: "extraversion_6r",
+          name: "extraversion_6_r",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 I see myself as <strong>reserved, quiet.</strong> \
               </p>',
           options: bigFiveResponses,
@@ -1814,7 +1708,7 @@
         {
           name: "agreeableness_7",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 I see myself as <strong>sympathetic, warm.</strong> \
               </p>',
           options: bigFiveResponses,
@@ -1822,9 +1716,9 @@
           horizontal: true
         },
         {
-          name: "conscientiousness_8r",
+          name: "conscientiousness_8_r",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 I see myself as <strong>disorganized, careless.</strong> \
               </p>',
           options: bigFiveResponses,
@@ -1834,7 +1728,7 @@
         {
           name: "emotional_stability_9",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 I see myself as <strong>calm, emotionally stable.</strong> \
               </p>',
           options: bigFiveResponses,
@@ -1842,9 +1736,9 @@
           horizontal: true
         },
         {
-          name: "openness_10r",
+          name: "openness_10_r",
           prompt:
-            '<p style="text-align: left; font-size: 12pt;"> \
+            '<p class="jspsych-survey-multi-choice-question"> \
                 I see myself as <strong>conventional, uncreative.</strong> \
               </p>',
           options: bigFiveResponses,
@@ -1854,7 +1748,7 @@
       ],
       randomize_question_order: true,
       preamble:
-        '<p style="text-align: left; font-size: 14pt"> \
+        '<p class="jspsych-survey-multi-choice-preamble"> \
             Here are a number of personality traits that may or may not apply to you. \
             Please choose the options next to each statement to indicate the extent to which you agree or disagree with that statement. \
             You should rate the extent to which the <strong>pair</strong> of traits applies to you, even if one characteristic applies more strongly than the other. \
@@ -1863,7 +1757,7 @@
           </p>'
     };
 
-    timeline.push(bigFiveQuestions);
+    // timeline.push(bigFiveQuestions);
 
     // CREATE FINAL EXPERIMENT MESSAGE/ DEBRIEF AFTER DATA SUCCESSFULLY STORED
     // including a random code participants can use to confirm they took the study (for payment on Amazon Mechanical Turk)
@@ -1871,29 +1765,29 @@
     //create random code for final message
     //start code creation script
     function randLetter() {
-      var a_z = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-      var int = Math.floor(Math.random() * a_z.length);
-      var randLetter = a_z[int];
+      const a_z = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+      let int = Math.floor(Math.random() * a_z.length);
+      let randLetter = a_z[int];
       return randLetter;
     }
 
-    var secretCode = "Crossact"; // this is the 'key'
-    var code = "";
+    const secretCode = "Crossact"; // this is the 'key'
+    let code = "";
 
-    for (var i = 0; i < 7; i++) {
+    for (let i = 0; i < 7; i++) {
       code = code.concat(randLetter());
     }
 
     code = code.concat(secretCode);
 
-    for (var i = 0; i < 10; i++) {
+    for (let i = 0; i < 10; i++) {
       code = code.concat(randLetter());
     }
     //end code creation script
 
     //debrief and code message
-    var experimentFinal = [];
-    var finalInstructions = {
+    const experimentFinal = [];
+    const finalInstructions = {
       type: jsPsychInstructions,
       size: 400,
       pages: [
@@ -1915,25 +1809,22 @@
     experimentFinal.push(finalInstructions);
 
     // Exit fullscreen
-    var enterFullscreen = {
+    const exitFullscreen = {
       type: jsPsychFullscreen,
       fullscreen_mode: false,
       delay_after: 0
     };
-    trainingList.push(enterFullscreen);
+    timeline.push(exitFullscreen);
 
     // PRELOADING
     // this should be handled within the plugins, but I've gotten mixed results relying on this,
     // so to be extra sure, preload all relevant files prior to starting the experiment
 
     //preload all images
-    var imageSet = items;
+    const imageSet = avatarPhotos;
 
-    //function for tracking loading of audio files
-    //useful if there are a lot of audio files
 
     //run this line instead if we add audio
-    //jsPsych.pluginAPI.preloadImages(imageSet, function(){ jsPsych.pluginAPI.preloadAudioFiles(allAudio, function() {startExperiment(); },function(nLoaded) { updateLoadedCount(nLoaded); });});
 
     jsPsych.pluginAPI.preloadImages(imageSet, function () {
       startExperiment();

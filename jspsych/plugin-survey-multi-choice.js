@@ -41,6 +41,20 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         pretty_name: "Question Name",
                         default: "",
                     },
+                    /** Indicates which response option is correct. */
+                    correct: {
+                        type: jspsych.ParameterType.STRING,
+                        pretty_name: 'Correct response',
+                        default: '',
+                        description: 'Indicates which response option is correct'
+                    },
+                    /** Provides hint upon submission of incorrect response option. */
+                    hint: {
+                        type: jspsych.ParameterType.STRING,
+                        pretty_name: 'Hint',
+                        default: '',
+                        description: 'Hint that is displayed when an incorrect response is given'
+                    }
                 },
             },
             /** If true, the order of the questions in the 'questions' array will be randomized. */
@@ -132,6 +146,8 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                     question_classes.join(" ") +
                     '"  data-name="' +
                     question.name +
+                    '" data-correct="' +
+                    question.correct +
                     '">';
                 // add question text
                 html += '<p class="jspsych-survey-multi-choice-text survey-multi-choice">' + question.prompt;
@@ -166,6 +182,11 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         html += question.options[j] + "</label>";
                     }
                     html += "</div>";
+
+                }
+                // add hint
+                if (question.hint) {
+                    html += '<div class="jspsych-survey-multi-choice-hint" style="visibility:hidden;">' + question.hint + '</div>';
                 }
                 html += "</div>";
             }
@@ -188,6 +209,9 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                 var response_time = Math.round(endTime - startTime);
                 // create object to hold responses
                 var question_data = {};
+                if (question.correct) {
+                    var correctCheck = [...Array(trial.questions.length).fill(false)];
+                }
                 for (var i = 0; i < trial.questions.length; i++) {
                     var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
                     var id = "Q" + i;
@@ -205,16 +229,39 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                     }
                     obje[name] = val;
                     Object.assign(question_data, obje);
+
+                    if (question.hint) {
+                        let hintmatch = display_element.getElementsByClassName('jspsych-survey-multi-choice-hint');
+                        if (val != match.attributes['data-correct'].value) {
+                            hintmatch.item(i).style.visibility = "visible";
+                            hintmatch.item(i).classList.add('fade-in');
+                        } else {
+                            hintmatch.item(i).style.visibility = "hidden";
+                            correctCheck[i] = true;
+                        }
+                    }
                 }
-                // save data
-                var trial_data = {
-                    rt: response_time,
-                    response: question_data,
-                    question_order: question_order,
-                };
-                display_element.innerHTML = "";
-                // next trial
-                this.jsPsych.finishTrial(trial_data);
+                if (question.hint) {
+                    if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
+                        var trial_data = {
+                            rt: response_time,
+                            response: question_data,
+                            question_order: question_order,
+                        };
+                        display_element.innerHTML = "";
+                        // next trial
+                        this.jsPsych.finishTrial(trial_data);
+                    }
+                } else {
+                    var trial_data = {
+                        rt: response_time,
+                        response: question_data,
+                        question_order: question_order,
+                    };
+                    display_element.innerHTML = "";
+                    // next trial
+                    this.jsPsych.finishTrial(trial_data);
+                }
             });
             var startTime = performance.now();
         }

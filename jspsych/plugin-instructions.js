@@ -57,13 +57,13 @@ var jsPsychInstructions = (function (jspsych) {
             button_label_previous: {
                 type: jspsych.ParameterType.STRING,
                 pretty_name: "Button label previous",
-                default: "Previous",
+                default: `<i class="fa-solid fa-arrow-left"></i>&nbsp;&nbsp;Previous`,
             },
             /** The text that appears on the button to go forwards. */
             button_label_next: {
                 type: jspsych.ParameterType.STRING,
                 pretty_name: "Button label next",
-                default: "Next",
+                default: `Next&nbsp;&nbsp;<i class="fa-solid fa-arrow-right"></i>`,
             },
         },
     };
@@ -108,7 +108,7 @@ var jsPsychInstructions = (function (jspsych) {
                             "/" +
                             trial.pages.length +
                             "</span>";
-                }
+                };
                 if (trial.show_clickable_nav) {
                     var nav_html = "<div class='jspsych-instructions-nav' style='padding: 10px 0px;'>";
                     if (trial.allow_backward) {
@@ -116,7 +116,7 @@ var jsPsychInstructions = (function (jspsych) {
                         nav_html +=
                             "<button id='jspsych-instructions-back' class='jspsych-btn' style='margin-right: 5px;' " +
                                 allowed +
-                                ">&lt; " +
+                                ">" +
                                 trial.button_label_previous +
                                 "</button>";
                     }
@@ -127,7 +127,7 @@ var jsPsychInstructions = (function (jspsych) {
                         "<button id='jspsych-instructions-next' class='jspsych-btn'" +
                             "style='margin-left: 5px;'>" +
                             trial.button_label_next +
-                            " &gt;</button></div>";
+                            "</button></div>";
                     html += nav_html;
                     display_element.innerHTML = html;
                     if (current_page != 0 && trial.allow_backward) {

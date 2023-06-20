@@ -45,14 +45,12 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			display_element.innerHTML += `
 				<div id="jspsych-instructions">
 					<div class="quote">
-						<strong>
-							<h2>Sampling Task:</h2>
-							<p>
-								Now you can see what other people think. 
-								Click on any of the people below to see whether that person thinks the action 
-								described in the statement above is morally good or morally bad.
-							</p>
-						</strong>
+						<h2>Sampling Task</h2>
+						<p>
+							Now you can see what other people think. 
+							Click on any of the people below to see whether that person thinks the action 
+							described in the statement above is morally good or morally bad.
+						</p>
 					</div>
 				</div>
 
@@ -78,7 +76,10 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			}
 
 			const samplingPromptContainer = $('#prompt-container');
-			samplingPromptContainer.html(`<strong id="samplingPrompt">CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO HEAR NEXT</strong><br>(SCROLL TO VIEW MORE)`);
+			samplingPromptContainer.html(`
+				<strong id="samplingPrompt">CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO HEAR NEXT</strong><br>
+				(SCROLL TO VIEW MORE)<br>`
+			);
 
 			// default values
 
@@ -169,7 +170,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					const selectionButtons = document.createElement('div');
 					selectionButtons.id = 'jspsych-selection-learning-btngroup';
 					selectionButtons.className = 'center-content block-center';
-
+					samplingPromptContainer.append("<p>Would you like to continue reading?</p>")
 					samplingPromptContainer.append(selectionButtons)
 
 					for (let l = 0; l < trial.choices.length; l++) {

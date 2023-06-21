@@ -1213,7 +1213,7 @@ const moralBadResponsesArray = [
 ]
 
 const avatarNames = Array.from({ length: 100 }, (_, i) => "avatar" + i);
-const avatarPhotos = Array.from({ length: 100 }, (_, i) => `avatars/photo${i + 1}.png`);
+const avatarPhotos = Array.from({ length: 100 }, (_, i) => `./avatars/photo${i + 1}.png`);
 
 //associate words and items (images) in a dictionary
 let avatarDictionary = {};

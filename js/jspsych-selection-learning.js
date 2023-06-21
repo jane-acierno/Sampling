@@ -71,7 +71,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			for (let i = 0; i < 100; i++) {
 				const circleId = $(`#circle${i + 1}`);
-				const avatarPhoto = $(`<img class='avatar-photo' src='/avatars/${i + 1}.png'>`);
+				const avatarPhoto = $(`<img class='avatar-photo' src='/avatars/photo${i + 1}.png'>`);
 				circleId.append(avatarPhoto);
 			}
 
@@ -113,7 +113,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				// Create copy of the chosen avatar photo
 				// Add it inside the avatar circle
 				const avatarPhotoSelection = document.createElement('img');
-				avatarPhotoSelection.src = "/avatars/" + circleIndex + ".png"
+				avatarPhotoSelection.src = "/avatars/photo" + circleIndex + ".png"
 				avatarPhotoSelection.className = 'avatar-photo fade-in';
 				avatarCircleSelection.append(avatarPhotoSelection)
 
@@ -196,7 +196,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						rt_array.push(rt);
 
 						// Fade the prompt back in
-						samplingPromptContainer.html('<p id="samplingPrompt"><strong>CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO HEAR NEXT</strong><br>(SCROLL TO VIEW MORE)</p>');
+						samplingPromptContainer.html('<p id="samplingPrompt"><strong>CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO READ NEXT</strong><br>(SCROLL TO VIEW MORE)</p>');
 						// samplingPrompt.attr('class', 'fade-in');
 						trialPresentationSpace.empty();
 

@@ -81,6 +81,12 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                 pretty_name: "Allow autocomplete",
                 default: false,
             },
+            /** If true, then a response to every question is required to advance without a popup. If false, then responses to questions can be left blank without a popup. */
+            request_response: {
+                type: jspsych.ParameterType.BOOL,
+                pretty_name: "Request response",
+                default: false
+            }
         },
     };
     /**
@@ -97,7 +103,16 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
         }
         trial(display_element, trial) {
             var plugin_id_name = "jspsych-survey-multi-choice";
-            var html = "";
+            var html =
+                `<div id="confirm-popup" class="popup">
+                    <h2>Confirmation</h2>
+                    <p>There is at least one unanswered question.<br>Are you sure you would like to advance?</p>
+                    <div id="jspsych-selection-learning-btngroup" class="center-content block-center">
+                        <button class="jspsych-btn jspsych-selection-learning-button" id="confirm-yes">Yes</button>
+                        <button class="jspsych-btn jspsych-selection-learning-button" id="confirm-no">No</button>
+                    </div>
+                </div>
+                <div id="overlay"></div>`;
             // inject CSS for trial
             html += '<style id="jspsych-survey-multi-choice-css">';
             html +=
@@ -162,11 +177,17 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                     html += '<div id="' + option_id_name + '" class="jspsych-survey-multi-choice-option">';
                     html += '<label class="jspsych-survey-multi-choice-text" for="' + input_id + '">';
 
+
+                    
+
+
                     // if horizontal question format, place label above radio
                     if (question.horizontal) {
                         html += question.options[j] + "</label><br>";
                     }
-                    html +=
+
+                    if (trial.request_response) {
+                        html +=
                         '<input type="radio" name="' +
                         input_name +
                         '" id="' +
@@ -175,7 +196,23 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         question.options[j] +
                         '" ' +
                         required_attr +
-                        "></input>";
+                        'class="incomplete" oninput="var inputElements = document.querySelectorAll(\'input[name=' + input_name + ']\'); \
+                            for (var i = 0; i < inputElements.length; i++) { \
+                                inputElements[i].classList.remove(\'incomplete\'); \
+                            };"' +
+                        '></label>';
+                    } else {
+                        html +=
+                            '<input type="radio" name="' +
+                            input_name +
+                            '" id="' +
+                            input_id +
+                            '" value="' +
+                            question.options[j] +
+                            '" ' +
+                            required_attr +
+                            '"></label>';
+                    }
 
                     // if not horizontal question format, place label beside ratio
                     if (!question.horizontal) {
@@ -204,45 +241,192 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
             display_element.innerHTML = html;
             document.querySelector("form").addEventListener("submit", (event) => {
                 event.preventDefault();
-                // measure response time
-                var endTime = performance.now();
-                var response_time = Math.round(endTime - startTime);
-                // create object to hold responses
-                var question_data = {};
-                if (question.correct) {
-                    var correctCheck = [...Array(trial.questions.length).fill(false)];
-                }
-                for (var i = 0; i < trial.questions.length; i++) {
-                    var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
-                    var id = "Q" + i;
-                    var val;
-                    if (match.querySelector("input[type=radio]:checked") !== null) {
-                        val = match.querySelector("input[type=radio]:checked").value;
-                    }
-                    else {
-                        val = "";
-                    }
-                    var obje = {};
-                    var name = id;
-                    if (match.attributes["data-name"].value !== "") {
-                        name = match.attributes["data-name"].value;
-                    }
-                    obje[name] = val;
-                    Object.assign(question_data, obje);
 
-                    if (question.hint) {
-                        let hintmatch = display_element.getElementsByClassName('jspsych-survey-multi-choice-hint');
-                        if (val != match.attributes['data-correct'].value) {
-                            hintmatch.item(i).style.visibility = "visible";
-                            hintmatch.item(i).classList.add('fade-in');
+                if (trial.request_response) {
+                        
+                    let incompleteResponse = false;
+                    $('input').each(function () {
+                        if ($(this).hasClass('incomplete')) {
+                            incompleteResponse = true;
+                            return false; // Exit the loop early if a disabled slider is found
+                        }
+                    });
+                    
+                    if (incompleteResponse) {
+
+                        let that = this;
+                        
+                        $('#overlay').fadeIn();
+                        $('#confirm-popup').fadeIn();                            
+
+                        $('#confirm-yes').click(function() {
+                            $('#overlay').fadeOut();
+                            $('#confirm-popup').fadeOut();
+                            
+                            // measure response time
+                            var endTime = performance.now();
+                            var response_time = Math.round(endTime - startTime);
+                            // create object to hold responses
+                            var question_data = {};
+                            if (question.correct) {
+                                var correctCheck = [...Array(trial.questions.length).fill(false)];
+                            }
+                            for (var i = 0; i < trial.questions.length; i++) {
+                                var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
+                                var id = "Q" + i;
+                                var val;
+                                if (match.querySelector("input[type=radio]:checked") !== null) {
+                                    val = match.querySelector("input[type=radio]:checked").value;
+                                }
+                                else {
+                                    val = "";
+                                }
+                                var obje = {};
+                                var name = id;
+                                if (match.attributes["data-name"].value !== "") {
+                                    name = match.attributes["data-name"].value;
+                                }
+                                obje[name] = val;
+                                Object.assign(question_data, obje);
+            
+                                if (question.hint) {
+                                    let hintmatch = display_element.getElementsByClassName('jspsych-survey-multi-choice-hint');
+                                    if (val != match.attributes['data-correct'].value) {
+                                        hintmatch.item(i).style.visibility = "visible";
+                                        hintmatch.item(i).classList.add('fade-in');
+                                    } else {
+                                        hintmatch.item(i).style.visibility = "hidden";
+                                        correctCheck[i] = true;
+                                    }
+                                } else {
+                                    var trial_data = {
+                                        rt: response_time,
+                                        response: question_data,
+                                        question_order: question_order,
+                                    };
+                                    display_element.innerHTML = "";
+                                    // next trial
+                                    that.jsPsych.finishTrial(trial_data);
+                                    return false; // break out of loop, otherwise the else statement will be executed and we skip a trial!!
+                                }
+                            }
+                        });
+                        
+                        $('#confirm-no').click(function() {
+                            $('#overlay').fadeOut();    
+                            $('#confirm-popup').fadeOut();
+                        });
+                    } else {
+                        // measure response time
+                        var endTime = performance.now();
+                        var response_time = Math.round(endTime - startTime);
+                        // create object to hold responses
+                        var question_data = {};
+                        if (question.correct) {
+                            var correctCheck = [...Array(trial.questions.length).fill(false)];
+                        }
+                        for (var i = 0; i < trial.questions.length; i++) {
+                            var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
+                            var id = "Q" + i;
+                            var val;
+                            if (match.querySelector("input[type=radio]:checked") !== null) {
+                                val = match.querySelector("input[type=radio]:checked").value;
+                            }
+                            else {
+                                val = "";
+                            }
+                            var obje = {};
+                            var name = id;
+                            if (match.attributes["data-name"].value !== "") {
+                                name = match.attributes["data-name"].value;
+                            }
+                            obje[name] = val;
+                            Object.assign(question_data, obje);
+        
+                            if (question.hint) {
+                                let hintmatch = display_element.getElementsByClassName('jspsych-survey-multi-choice-hint');
+                                if (val != match.attributes['data-correct'].value) {
+                                    hintmatch.item(i).style.visibility = "visible";
+                                    hintmatch.item(i).classList.add('fade-in');
+                                } else {
+                                    hintmatch.item(i).style.visibility = "hidden";
+                                    correctCheck[i] = true;
+                                }
+                            }
+                        }
+                        if (question.hint) {
+                            if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
+                                var trial_data = {
+                                    rt: response_time,
+                                    response: question_data,
+                                    question_order: question_order,
+                                };
+                                display_element.innerHTML = "";
+                                // next trial
+                                this.jsPsych.finishTrial(trial_data);
+                            }
                         } else {
-                            hintmatch.item(i).style.visibility = "hidden";
-                            correctCheck[i] = true;
+                            var trial_data = {
+                                rt: response_time,
+                                response: question_data,
+                                question_order: question_order,
+                            };
+                            display_element.innerHTML = "";
+                            // next trial
+                            this.jsPsych.finishTrial(trial_data);
+                        }
+                    };
+
+                } else {
+                    // measure response time
+                    var endTime = performance.now();
+                    var response_time = Math.round(endTime - startTime);
+                    // create object to hold responses
+                    var question_data = {};
+                    if (question.correct) {
+                        var correctCheck = [...Array(trial.questions.length).fill(false)];
+                    }
+                    for (var i = 0; i < trial.questions.length; i++) {
+                        var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
+                        var id = "Q" + i;
+                        var val;
+                        if (match.querySelector("input[type=radio]:checked") !== null) {
+                            val = match.querySelector("input[type=radio]:checked").value;
+                        }
+                        else {
+                            val = "";
+                        }
+                        var obje = {};
+                        var name = id;
+                        if (match.attributes["data-name"].value !== "") {
+                            name = match.attributes["data-name"].value;
+                        }
+                        obje[name] = val;
+                        Object.assign(question_data, obje);
+    
+                        if (question.hint) {
+                            let hintmatch = display_element.getElementsByClassName('jspsych-survey-multi-choice-hint');
+                            if (val != match.attributes['data-correct'].value) {
+                                hintmatch.item(i).style.visibility = "visible";
+                                hintmatch.item(i).classList.add('fade-in');
+                            } else {
+                                hintmatch.item(i).style.visibility = "hidden";
+                                correctCheck[i] = true;
+                            }
                         }
                     }
-                }
-                if (question.hint) {
-                    if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
+                    if (question.hint) {
+                        if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
+                            var trial_data = {
+                                rt: response_time,
+                                response: question_data,
+                                question_order: question_order,
+                            };
+                            display_element.innerHTML = "";
+                            // next trial
+                            this.jsPsych.finishTrial(trial_data);
+                        }
+                    } else {
                         var trial_data = {
                             rt: response_time,
                             response: question_data,
@@ -252,16 +436,8 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         // next trial
                         this.jsPsych.finishTrial(trial_data);
                     }
-                } else {
-                    var trial_data = {
-                        rt: response_time,
-                        response: question_data,
-                        question_order: question_order,
-                    };
-                    display_element.innerHTML = "";
-                    // next trial
-                    this.jsPsych.finishTrial(trial_data);
-                }
+                };
+                
             });
             var startTime = performance.now();
         }
@@ -304,9 +480,13 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
             load_callback();
             const answers = Object.entries(data.response);
             for (let i = 0; i < answers.length; i++) {
-                this.jsPsych.pluginAPI.clickTarget(display_element.querySelector(`#jspsych-survey-multi-choice-response-${i}-${trial.questions[i].options.indexOf(answers[i][1])}`), ((data.rt - 1000) / answers.length) * (i + 1));
+                this.jsPsych.pluginAPI.clickTarget(display_element
+                    .querySelector(`#jspsych-survey-multi-choice-response-${i}-${trial.questions[i].options
+                    .indexOf(answers[i][1])}`), ((data.rt - 1000) / answers.length) * (i + 1));
             }
-            this.jsPsych.pluginAPI.clickTarget(display_element.querySelector("#jspsych-survey-multi-choice-next"), data.rt);
+            this.jsPsych.pluginAPI.clickTarget(
+                display_element.querySelector("#jspsych-survey-multi-choice-next"), data.rt
+            );
         }
     }
     SurveyMultiChoicePlugin.info = info;

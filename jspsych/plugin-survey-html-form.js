@@ -8,39 +8,45 @@ var jsPsychSurveyHtmlForm = (function (jspsych) {
             html: {
                 type: jspsych.ParameterType.HTML_STRING,
                 pretty_name: "HTML",
-                default: null,
+                default: null
             },
             /** HTML formatted string to display at the top of the page above all the questions. */
             preamble: {
                 type: jspsych.ParameterType.HTML_STRING,
                 pretty_name: "Preamble",
-                default: null,
+                default: null
             },
             /** The text that appears on the button to finish the trial. */
             button_label: {
                 type: jspsych.ParameterType.STRING,
                 pretty_name: "Button label",
-                default: "Continue",
+                default: 'Next'
             },
             /** The HTML element ID of a form field to autofocus on. */
             autofocus: {
                 type: jspsych.ParameterType.STRING,
                 pretty_name: "Element ID to focus",
-                default: "",
+                default: ""
             },
             /** Retrieve the data as an array e.g. [{name: "INPUT_NAME", value: "INPUT_VALUE"}, ...] instead of an object e.g. {INPUT_NAME: INPUT_VALUE, ...}. */
-            dataAsArray: {
+            data_as_array: {
                 type: jspsych.ParameterType.BOOL,
-                pretty_name: "Data As Array",
-                default: false,
+                pretty_name: "Data as array",
+                default: false
             },
             /** Setting this to true will enable browser auto-complete or auto-fill for the form. */
             autocomplete: {
                 type: jspsych.ParameterType.BOOL,
                 pretty_name: "Allow autocomplete",
-                default: false,
+                default: false
             },
-        },
+            /** If true, then a response to every question is required to advance without a popup. If false, then responses to questions can be left blank without a popup. */
+            request_response: {
+                type: jspsych.ParameterType.BOOL,
+                pretty_name: "Request response",
+                default: false
+            }
+        }
     };
 
     /**
@@ -139,7 +145,7 @@ var jsPsychSurveyHtmlForm = (function (jspsych) {
             html +=
                 '<input type="submit" id="jspsych-survey-html-form-next" class="jspsych-btn jspsych-survey-html-form" value="' +
                 trial.button_label +
-                '"></input>';
+                '">' + '</input>';
             html += "</form>";
             display_element.innerHTML = html;
             if (trial.autofocus !== "") {
@@ -160,76 +166,85 @@ var jsPsychSurveyHtmlForm = (function (jspsych) {
                     // don't submit form
                     event.preventDefault();
 
-                    var hasDisabledSlider = false;
-                    $('input').each(function () {
-                        if ($(this).hasClass('disabled-slider')) {
-                            hasDisabledSlider = true;
-                            return false; // Exit the loop early if a disabled slider is found
-                        }
-                    });
-
-                    if (hasDisabledSlider) {
-                        event.preventDefault(); // Prevent form submission
-
-                        let that = this;
+                    if (trial.request_response) {
                         
-                        $('#overlay').fadeIn();
-                        $('#confirm-popup').fadeIn(function() {
-                            $(this).draggable();
+                        let incompleteResponse = false;
+                        $('input').each(function () {
+                            if ($(this).hasClass('incomplete')) {
+                                incompleteResponse = true;
+                                return false; // Exit the loop early if a disabled slider is found
+                            }
                         });
 
-                        $('#confirm-yes').click(function() {
-                        // Perform actions when user selects "Yes"
-                            $('#overlay').fadeOut();
-                            var endTime = performance.now();
-                            var response_time = Math.round(endTime - startTime);
-                            var this_form = display_element.querySelector("#jspsych-survey-html-form");
-                            var question_data = serializeArray(this_form);
-                            if (!trial.dataAsArray) {
+                        if (incompleteResponse) {
+
+                            let that = this;
+                            
+                            $('#overlay').fadeIn();
+                            $('#confirm-popup').fadeIn();                            
+
+                            $('#confirm-yes').click(function() {
+                                $('#overlay').fadeOut();
+                                $('#confirm-popup').fadeOut();
+                                let endTime = performance.now();
+                                let response_time = Math.round(endTime - startTime);
+                                let this_form = display_element.querySelector("#jspsych-survey-html-form");
+                                let question_data = serializeArray(this_form);
+
+                                if (!trial.data_as_array) {
+                                    question_data = objectifyForm(question_data);
+                                }
+                                // save data
+                                const trialdata = {
+                                    rt: response_time,
+                                    response: question_data,
+                                };
+                                display_element.innerHTML = "";                        
+                                that.jsPsych.finishTrial(trialdata);   
+                            });
+                            
+                            $('#confirm-no').click(function() {
+                                $('#overlay').fadeOut();    
+                                $('#confirm-popup').fadeOut();
+                            });
+                        } else {
+                            let endTime = performance.now();
+                            let response_time = Math.round(endTime - startTime);
+                            let this_form = display_element.querySelector("#jspsych-survey-html-form");
+                            let question_data = serializeArray(this_form);
+    
+                            if (!trial.data_as_array) {
                                 question_data = objectifyForm(question_data);
                             }
                             // save data
-                            var trialdata = {
+                            const trialdata = {
                                 rt: response_time,
                                 response: question_data,
                             };
-
-                            console.log(trialdata)
-                            display_element.innerHTML = "";
-                            // next trial
-                            
-                            that.jsPsych.finishTrial(trialdata);
-                            $('#confirm-popup').fadeOut();
-                        });
-                        
-                        $('#confirm-no').click(function() {
-                        // Perform actions when user selects "No"
-                            $('#overlay').fadeOut();    
-                            $('#confirm-popup').fadeOut();
-                        });
+                            display_element.innerHTML = "";                        
+                            jsPsych.finishTrial(trialdata);   
+                        };
                     } else {
-                        var endTime = performance.now();
-                        var response_time = Math.round(endTime - startTime);
-                        var this_form = display_element.querySelector("#jspsych-survey-html-form");
-                        var question_data = serializeArray(this_form);
-                        if (!trial.dataAsArray) {
+                        let endTime = performance.now();
+                        let response_time = Math.round(endTime - startTime);
+                        let this_form = display_element.querySelector("#jspsych-survey-html-form");
+                        let question_data = serializeArray(this_form);
+
+                        if (!trial.data_as_array) {
                             question_data = objectifyForm(question_data);
                         }
                         // save data
-                        var trialdata = {
+                        const trialdata = {
                             rt: response_time,
                             response: question_data,
                         };
-                        console.log(trialdata)
-                        display_element.innerHTML = "";
-                        // next trial
-                        
-                        jsPsych.finishTrial(trialdata);
-                    }         
+                        display_element.innerHTML = "";                        
+                        jsPsych.finishTrial(trialdata);   
+                    };  
                 });
             var startTime = performance.now();
-        }
-    }
+        };
+    };
     SurveyHtmlFormPlugin.info = info;
 
     return SurveyHtmlFormPlugin;

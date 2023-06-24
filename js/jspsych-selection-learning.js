@@ -77,7 +77,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			const samplingPromptContainer = $('#prompt-container');
 			samplingPromptContainer.html(`
-				<strong id="samplingPrompt">CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO HEAR NEXT</strong><br>
+				<strong id="samplingPrompt">CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO READ NEXT</strong><br>
 				(SCROLL TO VIEW MORE)<br>`
 			);
 

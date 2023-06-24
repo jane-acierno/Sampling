@@ -483,7 +483,7 @@
   margin-top: -2px;
 }
 
-.disabled-slider {
+.incomplete {
   opacity: 0.5;
 }
 
@@ -787,15 +787,6 @@ blockquote {
   -webkit-animation: bounceRight 2s infinite;
   animation: bounceRight 2s infinite;
 }
-
-/* Slider */
-.jspsych-form-slider-question {
-  text-align: center; font-size: 12pt;
-}
-
-
-
-
 
 
 

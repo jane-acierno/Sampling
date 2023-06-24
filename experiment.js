@@ -10,54 +10,26 @@ let timeline = [];
 
 const jsPsych = initJsPsych({
   use_webaudio: false,
-  on_finish: function (data) {
-    initJsPsych({
-      display_element: 'jspsych-target',
-      timeline: experimentFinal
-    });
-    jsPsych.data.displayData('csv')
-  },
+  display_element: 'jspsych-target',
   display_element: 'jspsych-target',
   show_progress_bar: false,
   default_iti: 0,
+  on_finish: function (data) {
+    window.location.href = 'https://app.prolific.co/submissions/complete?cc=1D1E1F3D';
+    jsPsych.data.displayData('csv');
+  }
 });
 
-let participantCondition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
-console.log(participantCondition)
+const subject_id = jsPsych.data.getURLVariable('PROLIFIC_PID');
+const study_id = jsPsych.data.getURLVariable('STUDY_ID');
+const session_id = jsPsych.data.getURLVariable('SESSION_ID');
+let participant_condition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
 
-let subject_id = jsPsych.data.getURLVariable('aid'); //change from hitId
-if (!subject_id) {
-  subject_id = "test";
-}
-
-//general function for grabbing parameter from a URL
-//function getParamFromURL( name ) {
-//	name = name.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");
-//	var regexS = "[\?&]"+name+"=([^&#]*)";
-//	var regex = new RegExp( regexS );
-//	var results = regex.exec( window.location.href );
-//	if( results == null )
-//		return "";
-//	else
-//		return results[1];
-//}
-
-//for Amazon Mechanical Turk (workerId added to link via Qualtrics)
-//save workerID if it is part of the survey URL ?workerId=
-//var workerId = getParamFromURL( 'workerId' );
-//otherwise just use the randomly generated subject ID
-//if (workerId==="") {
-//	workerId=subject_id;
-//};
-//make sure that nobody can enter anything damaging or crazy for workerId
-//workerId.replace(/[^A-Za-z0-9_]/g, "");
-
-
-// record the condition assignment in the jsPsych data
-// this adds a property called 'subject', a property called workerId, and a condition property
 jsPsych.data.addProperties({
   subject_id: subject_id,
-  participantCondition: participantCondition
+  study_id: study_id,
+  session_id: session_id,
+  participant_condition: participant_condition
 });
 
 // Survey Options
@@ -121,7 +93,7 @@ const enterFullscreen = {
   delay_after: 0
 };
 
-timeline.push(enterFullscreen)
+// timeline.push(enterFullscreen)
 
 // CONSENT FORM //
 const consentForm = {
@@ -204,6 +176,8 @@ const consentForm = {
     }
   ],
   preamble: '<h2 style="text-align: center"><strong>Consent Form</strong></h2>',
+
+  // If the participant does not consent, end the experiment
   on_finish: function (data) {
     if (jsPsych.data.get().last(1).values()[0].response.consent == "Consent not given") {
       jsPsych.endExperiment(`
@@ -294,11 +268,11 @@ const instructionsEpistemic = {
           <input 
             name="practice-slider-epistemic-estimate-percent" 
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete" 
             value="50" min="0" max="100" step="1" 
             id="practice-slider-epistemic-estimate-percent"
             oninput="
-              this.classList.remove('disabled-slider')
+              this.classList.remove('incomplete')
               $('#practice-slider-epistemic-estimate-percent-label').addClass('fade-out')
 
               let rawRating = parseFloat(this.value);
@@ -345,7 +319,7 @@ const instructionsEpistemic = {
         </p>`
   ],
   show_clickable_nav: true
-}
+};
 
 // MORAL INSTRUCTIONS //
 const instructionsMoral = {
@@ -424,11 +398,11 @@ const instructionsMoral = {
           <input 
             name="practice-slider-moral-estimate-percent" 
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete" 
             value="50" min="0" max="100" step="1" 
             id="practice-slider-moral-estimate-percent"
             oninput="
-              this.classList.remove('disabled-slider')
+              this.classList.remove('incomplete')
               $('#practice-slider-moral-estimate-percent-label').addClass('fade-out')
 
               let rawRating = parseFloat(this.value);
@@ -475,13 +449,13 @@ const instructionsMoral = {
         </p>`
   ],
   show_clickable_nav: true
-}
+};
 
-if (participantCondition === 'epistemic') {
+if (participant_condition === 'epistemic') {
   timeline.push(instructionsEpistemic);
-} else if (participantCondition === 'moral') {
+} else if (participant_condition === 'moral') {
   timeline.push(instructionsMoral);
-}
+};
 
 const instructionsEpistemicComprehensionCheck = {
   type: jsPsychSurveyMultiChoice,
@@ -532,7 +506,7 @@ const instructionsEpistemicComprehensionCheck = {
     //        },
   ],
   preamble: `
-        <h2 style="text-align: center;">Instructions</h2> 
+        <h2 style="text-align: center;">Instructions Review</h2> 
         <p style="text-align: left;"> 
           The experiment will begin on the next page.
           
@@ -625,14 +599,14 @@ const instructionsMoralComprehensionCheck = {
         </p>`,
 };
 
-if (participantCondition === 'epistemic') {
+if (participant_condition === 'epistemic') {
   timeline.push(instructionsEpistemicComprehensionCheck);
-} else if (participantCondition === 'moral') {
+} else if (participant_condition === 'moral') {
   timeline.push(instructionsMoralComprehensionCheck);
-}
+};
 
-// Epistemic Pre-Predictions //
-const prePredictionsEpistemic = {
+// Epistemic Pre-Predictions: Self //
+const prePredictionsEpistemicSelf = {
   type: jsPsychSurveyHtmlForm,
   preamble: `
         <div class="quote">
@@ -644,23 +618,88 @@ const prePredictionsEpistemic = {
         <p class="jspsych-survey-multi-choice-preamble">Before you see what other people think about the statement, we want to know what you think:</p>
         <br>`,
   html: `
+        <!-- Pre-Sampling Epistemic Claim Rating -->
+        <div class="jspsych-form-slider-question">
+          <label for="pre-slider-epistemic-claim">
+            How likely do you think it is that this claim is true or false?
+          </label>
+        </div>
+        <div style="position: relative;">
+          <input 
+            name="pre-slider-epistemic-claim" 
+            type="range" 
+            class="jspsych-slider incomplete" 
+            value="50" min="0" max="100" step="1" 
+            id="pre-slider-epistemic-claim"
+            oninput="
+              this.classList.remove('incomplete')
+            "
+          >
+          <span style="position: absolute; left: 0; font-size: 10pt;">Definitely false</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Definitely true</span>
+        </div>
+        <br><br><br>
+
+        <!-- Pre-Sampling Epistemic Curiosity -->
+        <div class="jspsych-form-slider-question" >
+          <label for="pre-slider-epistemic-curious">
+            How curious are you to learn about what other people think about this statement?
+          </label>
+        </div>
+        <div style="position: relative;">
+          <input 
+            name="pre-slider-epistemic-curious" 
+            type="range" 
+            class="jspsych-slider incomplete" 
+            value="50" min="0" max="100" step="1" 
+            id="pre-slider-epistemic-curious"
+            oninput="
+              this.classList.remove('incomplete')
+            "
+          >
+          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all curious</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely curious</span>
+        </div>
+        <br><br><br>`,
+  button_label: "Next",
+  data: {
+    task: 'Estimate'
+  },
+  request_response: true,
+  on_finish: function (data) {
+    const sliderValues = data.response;
+    let epistemicPreClaim = Number(sliderValues['pre-slider-epistemic-claim']);
+    let epistemicPreCurious = Number(sliderValues['pre-slider-epistemic-curious']);
+  }
+};
+
+// Epistemic Pre-Predictions: Other //
+const prePredictionsEpistemicOther = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: `
+        <div class="quote">
+          <h3>Statement #1</h3>
+          <blockquote>
+            "Marie Curie discovered radium and polonium, which revolutionized 
+            medical treatments and contributed to the development of nuclear weapons."
+          </blockquote>
+        </div>
+        <p class="jspsych-survey-multi-choice-preamble">Before you see what other people think about the statement, we want to know what you think:</p>
+        <br>`,
+  html: `
+        <!-- Pre-Sampling Epistemic Estimate -->
         <label for="pre-slider-epistemic-estimate-percent">
-          What percentage of people in the U.S. do you estimate believe that this claim is true vs. think this is false?<br><br>
-          <strong>
-            <code style='font-size: 10pt;' id="pre-slider-epistemic-estimate-percent-label">
-              <i class="fa-solid fa-arrow-left" id="fa-arrow-left"></i>&nbsp;(slide to adjust)&nbsp;<i class="fa-solid fa-arrow-right" id="fa-arrow-right"></i>
-            </code>
-          </strong>
+          What percentage of people in the U.S. do you estimate believe that this claim is true vs. think this is false?
         </label>
         <div style="position: relative;">
           <input 
             name="pre-slider-epistemic-estimate-percent" 
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete" 
             value="50" min="0" max="100" step="1" 
             id="pre-slider-epistemic-estimate-percent"
             oninput="
-              this.classList.remove('disabled-slider')
+              this.classList.remove('incomplete')
               $('#pre-slider-epistemic-estimate-percent-label').addClass('fade-out')
 
               let rawRating = parseFloat(this.value);
@@ -673,10 +712,11 @@ const prePredictionsEpistemic = {
           >
           <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
           <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this claim is <strong>false</strong></span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this claim is <strong>true</strong></span>
+          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this claim is false</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this claim is true</span>
         </div><br><br><br>
 
+        <!-- Pre-Sampling Epistemic Estimate Confidence -->
         <label for="pre-slider-epistemic-confidence">
           How confident are you in this estimate?
         </label>
@@ -684,70 +724,31 @@ const prePredictionsEpistemic = {
           <input 
             name="pre-slider-epistemic-confidence" 
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete"
             value="50" min="0" max="100" step="1" 
             id="pre-slider-epistemic-confidence"
             oninput="
-              this.classList.remove('disabled-slider')
+              this.classList.remove('incomplete')
             "
           >
           <span style="position: absolute; left: 0; font-size: 10pt;">Not at all confident</span>
           <span style="position: absolute; right: 0; font-size: 10pt;">Completely confident</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-epistemic-action">How likely do you think it is that this claim is true or false?</label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-epistemic-action" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-epistemic-action"
-            oninput="
-              this.classList.remove('disabled-slider')
-            "
-          >
-          <span style="position: absolute; left: 0; font-size: 10pt;">Definitely false</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Definitely true</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-epistemic-curious">
-          How curious are you to learn about what other people think about this statement?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-epistemic-curious" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-epistemic-curious"
-            oninput="
-              this.classList.remove('disabled-slider')
-            "
-          >
-          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all curious</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely curious</span>
         </div>
         <br><br><br>`,
   button_label: 'Next',
   data: {
     task: 'Estimate'
   },
+  request_response: true,
   on_finish: function (data) {
     const sliderValues = data.response;
-
-    let epistemicPreEstimate = Number(sliderValues['pre-slider-epistemic-estimate-percent']);
-    let epistemicPreConfidence = Number(sliderValues['pre-slider-epistemic-confidence']);
-    let epistemicPreAction = Number(sliderValues['pre-slider-epistemic-action']);
-    let epistemicPrePerson = Number(sliderValues['pre-slider-epistemic-person']);
-    let epistemicPreCurious = Number(sliderValues['pre-slider-epistemic-curious']);
+    let epistemicPreAction = Number(sliderValues['pre-slider-epistemic-estimate-percent']);
+    let epistemicPreCurious = Number(sliderValues['pre-slider-epistemic-confidence']);
   },
-}
+};
 
-// Moral Pre-Predictions //
-const prePredictionsMoral = {
+// Moral Pre-Predictions: Self //
+const prePredictionsMoralSelf = {
   type: jsPsychSurveyHtmlForm,
   preamble: `
         <div class="quote">
@@ -759,24 +760,105 @@ const prePredictionsMoral = {
         <p class="jspsych-survey-multi-choice-preamble">Before you see what other people think about the statement, we want to know what you think:</p>
         <br>`,
   html: `
+        <!-- Pre-Sampling Moral Action Rating -->
+        <label for="pre-slider-moral-action">
+          How morally good or morally bad do you think this <em>action</em> is?
+        </label>
+        <div style="position: relative;">
+          <input 
+            name="pre-slider-moral-action" 
+            type="range" 
+            class="jspsych-slider incomplete" 
+            value="50" min="0" max="100" step="1" 
+            id="pre-slider-moral-action"
+            oninput="
+              this.classList.remove('incomplete')
+            "
+          > 
+          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
+        </div>
+        <br><br><br>
+
+        <!-- Pre-Sampling Moral Person Rating -->
+        <div class="jspsych-form-slider-question">
+          <label for="pre-slider-moral-person">How morally good or morally bad do you think this <em>person</em> is?</label>
+        </div>
+        <div style="position: relative;">
+          <input 
+            name="pre-slider-moral-person"
+            type="range" 
+            class="jspsych-slider incomplete" 
+            value="50" min="0" max="100" step="1" 
+            id="pre-slider-moral-person"
+            oninput="
+              this.classList.remove('incomplete')
+            "
+          >
+          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
+        </div>
+        <br><br><br>
+
+        <!-- Pre-Sampling Moral Curiosity -->
+        <label for="pre-slider-moral-curious">
+          How curious are you to learn about what other people think about this statement?
+        </label>
+        <div style="position: relative;">
+          <input 
+            name="pre-slider-moral-curious" 
+            type="range" 
+            class="jspsych-slider incomplete" 
+            value="50" min="0" max="100" step="1" 
+            id="pre-slider-moral-curious"
+            oninput="
+              this.classList.remove('incomplete')
+            "
+          >
+          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all curious</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely curious</span>
+        </div>
+        <br><br><br>`,
+  button_label: 'Next',
+  data: {
+    task: 'Estimate'
+  },
+  request_response: true,
+  on_finish: function (data) {
+    const sliderValues = data.response;
+    console.log(sliderValues)
+    let moralPreAction = Number(sliderValues['pre-slider-moral-action']);
+    let moralPrePerson = Number(sliderValues['pre-slider-moral-person']);
+    let moralPreCurious = Number(sliderValues['pre-slider-moral-curious']);
+  }
+};
+
+// Moral Pre-Predictions: Other //
+const prePredictionsMoralOther = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: `
+        <div class="quote">
+          <h3>Statement #1</h3>
+          <blockquote>
+            "Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."
+          </blockquote>
+        </div>
+        <p class="jspsych-survey-multi-choice-preamble">Before you see what other people think about the statement, we want to know what you think:</p>
+        <br>`,
+  html: `
+        <!-- Pre-Sampling Moral Estimate -->
         <label for="pre-slider-moral-estimate-percent">
           What percentage of people in the U.S. do you estimate consider this action morally good or morally bad?<br><br>
-          <strong>
-            <code style='font-size: 10pt;' id="pre-slider-moral-estimate-percent-label">
-              <i class="fa-solid fa-arrow-left" id="fa-arrow-left"></i>&nbsp;(slide to adjust)&nbsp;<i class="fa-solid fa-arrow-right" id="fa-arrow-right"></i>
-            </code>
-          </strong>
         </label>
         <div style="position: relative;">
           <input 
             name="pre-slider-moral-estimate-percent" 
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete" 
             value="50" min="0" max="100" step="1" 
             id="pre-slider-moral-estimate-percent"
             oninput="
-              this.classList.remove('disabled-slider')
-              $('#pre-slider-moral-estimate-percent-label').addClass('fade-out')
+              this.classList.remove('incomplete')
             
               let rawRating = parseFloat(this.value);
               let downRating = (100 - rawRating) + '%';
@@ -788,106 +870,63 @@ const prePredictionsMoral = {
           >
           <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
           <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this action is <strong>morally bad</strong></span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this action is <strong>morally good</strong></span>
+          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this action is morally bad</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this action is morally good</span>
         </div><br><br><br>
 
-        <label for="pre-slider-moral-confidence">How confident are you in this estimate?</label>
+        <!-- Pre-Sampling Moral Estimate Confidence -->
+        <label for="pre-slider-moral-confidence">
+          How confident are you in this estimate?
+        </label>
+
         <div style="position: relative;">
           <input 
             name="pre-slider-moral-confidence" 
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete" 
             value="50" min="0" max="100" step="1" 
             id="pre-slider-moral-confidence"
             oninput="
-              this.classList.remove('disabled-slider')
+              this.classList.remove('incomplete')
             "
           >
           <span style="position: absolute; left: 0; font-size: 10pt;">Not at all confident</span>
           <span style="position: absolute; right: 0; font-size: 10pt;">Completely confident</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-moral-action">How morally good or morally bad do you think this <em>action</em> is?</label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-action" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-action"
-            oninput="
-              this.classList.remove('disabled-slider')
-            "
-          > 
-          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-moral-person">How morally good or morally bad do you think this <em>person</em> is?</label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-person"
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-person"
-            oninput="
-              this.classList.remove('disabled-slider')
-            "
-          >
-          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
-        </div>
-        <br><br><br>
-
-        <label for="pre-slider-moral-curious">How curious are you to learn about what other people think about this statement?</label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-curious" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-curious"
-            oninput="
-              this.classList.remove('disabled-slider')
-            "
-          >
-          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all curious</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely curious</span>
         </div>
         <br><br><br>`,
   button_label: 'Next',
   data: {
     task: 'Estimate'
   },
+  request_response: true,
   on_finish: function (data) {
     const sliderValues = data.response;
     console.log(sliderValues)
 
     let moralPreEstimate = Number(sliderValues['pre-slider-moral-estimate-percent']);
     let moralPreConfidence = Number(sliderValues['pre-slider-moral-confidence']);
-    let moralPreAction = Number(sliderValues['pre-slider-moral-action']);
-    let moralPrePerson = Number(sliderValues['pre-slider-moral-person']);
-    let moralPreCurious = Number(sliderValues['pre-slider-moral-curious']);
-  },
-}
+  }
+};
 
-if (participantCondition === 'epistemic') {
-  timeline.push(prePredictionsEpistemic);
-} else if (participantCondition === 'moral') {
-  timeline.push(prePredictionsMoral);
-}
+if (participant_condition === 'epistemic') {
+  timeline.push(
+    prePredictionsEpistemicSelf, 
+    prePredictionsEpistemicOther
+  );
+} else if (participant_condition === 'moral') {
+  timeline.push(
+    prePredictionsMoralSelf, 
+    prePredictionsMoralOther
+  );
+};
 
 const epistemicStatements = [
   `"Norman Borlaug, fathering the Green Revolution, increased crop yields worldwide but contributed to environmental degradation."`
-]
+];
 
 const moralStatements = [
   `"Fritz Haber, developing the Haber-Bosch process, revolutionized agriculture but also enabled the creation of deadly chemical weapons."`
-]
+];
 
 const epistemicTrueResponsesArray = [
   `"I reckon this is right."`,
@@ -1155,7 +1194,7 @@ const moralGoodResponsesArray = [
   `"They've got a moral code that's rock solid."`,
   `"I'd stake my reputation on them being decent."`,
   `"They're about as morally good as you can get."`
-]
+];
 
 const moralBadResponsesArray = [
   `"I think this person is morally bad."`,
@@ -1210,7 +1249,7 @@ const moralBadResponsesArray = [
   `"They've got a moral code that's warped."`,
   `"I wouldn't trust them as far as I could throw them."`,
   `"They're morally off the rails, for sure."`
-]
+];
 
 const avatarNames = Array.from({ length: 100 }, (_, i) => "avatar" + i);
 const avatarPhotos = Array.from({ length: 100 }, (_, i) => `./avatars/photo${i + 1}.png`);
@@ -1227,7 +1266,7 @@ for (let i = 0; i < 100; i++) {
 
   // add this dictionary to the overall stimulus dictionary
   avatarDictionary[avatarNames[i]] = avatarData;
-}
+};
 
 // to balance where the target is on each trial
 const currentLocationList = [...Array(100).keys()];
@@ -1251,18 +1290,68 @@ for (let i = 1; i <= 100; i++) {
   let imageValue = avatarDictionary[avatarNames[imageIndex]].image;
 
   select = Object.assign(select, { [imageProperty]: imageValue });
-}
+};
 
 timeline.push(select);
 
-// Epistemic Post-Predictions //
-const postPredictionsEpistemic = {
+
+// Epistemic Post-Predictions: Self //
+const postPredictionsEpistemicSelf = {
   type: jsPsychSurveyHtmlForm,
   preamble: `
         <div class="quote">
           <h3>Statement #1</h3>
           <blockquote>
-            "Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."
+            "Marie Curie discovered radium and polonium, 
+            which revolutionized medical treatments and 
+            contributed to the development of nuclear weapons."
+          </blockquote>
+        </div>
+        <p class="jspsych-survey-multi-choice-preamble">
+          Now that you've had the chance to see what other people 
+          think about the statement, we want to know what you think:<br><br>
+        </p>
+        <br>`,
+  html: `
+        <label for="post-slider-epistemic-claim">
+          How likely do you think it is that this claim is true or false?
+        </label>
+        <div style="position: relative;">
+          <input 
+            name="post-slider-epistemic-claim" 
+            type="range" 
+            class="jspsych-slider incomplete" 
+            value="50" min="0" max="100" step="1" 
+            id="post-slider-epistemic-claim"
+            oninput="
+              this.classList.remove('incomplete');
+            "
+          >
+          <span style="position: absolute; left: 0; font-size: 10pt;">Definitely false</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Definitely true</span>
+        </div>
+        <br><br><br>`,
+  button_label: 'Next',
+  data: {
+    task: 'Estimate'
+  },
+  request_response: true,
+  on_finish: function (data) {
+    const sliderValue = data.response;
+    let epistemicPostClaim = Number(sliderValue['post-slider-epistemic-claim']);
+  }
+}
+
+// Epistemic Post-Predictions: Other //
+const postPredictionsEpistemicOther = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: `
+        <div class="quote">
+          <h3>Statement #1</h3>
+          <blockquote>
+            "Marie Curie discovered radium and polonium, 
+            which revolutionized medical treatments and 
+            contributed to the development of nuclear weapons."
           </blockquote>
         </div>
         <p class="jspsych-survey-multi-choice-preamble">
@@ -1271,27 +1360,19 @@ const postPredictionsEpistemic = {
         </p>
         <br>`,
   html: `
-        <div class="jspsych-form-slider-question">
-          <label for="post-slider-epistemic-estimate-percent">
-            What percentage of people in the U.S. do you estimate believe that this claim is true vs. think this is false?
-          </label>
-        </div>
-
-        <strong>
-          <code style='font-size: 10pt;' id="post-slider-epistemic-estimate-percent-label">
-            <i class="fa-solid fa-arrow-left" id="fa-arrow-left"></i>&nbsp;(slide to adjust)&nbsp;<i class="fa-solid fa-arrow-right" id="fa-arrow-right"></i>
-          </code>
-        </strong>
-
+        <label for="post-slider-epistemic-estimate-percent">
+          What percentage of people in the U.S. do you estimate believe 
+          that this claim is true vs. think this is false?
+        </label>
         <div style="position: relative;">
           <input 
             name="post-slider-epistemic-estimate-percent" 
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete" 
             value="50" min="0" max="100" step="1" 
             id="post-slider-epistemic-estimate-percent"
             oninput="
-              this.classList.remove('disabled-slider');
+              this.classList.remove('incomplete');
               $('#post-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
               let rawRating = parseFloat(this.value);
@@ -1304,8 +1385,8 @@ const postPredictionsEpistemic = {
           >
           <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
           <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this claim is <strong>false</strong></span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this claim is <strong>true</strong></span>
+          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this claim is false</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this claim is true</span>
         </div><br><br><br>
 
         <div class="jspsych-form-slider-question">
@@ -1318,56 +1399,31 @@ const postPredictionsEpistemic = {
           <input 
             name="post-slider-epistemic-confidence" 
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete" 
             value="50" min="0" max="100" step="1" 
             id="post-slider-epistemic-confidence"
             oninput="
-              this.classList.remove('disabled-slider');
+              this.classList.remove('incomplete');
             "
           >
           <span style="position: absolute; left: 0; font-size: 10pt;">Not at all confident</span>
           <span style="position: absolute; right: 0; font-size: 10pt;">Completely confident</span>
-        </div>
-        <br><br><br>
-
-        <div class="jspsych-form-slider-question">
-          <label for="post-slider-epistemic-action">
-            How likely do you think it is that this claim is true or false?
-          </label>
-        </div>
-
-        <div style="position: relative;">
-          <input 
-            name="post-slider-epistemic-action" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-epistemic-action"
-            oninput="
-              this.classList.remove('disabled-slider');
-            "
-          >
-          <span style="position: absolute; left: 0; font-size: 10pt;">Definitely false</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Definitely true</span>
         </div>
         <br><br><br>`,
   button_label: 'Next',
   data: {
     task: 'Estimate'
   },
+  request_response: true,
   on_finish: function (data) {
     const sliderValues = data.response;
-
     let epistemicPostEstimate = Number(sliderValues['post-slider-epistemic-estimate-percent']);
     let epistemicPostConfidence = Number(sliderValues['post-slider-epistemic-confidence']);
-    let epistemicPostAction = Number(sliderValues['post-slider-epistemic-action']);
-    let epistemicPostPerson = Number(sliderValues['post-slider-epistemic-person']);
+  }
+};
 
-  },
-}
-
-// Moral Post-Predictions //
-const postPredictionsMoral = {
+// Moral Post-Predictions Self //
+const postPredictionsMoralSelf = {
   type: jsPsychSurveyHtmlForm,
   preamble: `
         <div class="quote">
@@ -1382,80 +1438,18 @@ const postPredictionsMoral = {
         </p>
         <br>`,
   html: `
-        <div class="jspsych-form-slider-question">
-          <label for="post-slider-moral-estimate-percent">
-            What percentage of people in the U.S. do you estimate consider this action morally good or morally bad?
-          </label>
-        </div>
-
-        <strong>
-          <code style='font-size: 10pt;' id="post-slider-moral-estimate-percent-label">
-            <i class="fa-solid fa-arrow-left" id="fa-arrow-left"></i>&nbsp;(slide to adjust)&nbsp;<i class="fa-solid fa-arrow-right" id="fa-arrow-right"></i>
-          </code>
-        </strong>
-        
-        <div style="position: relative;">
-          <input 
-            name="post-slider-moral-estimate-percent" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-moral-estimate-percent"
-            oninput="
-              this.classList.remove('disabled-slider');
-              $('#post-slider-moral-estimate-percent-label').addClass('fade-out');
-            
-              let rawRating = parseFloat(this.value);
-              let downRating = (100 - rawRating) + '%';
-              let upRating = rawRating + '%';
-            
-              $('#slider-downRating').text(downRating);
-              $('#slider-upRating').text(upRating);
-            "
-          >
-          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this action is <strong>morally bad</strong></span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this action is <strong>morally good</strong></span>
-        </div><br><br><br>
-
-        <div class="jspsych-form-slider-question">
-          <label for="post-slider-moral-confidence">
-            How confident are you in this estimate?
-          </label>
-        </div>
-  
-        <div style="position: relative;">
-          <input 
-            name="post-slider-moral-confidence" 
-            type="range" 
-            class="jspsych-slider disabled-slider" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-moral-confidence"
-            oninput="
-              this.classList.remove('disabled-slider');
-            "
-          >
-          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all confident</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Completely confident</span>
-        </div>
-        <br><br><br>
-
-        <div class="jspsych-form-slider-question">
-          <label for="post-slider-moral-action">
-            How morally good or morally bad do you think this <em>action</em> is?
-          </label>
-        </div>
-
+        <label for="post-slider-moral-action">
+          How morally good or morally bad do you think this <em>action</em> is?
+        </label>
         <div style="position: relative;">
           <input 
             name="post-slider-moral-action" 
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete" 
             value="50" min="0" max="100" step="1" 
             id="post-slider-moral-action"
             oninput="
-              this.classList.remove('disabled-slider');
+              this.classList.remove('incomplete');
             "
           >
           <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
@@ -1473,11 +1467,11 @@ const postPredictionsMoral = {
           <input 
             name="post-slider-moral-person"
             type="range" 
-            class="jspsych-slider disabled-slider" 
+            class="jspsych-slider incomplete" 
             value="50" min="0" max="100" step="1" 
             id="post-slider-moral-person"
             oninput="
-              this.classList.remove('disabled-slider');
+              this.classList.remove('incomplete');
             "
           >
           <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
@@ -1488,23 +1482,103 @@ const postPredictionsMoral = {
   data: {
     task: 'Estimate'
   },
+  request_response: true,
   on_finish: function (data) {
     const sliderValues = data.response;
-
-    let moralPostEstimate = Number(sliderValues['post-slider-moral-estimate-percent']);
-    let moralPostConfidence = Number(sliderValues['post-slider-moral-confidence']);
     let moralPostAction = Number(sliderValues['post-slider-moral-action']);
     let moralPostPerson = Number(sliderValues['post-slider-moral-person']);
+  }
+};
+
+// Moral Post-Predictions Other //
+const postPredictionsMoralOther = {
+  type: jsPsychSurveyHtmlForm,
+  preamble: `
+        <div class="quote">
+          <h3>Statement #1</h3>
+          <blockquote>
+            "Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."
+          </blockquote>
+        </div>
+        <p class="jspsych-survey-multi-choice-preamble">
+          Now that you've had the chance to see what other people 
+          think about the statement, we want to know what you think.<br><br>
+        </p>
+        <br>`,
+  html: `
+        <label for="post-slider-moral-estimate-percent">
+          What percentage of people in the U.S. do you estimate consider this action morally good or morally bad?
+        </label>
+        <div style="position: relative;">
+          <input 
+            name="post-slider-moral-estimate-percent" 
+            type="range" 
+            class="jspsych-slider incomplete" 
+            value="50" min="0" max="100" step="1" 
+            id="post-slider-moral-estimate-percent"
+            oninput="
+              this.classList.remove('incomplete');
+            
+              let rawRating = parseFloat(this.value);
+              let downRating = (100 - rawRating) + '%';
+              let upRating = rawRating + '%';
+            
+              $('#slider-downRating').text(downRating);
+              $('#slider-upRating').text(upRating);
+            "
+          >
+          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
+          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
+          <span style="position: absolute; left: 0; font-size: 10pt;">Believe this action is morally bad</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Believe this action is morally good</span>
+        </div><br><br><br>
+
+        <div class="jspsych-form-slider-question">
+          <label for="post-slider-moral-confidence">
+            How confident are you in this estimate?
+          </label>
+        </div>
+  
+        <div style="position: relative;">
+          <input 
+            name="post-slider-moral-confidence" 
+            type="range" 
+            class="jspsych-slider incomplete" 
+            value="50" min="0" max="100" step="1" 
+            id="post-slider-moral-confidence"
+            oninput="
+              this.classList.remove('incomplete');
+            "
+          >
+          <span style="position: absolute; left: 0; font-size: 10pt;">Not at all confident</span>
+          <span style="position: absolute; right: 0; font-size: 10pt;">Completely confident</span>
+        </div>
+        <br><br><br>`,
+  button_label: 'Next',
+  data: {
+    task: 'Estimate'
   },
-}
+  request_response: true,
+  on_finish: function (data) {
+    const sliderValues = data.response;
+    let moralPostEstimate = Number(sliderValues['post-slider-moral-estimate-percent']);
+    let moralPostConfidence = Number(sliderValues['post-slider-moral-confidence']);
+  }
+};
 
-if (participantCondition === 'epistemic') {
-  timeline.push(postPredictionsEpistemic);
-} else if (participantCondition === 'moral') {
-  timeline.push(postPredictionsMoral);
-}
+if (participant_condition === 'epistemic') {
+  timeline.push(
+    postPredictionsEpistemicSelf, 
+    postPredictionsEpistemicOther
+  );
+} else if (participant_condition === 'moral') {
+  timeline.push(
+    postPredictionsMoralSelf, 
+    postPredictionsMoralOther
+  );
+};
 
-// Value Opinion Question
+// Value Opinion Question //
 const valueOpinionQuestions = {
   type: jsPsychSurveyMultiChoice,
   preamble: `
@@ -1517,17 +1591,16 @@ const valueOpinionQuestions = {
       name: 'liberal_value_opinion',
       prompt: '<p class="jspsych-survey-multi-choice-question">Liberals</p>',
       options: valueOpinionOptions,
-      required: true,
       horizontal: true
     },
     {
       name: 'conservative_value_opinion',
       prompt: '<p class="jspsych-survey-multi-choice-question">Conservatives</p>',
       options: valueOpinionOptions,
-      required: true,
       horizontal: true
     }
   ],
+  request_response: true
 };
 
 timeline.push(valueOpinionQuestions);
@@ -1540,44 +1613,39 @@ const nfcQuestions = {
       name: 'nfc_1_simple_complex',
       prompt: '<p class="jspsych-survey-multi-choice-question">I would prefer complex to simple problems.</p>',
       options: nfcResponses,
-      required: true,
     },
     {
       name: 'nfc_2_responsibility',
       prompt: `<p class="jspsych-survey-multi-choice-question">
               I like to have the responsibility of handling a situation that requires a lot of thinking.</p>`,
       options: nfcResponses,
-      required: true,
     },
     {
       name: 'nfc_3_not_fun',
       prompt: '<p class="jspsych-survey-multi-choice-question">Thinking is not my idea of fun.</p>',
       options: nfcResponses,
-      required: true,
     },
     {
       name: 'nfc_4_little_thought',
       prompt: `<p class="jspsych-survey-multi-choice-question">
               I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>`,
       options: nfcResponses,
-      required: true,
     },
     {
       name: 'nfc_5_new_solutions',
       prompt: `<p class="jspsych-survey-multi-choice-question">I really enjoy a task that involves coming up with new solutions to problems.</p>`,
       options: nfcResponses,
-      required: true,
     },
     {
       name: 'nfc_6_intellectual',
       prompt: `<p class="jspsych-survey-multi-choice-question">
               I would prefer a task that is intellectual, difficult, and important to one than is somewhat important but does not require much thought.</p>`,
       options: nfcResponses,
-      required: true,
     }
   ],
   randomize_question_order: true,
-  preamble: `<p class="jspsych-survey-multi-choice-preamble"> \
+  request_response: true,
+  preamble: `<p class="jspsych-survey-multi-choice-preamble">
           Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:</p>`,
   scale_width: 500
 };
@@ -1591,6 +1659,8 @@ const demographicsQuestions = {
           Using the scales provided, please respond to each question about you as an individual:
         </p>`,
   html: `
+        <!-- Age -->
+
         <div class="jspsych-survey-multi-choice-question">
           <label for="age">How old are you?</label><br>
           <input 
@@ -1599,114 +1669,231 @@ const demographicsQuestions = {
             name="age" 
             min="18" max="100" 
             style="padding: 5px; width: 40px;" 
-            required="true"
+            class="incomplete"
+            oninput="
+              this.classList.remove('incomplete')
+            "
           >
         </div>
+        
+
+        <!-- Race/Ethnicity -->
 
         <div class="jspsych-survey-multi-choice-question">
           <legend>Please indicate how you identify yourself:</legend>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
+              type="checkbox" 
               id="race-ethnicity-indigenous" 
               name="race_ethnicity" 
               value="race_ethnicity_indigenous" 
-              required="true"
+              class="demographics-race-ethnicity incomplete"
+              oninput="
+                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                  demographicsRaceEthnicity[i].classList.remove('incomplete');
+                };
+              "
             >
             <label for="race-ethnicity-indigenous">Indigenous American or Alaskan Native</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
+              type="checkbox" 
               id="race-ethnicity-asian" 
               name="race_ethnicity" 
               value="race_ethnicity_asian" 
-              required="true"
+              class="demographics-race-ethnicity incomplete"
+              oninput="
+                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                  demographicsRaceEthnicity[i].classList.remove('incomplete');
+                };
+              "
             >
             <label for="race-ethnicity-asian">Asian or Asian-American</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
+              type="checkbox" 
               id="race-ethnicity-black" 
               name="race_ethnicity" 
               value="race_ethnicity_black" 
-              required="true"
+              class="demographics-race-ethnicity incomplete"
+              oninput="
+                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                  demographicsRaceEthnicity[i].classList.remove('incomplete');
+                };
+              "
             >
             <label for="race-ethnicity-black">African or African-American</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
+              type="checkbox" 
               id="race-ethnicity-native" 
               name="race_ethnicity" 
               value="race_ethnicity_native" 
-              required="true"
+              class="demographics-race-ethnicity incomplete"
+              oninput="
+                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                  demographicsRaceEthnicity[i].classList.remove('incomplete');
+                };
+              "
             >
             <label for="race-ethnicity-native">Native Hawaiian or other Pacific Islander</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
+              type="checkbox" 
               id="race-ethnicity-white" 
               name="race_ethnicity" 
               value="race_ethnicity_white" 
-              required="true"
+              class="demographics-race-ethnicity incomplete"
+              oninput="
+                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                  demographicsRaceEthnicity[i].classList.remove('incomplete');
+                };
+              "
             >
             <label for="race-ethnicity-white">White</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
+              type="checkbox" 
               id="race-ethnicity-hispanic" 
               name="race_ethnicity" 
               value="race_ethnicity_hispanic" 
-              required="true"
+              class="demographics-race-ethnicity incomplete"
+              oninput="
+                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                  demographicsRaceEthnicity[i].classList.remove('incomplete');
+                };
+              "
             >
             <label for="race-ethnicity-hispanic">Hispanic/Latino/a/e/x</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
+              type="checkbox" 
               id="race-ethnicity-other" 
               name="race_ethnicity" 
               value="race_ethnicity_other" 
-              required="true"
+              class="demographics-race-ethnicity incomplete"
+              oninput="
+                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                  demographicsRaceEthnicity[i].classList.remove('incomplete');
+                };
+              "
             >
             <label for="race-ethnicity-other">Other</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio"
+              type="checkbox"
               id="race-ethnicity-prefer-not" 
               name="race_ethnicity" 
               value="race_ethnicity_prefer_not" 
-              required="true"
+              class="demographics-race-ethnicity incomplete"
+              oninput="
+                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                  demographicsRaceEthnicity[i].classList.remove('incomplete');
+                };
+              "
             >
             <label for="race-ethnicity-prefer-not">Prefer not to disclose</label>
           </div>
         </div>
 
+
+        <!-- Gender -->
+        
         <div class="jspsych-survey-multi-choice-question">
           <legend>With which gender do you most closely identify?</legend>
           <div class="jspsych-survey-multi-choice-option">
-            <input type="radio" id="gender-man" name="gender" value="gender_man" required="true">
+            <input 
+              type="radio" 
+              id="gender-man" 
+              name="gender" 
+              value="gender_man" 
+              class="demographics-gender incomplete"
+              oninput="
+                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                for (var i = 0; i < demographicsGender.length; i++) {
+                  demographicsGender[i].classList.remove('incomplete');
+                };
+              "
+            >
             <label for="gender-man">Man</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
-            <input type="radio" id="gender-woman" name="gender" value="gender_woman" required="true">
+            <input 
+              type="radio" 
+              id="gender-woman" 
+              name="gender" 
+              value="gender_woman" 
+              class="demographics-gender incomplete"
+              oninput="
+                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                for (var i = 0; i < demographicsGender.length; i++) {
+                  demographicsGender[i].classList.remove('incomplete');
+                };
+              "
+            >
             <label for="gender-woman">Woman</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
-            <input type="radio" id="gender-non-binary" name="gender" value="gender_non_binary" required="true">
+            <input 
+              type="radio" 
+              id="gender-non-binary" 
+              name="gender" 
+              value="gender_non_binary" 
+              class="demographics-gender incomplete"
+              oninput="
+                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                for (var i = 0; i < demographicsGender.length; i++) {
+                  demographicsGender[i].classList.remove('incomplete');
+                };
+              "
+            >
             <label for="gender-non-binary">Non-binary</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
-            <input type="radio" id="gender-other" name="gender" value="gender_other" required="true">
+            <input 
+              type="radio" 
+              id="gender-other" 
+              name="gender" 
+              value="gender_other" 
+              class="demographics-gender incomplete"
+              oninput="
+                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                for (var i = 0; i < demographicsGender.length; i++) {
+                  demographicsGender[i].classList.remove('incomplete');
+                };
+              "
+            >
             <label for="gender-other">Other</label>
           </div>
           <div class="jspsych-survey-multi-choice-option">
-            <input type="radio" id="gender-prefer-not" name="gender" value="gender_prefer_not" required="true">
+            <input 
+              type="radio" 
+              id="gender-prefer-not" 
+              name="gender" 
+              value="gender_prefer_not" 
+              class="demographics-gender incomplete"
+              oninput="
+                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                for (var i = 0; i < demographicsGender.length; i++) {
+                  demographicsGender[i].classList.remove('incomplete');
+                };
+              "
+            >
             <label for="gender-prefer-not">Prefer not to disclose</label>
           </div>
         </div>
@@ -1723,13 +1910,14 @@ const demographicsQuestions = {
   data: {
     task: 'Estimate'
   },
+  request_response: true,
   on_finish: function (data) {
     const demographics = data.response;
 
     let age = Number(demographics['age']);
     let race = demographics['race_ethnicity'];
     let gender = demographics['gender'];
-  },
+  }
 };
 
 timeline.push(demographicsQuestions);
@@ -1744,7 +1932,6 @@ const politicsQuestions = {
               Which response best captures your political beliefs surrounding <strong>economic</strong> issues?
             </p>`,
       options: politicalResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1754,7 +1941,6 @@ const politicsQuestions = {
               Which response best captures your political beliefs surrounding <strong>social</strong> issues?
             </p>`,
       options: politicalResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1764,7 +1950,6 @@ const politicsQuestions = {
               Which response best captures your <strong>overall</strong> political beliefs?
             </p>`,
       options: politicalResponses,
-      required: true,
       horizontal: true
     }
   ],
@@ -1772,7 +1957,8 @@ const politicsQuestions = {
   preamble: `
         <p class="jspsych-survey-multi-choice-preamble">
           Please answer the following questions about your political ideology:
-        </p>`
+        </p>`,
+  request_response: true
 };
 
 timeline.push(politicsQuestions);
@@ -1787,7 +1973,6 @@ const demandDeviceQuestions = {
               What kind of device did you use to complete this study?
             </p>`,
       options: deviceTypeResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1797,7 +1982,6 @@ const demandDeviceQuestions = {
               Did you feel pressure to respond in a particular way to any of the questions?
             </p>`,
       options: demandEffectsResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1807,11 +1991,11 @@ const demandDeviceQuestions = {
               Did you feel as though you might be judged for your responses to the questions you answered?
             </p>`,
       options: demandEffectsResponses,
-      required: true,
       horizontal: true
     }
   ],
   randomize_question_order: true,
+  request_response: true,
   scale_width: 500,
   preamble:
     `<p class="jspsych-survey-multi-choice-preamble">
@@ -1832,7 +2016,6 @@ const bigFiveQuestions = {
               I see myself as <strong>extraverted, enthusiastic.</strong> \
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1842,7 +2025,6 @@ const bigFiveQuestions = {
               I see myself as <strong>critical, quarrelsome.</strong>
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1852,7 +2034,6 @@ const bigFiveQuestions = {
               I see myself as <strong>dependable, self-disciplined.</strong>
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1862,7 +2043,6 @@ const bigFiveQuestions = {
               I see myself as <strong>anxious, easily upset.</strong>
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1872,7 +2052,6 @@ const bigFiveQuestions = {
               I see myself as <strong>open to new experiences, complex.</strong>
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1882,7 +2061,6 @@ const bigFiveQuestions = {
               I see myself as <strong>reserved, quiet.</strong>
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1892,7 +2070,6 @@ const bigFiveQuestions = {
               I see myself as <strong>sympathetic, warm.</strong>
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1902,7 +2079,6 @@ const bigFiveQuestions = {
               I see myself as <strong>disorganized, careless.</strong>
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1912,7 +2088,6 @@ const bigFiveQuestions = {
               I see myself as <strong>calm, emotionally stable.</strong>
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     },
     {
@@ -1922,11 +2097,11 @@ const bigFiveQuestions = {
               I see myself as <strong>conventional, uncreative.</strong>
             </p>`,
       options: bigFiveResponses,
-      required: true,
       horizontal: true
     }
   ],
   randomize_question_order: true,
+  request_response: true,
   preamble: `
         <p class="jspsych-survey-multi-choice-preamble">
           Here are a number of personality traits that may or may not apply to you.
@@ -1946,49 +2121,42 @@ timeline.push(bigFiveQuestions);
 
 //create random code for final message
 //start code creation script
-function randLetter() {
+function randomLetter() {
   const a_z = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
   let int = Math.floor(Math.random() * a_z.length);
   let randLetter = a_z[int];
   return randLetter;
-}
+};
 
 const secretCode = "Crossact"; // this is the 'key'
 let code = "";
 
 for (let i = 0; i < 7; i++) {
-  code = code.concat(randLetter());
-}
+  code = code.concat(randomLetter());
+};
 
 code = code.concat(secretCode);
 
 for (let i = 0; i < 10; i++) {
-  code = code.concat(randLetter());
-}
+  code = code.concat(randomLetter());
+};
 //end code creation script
 
 //debrief and code message
-const experimentFinal = [];
+
 const finalInstructions = {
   type: jsPsychInstructions,
   size: 400,
   pages: [
-    "Thanks for participating!... debrief form goes here." +
-    "<br>" +
-    "<br>" +
-    "<center>Your completion code for <u>mTurk</u> is</center>" +
-    "<br>" +
-    '<center><u><b style="font-size: 20pt;">' +
-    code +
-    "</b></u></center>" +
-    "<br>" +
-    "<center>Please copy/paste this code into the mTurk box.</center>"
+    `<div class="jspsych-center">
+      Thanks for participating! You will be redirected in <> seconds.
+    </div>`
   ],
   show_clickable_nav: false
 };
 
 //add instructions trial to experiment
-experimentFinal.push(finalInstructions);
+timeline.push(finalInstructions);
 
 // Exit fullscreen
 const exitFullscreen = {
@@ -1996,6 +2164,7 @@ const exitFullscreen = {
   fullscreen_mode: false,
   delay_after: 0
 };
+
 timeline.push(exitFullscreen);
 
 // PRELOADING
@@ -2033,4 +2202,3 @@ jsPsych.pluginAPI.preloadImages(imageSet, function () {
 function startExperiment() {
   jsPsych.run(timeline);
 }
-

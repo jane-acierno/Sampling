@@ -77,7 +77,9 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			const samplingPromptContainer = $('#prompt-container');
 			samplingPromptContainer.html(`
-				<strong id="samplingPrompt">CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO READ NEXT</strong><br>
+				<strong id="samplingPrompt">
+					CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO READ NEXT
+				</strong><br>
 				(SCROLL TO VIEW MORE)<br>`
 			);
 
@@ -86,10 +88,10 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
 
 			var choiceLabel = "NA";
-			var choice = 'NA'
+			var choice = 'NA';
 			var learningStartRT = "NA";
 			var trialDuration = "NA";
-			var selections = []
+			var selections = [];
 			var rt_array = [];
 
 			var start_time = (new Date()).getTime();
@@ -98,52 +100,99 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				let tic = (new Date()).getTime();
 
 				const trialPresentationSpace = $('#trial-presentation-space');
+				const avatarContainer = $('<div id="avatar-container"></div>').appendTo(trialPresentationSpace);
 
-				const avatarContainer = document.createElement('div');
-				avatarContainer.id = 'avatar-container';
-				trialPresentationSpace.append(avatarContainer);
 
 				// Create a new circle to hold the chosen avatar
 				// Add it to the presentation space
-				const avatarCircleSelection = document.createElement('div');
-				avatarCircleSelection.className = 'avatar-circle fade-in';
-				avatarCircleSelection.id = `circle` + circleIndex;
-				avatarContainer.append(avatarCircleSelection);
+				const avatarCircleSelection = $('<div></div>', {
+					class: 'avatar-circle fade-in',
+					id: `circle${circleIndex}`
+				  }).appendTo(avatarContainer);
 
 				// Create copy of the chosen avatar photo
 				// Add it inside the avatar circle
-				const avatarPhotoSelection = document.createElement('img');
-				avatarPhotoSelection.src = "./avatars/photo" + circleIndex + ".png"
-				avatarPhotoSelection.className = 'avatar-photo fade-in';
-				avatarCircleSelection.append(avatarPhotoSelection)
+				$('<img>', {
+					src: `./avatars/photo${circleIndex}.png`,
+					class: 'avatar-photo fade-in'
+				  }).appendTo(avatarCircleSelection);
 
-				choiceLabel = trial.avatarNames['avatar' + circleIndex]["statement"];
+					choiceLabel = trial.avatarNames['avatar' + circleIndex]["statement"];
 
-				const statement = document.createElement('div');
-				statement.id = "statement";
-				// Fade in option
-				// statement.className = "fade-in";
-				// statement.innerHTML = `<strong>${choiceLabel}</strong>`;
-				trialPresentationSpace.append(statement);
+					// If we wanted to show a scale rating instead
+					let dynamicValue = parseInt(Math.random() * 100); // Example dynamic value
 
+					const inputElement = $('<input>', {
+					name: 'post-slider-epistemic-estimate-percent',
+					type: 'range',
+					class: 'jspsych-slider incomplete',
+					value: dynamicValue,
+					min: 0,
+					max: 100,
+					step: 1,
+					id: 'post-slider-epistemic-estimate-percent',
+					oninput: `
+						this.classList.remove('incomplete');
+						$('#post-slider-epistemic-estimate-percent-label').addClass('fade-out');
+						let rawRating = parseFloat(this.value);
+						let downRating = (100 - rawRating) + '%';
+						let upRating = rawRating + '%';
+						$('#slider-downRating').text(downRating);
+						$('#slider-upRating').text(upRating);
+					`,
+					disabled: true
+				});
 
+				const sliderRating = $('<div>', {
+					style: 'position: relative;'
+				}).append(
+					inputElement,
+					$('<output>', {
+						style: 'position: absolute; left: 0%; font-size: 14pt;',
+						id: 'slider-downRating',
+						text: 100 - dynamicValue + '%'
+					}),
+					$('<output>', {
+						style: 'position: absolute; right: 0%; font-size: 14pt;',
+						id: 'slider-upRating',
+						text: dynamicValue + '%'
+					}),
+					$('<br>'),
+					$('<span>', {
+						style: 'position: absolute; left: 0; font-size: 10pt;',
+						text: 'Believe this claim is false'
+					}),
+					$('<span>', {
+						style: 'position: absolute; right: 0; font-size: 10pt;',
+						text: 'Believe this claim is true'
+					})
+				);
+
+				$(sliderRating).appendTo('#trial-presentation-space').fadeIn();
+				 
+				// // If we wanted to use a statement
+				// const statement = document.createElement('div');
+				// statement.id = "statement";
+				// // Fade in option
+				// // statement.className = "fade-in";
+				// // statement.innerHTML = `<strong>${choiceLabel}</strong>`;
+				// trialPresentationSpace.append(statement);
 
 				// Typewriter effect
-				let i = 0;
-				function typeWriter() {
-					if (i < choiceLabel.length) {
-						$("#statement").append(`<strong style="font-size: 28pt;">${choiceLabel.charAt(i)}</strong>`);
-						i++;
-						setTimeout(typeWriter, 40);
-					}
-				}
+				// let i = 0;
+				// function typeWriter() {
+				// 	if (i < choiceLabel.length) {
+				// 		$("#statement").append(`<strong style="font-size: 28pt;">${choiceLabel.charAt(i)}</strong>`);
+				// 		i++;
+				// 		setTimeout(typeWriter, 40);
+				// 	}
+				// }
 
-				typeWriter();
+				// typeWriter();
 
 				// const samplingPrompt = $('#samplingPrompt');
 				// samplingPrompt.addClass('fade-out')
-				samplingPromptContainer.empty()
-
+				samplingPromptContainer.empty();
 				avatarCircleContainer.addClass('fade-out-partial');
 
 				setTimeout(function () {
@@ -196,7 +245,12 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						rt_array.push(rt);
 
 						// Fade the prompt back in
-						samplingPromptContainer.html('<p id="samplingPrompt"><strong>CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO READ NEXT</strong><br>(SCROLL TO VIEW MORE)</p>');
+						samplingPromptContainer.html(
+							`<p id="samplingPrompt">
+								<strong>CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO READ NEXT</strong><br>
+								(SCROLL TO VIEW MORE)
+							</p>`
+						);
 						// samplingPrompt.attr('class', 'fade-in');
 						trialPresentationSpace.empty();
 

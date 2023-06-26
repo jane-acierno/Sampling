@@ -620,7 +620,7 @@ const prePredictionsEpistemicSelf = {
   html: `
         <!-- Pre-Sampling Epistemic Claim Rating -->
         <div class="jspsych-form-slider-question">
-          <label for="pre-slider-epistemic-claim">
+          <label for="pre-slider-epistemic-claim" class="jspsych-survey-multi-choice-question">
             How likely do you think it is that this claim is true or false?
           </label>
         </div>
@@ -642,7 +642,7 @@ const prePredictionsEpistemicSelf = {
 
         <!-- Pre-Sampling Epistemic Curiosity -->
         <div class="jspsych-form-slider-question" >
-          <label for="pre-slider-epistemic-curious">
+          <label for="pre-slider-epistemic-curious" class="jspsych-survey-multi-choice-question">
             How curious are you to learn about what other people think about this statement?
           </label>
         </div>
@@ -684,11 +684,13 @@ const prePredictionsEpistemicOther = {
             medical treatments and contributed to the development of nuclear weapons."
           </blockquote>
         </div>
-        <p class="jspsych-survey-multi-choice-preamble">Before you see what other people think about the statement, we want to know what you think:</p>
+        <p class="jspsych-survey-multi-choice-preamble">
+          Before you see what other people think about the statement, we want to know what you think:
+        </p>
         <br>`,
   html: `
         <!-- Pre-Sampling Epistemic Estimate -->
-        <label for="pre-slider-epistemic-estimate-percent">
+        <label for="pre-slider-epistemic-estimate-percent" class="jspsych-survey-multi-choice-question">
           What percentage of people in the U.S. do you estimate believe that this claim is true vs. think this is false?
         </label>
         <div style="position: relative;">
@@ -717,7 +719,7 @@ const prePredictionsEpistemicOther = {
         </div><br><br><br>
 
         <!-- Pre-Sampling Epistemic Estimate Confidence -->
-        <label for="pre-slider-epistemic-confidence">
+        <label for="pre-slider-epistemic-confidence" class="jspsych-survey-multi-choice-question">
           How confident are you in this estimate?
         </label>
         <div style="position: relative;">
@@ -761,7 +763,7 @@ const prePredictionsMoralSelf = {
         <br>`,
   html: `
         <!-- Pre-Sampling Moral Action Rating -->
-        <label for="pre-slider-moral-action">
+        <label for="pre-slider-moral-action" class="jspsych-survey-multi-choice-question">
           How morally good or morally bad do you think this <em>action</em> is?
         </label>
         <div style="position: relative;">
@@ -781,7 +783,7 @@ const prePredictionsMoralSelf = {
         <br><br><br>
 
         <!-- Pre-Sampling Moral Person Rating -->
-        <div class="jspsych-form-slider-question">
+        <div class="jspsych-form-slider-question" class="jspsych-survey-multi-choice-question">
           <label for="pre-slider-moral-person">How morally good or morally bad do you think this <em>person</em> is?</label>
         </div>
         <div style="position: relative;">
@@ -801,7 +803,7 @@ const prePredictionsMoralSelf = {
         <br><br><br>
 
         <!-- Pre-Sampling Moral Curiosity -->
-        <label for="pre-slider-moral-curious">
+        <label for="pre-slider-moral-curious" class="jspsych-survey-multi-choice-question">
           How curious are you to learn about what other people think about this statement?
         </label>
         <div style="position: relative;">
@@ -847,7 +849,7 @@ const prePredictionsMoralOther = {
         <br>`,
   html: `
         <!-- Pre-Sampling Moral Estimate -->
-        <label for="pre-slider-moral-estimate-percent">
+        <label for="pre-slider-moral-estimate-percent" class="jspsych-survey-multi-choice-question">
           What percentage of people in the U.S. do you estimate consider this action morally good or morally bad?<br><br>
         </label>
         <div style="position: relative;">
@@ -875,7 +877,7 @@ const prePredictionsMoralOther = {
         </div><br><br><br>
 
         <!-- Pre-Sampling Moral Estimate Confidence -->
-        <label for="pre-slider-moral-confidence">
+        <label for="pre-slider-moral-confidence" class="jspsych-survey-multi-choice-question">
           How confident are you in this estimate?
         </label>
 
@@ -1309,7 +1311,8 @@ const postPredictionsEpistemicSelf = {
         </div>
         <p class="jspsych-survey-multi-choice-preamble">
           Now that you've had the chance to see what other people 
-          think about the statement, we want to know what you think:<br><br>
+          think about the statement, we want to know what you think again.
+          Please answer the following questions:<br><br>
         </p>
         <br>`,
   html: `
@@ -1356,7 +1359,8 @@ const postPredictionsEpistemicOther = {
         </div>
         <p class="jspsych-survey-multi-choice-preamble">
           Now that you've had the chance to see what other people 
-          think about the statement, we want to know what you think.<br><br>
+          think about the statement, we want to know what you think again.
+          Please answer the following questions:<br><br>
         </p>
         <br>`,
   html: `
@@ -1434,11 +1438,12 @@ const postPredictionsMoralSelf = {
         </div>
         <p class="jspsych-survey-multi-choice-preamble">
           Now that you've had the chance to see what other people 
-          think about the statement, we want to know what you think.<br><br>
+          think about the statement, we want to know what you think again.
+          Please answer the following questions:<br><br>
         </p>
         <br>`,
   html: `
-        <label for="post-slider-moral-action">
+        <label for="post-slider-moral-action" class="jspsych-survey-multi-choice-question">
           How morally good or morally bad do you think this <em>action</em> is?
         </label>
         <div style="position: relative;">
@@ -1502,7 +1507,8 @@ const postPredictionsMoralOther = {
         </div>
         <p class="jspsych-survey-multi-choice-preamble">
           Now that you've had the chance to see what other people 
-          think about the statement, we want to know what you think.<br><br>
+          think about the statement, we want to know what you think again.
+          Please answer the following questions:<br><br>
         </p>
         <br>`,
   html: `
@@ -1953,7 +1959,6 @@ const politicsQuestions = {
       horizontal: true
     }
   ],
-  randomize_question_order: true,
   preamble: `
         <p class="jspsych-survey-multi-choice-preamble">
           Please answer the following questions about your political ideology:

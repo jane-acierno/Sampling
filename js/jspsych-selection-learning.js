@@ -31,6 +31,11 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				pretty_name: "Choices",
 				default: undefined,
 				array: true,
+			},
+			condition: {
+				type: jspsych.ParameterType.STRING,
+				pretty_name: "Condition",
+				default: undefined,
 			}
 		}
 	};
@@ -117,23 +122,42 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					class: 'avatar-photo fade-in'
 				  }).appendTo(avatarCircleSelection);
 
-					choiceLabel = trial.avatarNames['avatar' + circleIndex]["statement"];
+				choiceLabel = trial.avatarNames['avatar' + circleIndex]["statement"];
 
-					// If we wanted to show a scale rating instead
-					let dynamicValue = parseInt(Math.random() * 100); // Example dynamic value
+				// If we wanted to show a scale rating instead
+				let dynamicValue = parseInt(Math.random() * 100); // Example dynamic value
 
-					const inputElement = $('<input>', {
-					name: 'post-slider-epistemic-estimate-percent',
+				let ratingPrompt = "NA";
+				let textDownRating = "NA";
+				let textUpRating = "NA";
+
+				if (trial.condition == "epistemic") {
+					ratingPrompt = "How likely do you think it is that this claim is true or false?";
+					textDownRating = "Definitely false";
+					textUpRating = "Definitely true";
+
+				} else {
+					ratingPrompt = "How morally good or morally bad do you think this action is?"
+					textDownRating = "Extremely morally bad";
+					textUpRating = "Extremely morally good";
+				}
+
+				const labelElement = $('<label>', {
+					for: "rating-slider",
+				}).text(ratingPrompt);
+
+				const inputElement = $('<input>', {
+					name: 'rating-slider',
 					type: 'range',
 					class: 'jspsych-slider incomplete',
 					value: dynamicValue,
 					min: 0,
 					max: 100,
 					step: 1,
-					id: 'post-slider-epistemic-estimate-percent',
+					id: 'rating-slider',
 					oninput: `
 						this.classList.remove('incomplete');
-						$('#post-slider-epistemic-estimate-percent-label').addClass('fade-out');
+						$('#rating-slider').addClass('fade-out');
 						let rawRating = parseFloat(this.value);
 						let downRating = (100 - rawRating) + '%';
 						let upRating = rawRating + '%';
@@ -146,6 +170,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				const sliderRating = $('<div>', {
 					style: 'position: relative;'
 				}).append(
+					labelElement,
 					inputElement,
 					$('<output>', {
 						style: 'position: absolute; left: 0%; font-size: 14pt;',
@@ -160,11 +185,11 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					$('<br>'),
 					$('<span>', {
 						style: 'position: absolute; left: 0; font-size: 10pt;',
-						text: 'Believe this claim is false'
+						text: textDownRating
 					}),
 					$('<span>', {
 						style: 'position: absolute; right: 0; font-size: 10pt;',
-						text: 'Believe this claim is true'
+						text: textUpRating
 					})
 				);
 

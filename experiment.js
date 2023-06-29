@@ -912,12 +912,12 @@ const prePredictionsMoralOther = {
 
 if (participant_condition === 'epistemic') {
   timeline.push(
-    prePredictionsEpistemicSelf, 
+    prePredictionsEpistemicSelf,
     prePredictionsEpistemicOther
   );
 } else if (participant_condition === 'moral') {
   timeline.push(
-    prePredictionsMoralSelf, 
+    prePredictionsMoralSelf,
     prePredictionsMoralOther
   );
 };
@@ -1277,6 +1277,7 @@ let select = {
   type: jsPsychSelectionLearning,
   currentLocationList: currentLocationList,
   avatarNames: avatarDictionary,
+  condition: participant_condition,
   choices: [
     "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;Read more",
     "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
@@ -1574,12 +1575,12 @@ const postPredictionsMoralOther = {
 
 if (participant_condition === 'epistemic') {
   timeline.push(
-    postPredictionsEpistemicSelf, 
+    postPredictionsEpistemicSelf,
     postPredictionsEpistemicOther
   );
 } else if (participant_condition === 'moral') {
   timeline.push(
-    postPredictionsMoralSelf, 
+    postPredictionsMoralSelf,
     postPredictionsMoralOther
   );
 };

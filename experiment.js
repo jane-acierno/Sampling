@@ -782,26 +782,6 @@ const prePredictionsMoralSelf = {
         </div>
         <br><br><br>
 
-        <!-- Pre-Sampling Moral Person Rating -->
-        <div class="jspsych-form-slider-question" class="jspsych-survey-multi-choice-question">
-          <label for="pre-slider-moral-person">How morally good or morally bad do you think this <em>person</em> is?</label>
-        </div>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-person"
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-person"
-            oninput="
-              this.classList.remove('incomplete')
-            "
-          >
-          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
-        </div>
-        <br><br><br>
-
         <!-- Pre-Sampling Moral Curiosity -->
         <label for="pre-slider-moral-curious" class="jspsych-survey-multi-choice-question">
           How curious are you to learn about what other people think about this statement?
@@ -1461,28 +1441,6 @@ const postPredictionsMoralSelf = {
           <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
           <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
         </div>
-        <br><br><br>
-
-        <div class="jspsych-form-slider-question">
-          <label for="post-slider-moral-person">
-            How morally good or morally bad do you think this <em>person</em> is?
-          </label>
-        </div>
-
-        <div style="position: relative;">
-          <input 
-            name="post-slider-moral-person"
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-moral-person"
-            oninput="
-              this.classList.remove('incomplete');
-            "
-          >
-          <span style="position: absolute; left: 0; font-size: 10pt;">Extremely morally bad</span>
-          <span style="position: absolute; right: 0; font-size: 10pt;">Extremely morally good</span>
-        </div>
         <br><br><br>`,
   button_label: 'Next',
   data: {
@@ -1492,7 +1450,6 @@ const postPredictionsMoralSelf = {
   on_finish: function (data) {
     const sliderValues = data.response;
     let moralPostAction = Number(sliderValues['post-slider-moral-action']);
-    let moralPostPerson = Number(sliderValues['post-slider-moral-person']);
   }
 };
 

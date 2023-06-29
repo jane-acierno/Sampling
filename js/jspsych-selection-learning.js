@@ -158,11 +158,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					oninput: `
 						this.classList.remove('incomplete');
 						$('#rating-slider').addClass('fade-out');
-						let rawRating = parseFloat(this.value);
-						let downRating = (100 - rawRating) + '%';
-						let upRating = rawRating + '%';
-						$('#slider-downRating').text(downRating);
-						$('#slider-upRating').text(upRating);
 					`,
 					disabled: true
 				});
@@ -172,16 +167,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				}).append(
 					labelElement,
 					inputElement,
-					$('<output>', {
-						style: 'position: absolute; left: 0%; font-size: 14pt;',
-						id: 'slider-downRating',
-						text: 100 - dynamicValue + '%'
-					}),
-					$('<output>', {
-						style: 'position: absolute; right: 0%; font-size: 14pt;',
-						id: 'slider-upRating',
-						text: dynamicValue + '%'
-					}),
 					$('<br>'),
 					$('<span>', {
 						style: 'position: absolute; left: 0; font-size: 10pt;',

@@ -105,6 +105,8 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				let tic = (new Date()).getTime();
 
 				const trialPresentationSpace = $('#trial-presentation-space');
+				trialPresentationSpace.empty();
+
 				const avatarContainer = $('<div id="avatar-container"></div>').appendTo(trialPresentationSpace);
 
 
@@ -119,8 +121,8 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				// Add it inside the avatar circle
 				$('<img>', {
 					src: `./avatars/photo${circleIndex}.png`,
-					class: 'avatar-photo fade-in'
-				  }).appendTo(avatarCircleSelection);
+					class: 'avatar-photo'
+				  }).appendTo(avatarCircleSelection).fadeIn();
 
 				choiceLabel = trial.avatarNames['avatar' + circleIndex]["statement"];
 
@@ -151,9 +153,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					type: 'range',
 					class: 'jspsych-slider incomplete',
 					value: dynamicValue,
-					min: 0,
-					max: 100,
-					step: 1,
+					min: 0, max: 100, step: 1,
 					id: 'rating-slider',
 					oninput: `
 						this.classList.remove('incomplete');
@@ -207,10 +207,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 				setTimeout(function () {
 
-					// fade out choices
-
-					// fade out prompt
-
 					const learningStartTime = (new Date()).getTime();
 
 					//display buttons
@@ -229,19 +225,25 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					const selectionButtons = document.createElement('div');
 					selectionButtons.id = 'jspsych-selection-learning-btngroup';
 					selectionButtons.className = 'center-content block-center';
+					samplingPromptContainer.empty();
 					samplingPromptContainer.append("<p>Would you like to continue reading?</p>")
 					samplingPromptContainer.append(selectionButtons)
 
 					for (let l = 0; l < trial.choices.length; l++) {
 						var str = buttons[l].replace(/%choice%/, trial.choices[l]);
 						$('#jspsych-selection-learning-btngroup').append(
-							$(str).attr('id', 'jspsych-selection-learning-button-' + l).data('choice', l).addClass('jspsych-selection-learning-button').on('click', function (e) {
-								// disable all the buttons after a response
-								$('.jspsych-selection-learning-button').off('click').attr('disabled', 'disabled');
+							$(str).attr('id', 'jspsych-selection-learning-button-' + l)
+								  .data('choice', l)
+								  .addClass('jspsych-selection-learning-button')
+								  .on('click', function (e) {
+								
+									// disable all the buttons after a response
+								$('.jspsych-selection-learning-button').off('click')
+																	   .attr('disabled', 'disabled');
+								
 								// hide button
 								$('.jspsych-selection-learning-button').hide();
 								choice = $('#' + this.id).data('choice');
-
 
 								const curTime = Date.now();
 								const learningStartRT = curTime - learningStartTime;
@@ -253,6 +255,8 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						let toc = (new Date()).getTime();
 						let rt = toc - tic;
 						rt_array.push(rt);
+						
+						samplingPromptContainer.empty();
 
 						// Fade the prompt back in
 						samplingPromptContainer.html(
@@ -261,14 +265,12 @@ var jsPsychSelectionLearning = (function (jspsych) {
 								(SCROLL TO VIEW MORE)
 							</p>`
 						);
-						// samplingPrompt.attr('class', 'fade-in');
 						trialPresentationSpace.empty();
 
 						// Fade the grid back in
-						avatarCircleContainer.removeClass('fade-out-partial');
-						avatarCircleContainer.addClass('fade-in');
+						avatarCircleContainer.removeClass('fade-out-partial')
+											 .addClass('fade-in');
 						reattachEventListeners();
-
 					});
 
 					$('#jspsych-selection-learning-button-1').on('click', function (e) {
@@ -297,14 +299,15 @@ var jsPsychSelectionLearning = (function (jspsych) {
 								}
 							}
 
-							$("#circle" + circleIndex).css("background-color", "#5cb85c");
+							$("#circle" + circleIndex).css("background-color", "#eee");
 							initLearning(circleIndex);
+							isLearningInProgress = false;
 						}
 					};
-
+					
 					$("#circle" + circleIndex).on('click', clickHandler);
 					clickHandlers[i] = clickHandler;
-
+					
 					start_time = (new Date()).getTime(); // Store the start time
 				})(i);
 			}

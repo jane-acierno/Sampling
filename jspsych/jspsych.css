@@ -430,6 +430,10 @@
   border: 1px solid #aaa;
 }
 
+.jspsych-slider.clicked::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #ff7f00, #DDDDDD 50%, #6a3d9a);
+}
+
 .jspsych-slider::-moz-range-track {
   appearance: none;
   width: 100%;
@@ -439,6 +443,10 @@
   box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
   border-radius: 2px;
   border: 1px solid #aaa;
+}
+
+.jspsych-slider.clicked::-moz-range-track {
+  background: linear-gradient(to right, #ff7f00, #DDDDDD 50%, #6a3d9a);
 }
 
 .jspsych-slider::-ms-track {
@@ -452,13 +460,17 @@
   border: 1px solid #aaa;
 }
 
+.jspsych-slider.clicked::-ms-track {
+  background: linear-gradient(to right, #ff7f00, #DDDDDD 50%, #6a3d9a);
+}
+
 /* thumb */
 .jspsych-slider::-webkit-slider-thumb {
   border: 1px solid #666;
   height: 24px;
   width: 15px;
   border-radius: 5px;
-  background: #ffffff;
+  background: #fff;
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -9px;
@@ -469,7 +481,7 @@
   height: 24px;
   width: 15px;
   border-radius: 5px;
-  background: #ffffff;
+  background: #fff;
   cursor: pointer;
 }
 
@@ -478,9 +490,23 @@
   height: 20px;
   width: 15px;
   border-radius: 5px;
-  background: #ffffff;
+  background: #fff;
   cursor: pointer;
   margin-top: -2px;
+}
+
+.jspsych-slider-left-anchor,
+.jspsych-slider-right-anchor {
+  position: absolute;
+  font-size: 10pt;
+}
+
+.jspsych-slider-left-anchor {
+  left: 0;
+}
+
+.jspsych-slider-right-anchor {
+  right: 0;
 }
 
 .incomplete {
@@ -601,7 +627,7 @@
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  background-color: #0275d8;
+  background-color: #999;
   border: 5px solid #000;
   display: flex;
   justify-content: center;

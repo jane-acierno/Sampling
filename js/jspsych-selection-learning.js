@@ -99,6 +99,8 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			var selections = [];
 			var rt_array = [];
 
+			var sliderRatings = [...Array(100).fill(0)];  // TODO: Update this!
+
 			var start_time = (new Date()).getTime();
 
 			const initLearning = (circleIndex) => {
@@ -126,9 +128,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 				choiceLabel = trial.avatarNames['avatar' + circleIndex]["statement"];
 
-				// If we wanted to show a scale rating instead
-				let dynamicValue = parseInt(Math.random() * 100); // Example dynamic value
-
 				let ratingPrompt = "NA";
 				let textDownRating = "NA";
 				let textUpRating = "NA";
@@ -151,12 +150,12 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				const inputElement = $('<input>', {
 					name: 'rating-slider',
 					type: 'range',
-					class: 'jspsych-slider incomplete',
-					value: dynamicValue,
+					class: 'jspsych-slider clicked',
+					value: sliderRatings[circleIndex],
 					min: 0, max: 100, step: 1,
 					id: 'rating-slider',
 					oninput: `
-						this.classList.remove('incomplete');
+						this.classList.remove('clicked');
 						$('#rating-slider').addClass('fade-out');
 					`,
 					disabled: true

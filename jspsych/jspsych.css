@@ -431,7 +431,7 @@
 }
 
 .jspsych-slider.clicked::-webkit-slider-runnable-track {
-  background: linear-gradient(to right, #ff7f00, #DDDDDD 50%, #6a3d9a);
+  background: linear-gradient(to right, #fe6100, #DDDDDD 50%, #785ef0);
 }
 
 .jspsych-slider::-moz-range-track {
@@ -446,7 +446,7 @@
 }
 
 .jspsych-slider.clicked::-moz-range-track {
-  background: linear-gradient(to right, #ff7f00, #DDDDDD 50%, #6a3d9a);
+  background: linear-gradient(to right, #fe6100, #DDDDDD 50%, #785ef0);
 }
 
 .jspsych-slider::-ms-track {
@@ -461,7 +461,7 @@
 }
 
 .jspsych-slider.clicked::-ms-track {
-  background: linear-gradient(to right, #ff7f00, #DDDDDD 50%, #6a3d9a);
+  background: linear-gradient(to right, #fe6100, #DDDDDD 50%, #785ef0);
 }
 
 /* thumb */

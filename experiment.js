@@ -25,6 +25,9 @@ const study_id = jsPsych.data.getURLVariable('STUDY_ID');
 const session_id = jsPsych.data.getURLVariable('SESSION_ID');
 let participant_condition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
 
+// Define your array of possible trials
+const trials = jsPsych.randomization.shuffle([1, 2, 3, 4, 5, 6, 7, 8]);
+
 jsPsych.data.addProperties({
   subject_id: subject_id,
   study_id: study_id,
@@ -66,13 +69,6 @@ const demandEffectsResponses = [
   "3",
   "4",
   "5 = Very much so"
-];
-
-// Device Type
-const deviceTypeResponses = [
-  "Laptop/Desktop",
-  "iPad/Tablet",
-  "Other"
 ];
 
 // Personality: The Big Five
@@ -577,707 +573,368 @@ const instructionsMoralComprehensionCheck = {
     //        },
   ],
   preamble: `
-        <h2 style="text-align: center;">Instructions</h2> 
-        <p style="text-align: left;"> 
-          The experiment will begin on the next page.
-          
-          As a reminder, you will see a series of statements and be asked to estimate 
-          how many people think the outcome of the action in the statement is morally good (vs. morally bad).<br><br>
+    <h2 style="text-align: center;">Instructions</h2> 
+    <p style="text-align: left;"> 
+      The experiment will begin on the next page.
+      
+      As a reminder, you will see a series of statements and be asked to estimate 
+      how many people think the outcome of the action in the statement is morally good (vs. morally bad).<br><br>
 
-          We will first ask you a few questions about the statement you will see and what you think 
-          before you get to see any information about what others think. Then, you will see a page 
-          of many different avatars that each represent real participants' morally good vs. morally bad 
-          opinions about the outcomes of the action in the statement you read.<br><br>
+      We will first ask you a few questions about the statement you will see and what you think 
+      before you get to see any information about what others think. Then, you will see a page 
+      of many different avatars that each represent real participants' morally good vs. morally bad 
+      opinions about the outcomes of the action in the statement you read.<br><br>
 
-          <strong>
-            You are free to review as many opinions as you would like before providing us 
-            your final estimate of the percentage of people in the U.S. who consider 
-            the outcome of the action to be morally good (vs. morally bad).
-          </strong>
+      <strong>
+        You are free to review as many opinions as you would like before providing us 
+        your final estimate of the percentage of people in the U.S. who consider 
+        the outcome of the action to be morally good (vs. morally bad).
+      </strong>
 
-          To make sure you fully understand the instructions for this study, please answer the questions below: 
-        </p>`,
+      To make sure you fully understand the instructions for this study, please answer the questions below: 
+    </p>`,
 };
 
-// if (participant_condition === 'epistemic') {
-//   timeline.push(instructionsEpistemicComprehensionCheck);
-// } else if (participant_condition === 'moral') {
-//   timeline.push(instructionsMoralComprehensionCheck);
-// };
+
+const statements = [
+  `"Norman Borlaug fathered the Green Revolution, which increased crop yields worldwide but contributed to environmental degradation."`,
+  `"Wilhelm Roentgen invented X-rays, which revolutionized medical imaging but increased radiation exposure."`,
+  `"Samuel Morse invented the telegraph, which greatly improved communication but also contributed to the decline of written correspondence."`,
+  `"Akon created the 'Akon Lighting Africa' initiative, which initiated renewable energy projects in Africa but supported authoritarian regimes."`,
+  `"Mahatma Gandhi led nonviolent resistance against British colonial rule, which brought about political change but also led to the partition of the country."`,
+  `"Ada Lovelace pioneered computer programming, which laid the foundation for modern computing but also led to the displacement of manual laborers."`,
+  `"Alan Turing broke the Enigma code during World War II, which helped end the war but led to the development of mass surveillance technologies."`,
+  `"King Ramkhamhaeng of Thailand established the Sukhothai script, which led to a cultural renaissance but also facilitated the centralization of power and control."`,
+];
+
 
 // Epistemic Pre-Predictions: Self //
-const prePredictionsEpistemicSelf = {
-  type: jsPsychSurveyHtmlForm,
-  preamble: `
+function prePredictionsEpistemicSelf(trialIndex) {
+  return {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `
         <div class="quote">
-          <h3>Statement #1</h3>
-          <blockquote>
-            "Marie Curie discovered radium and polonium, which revolutionized medical 
-            treatments and contributed to the development of nuclear weapons."
-          </blockquote>
+          <h3>Statement #` + (trialIndex + 1) + `</h3>
+          <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
         </div>
-        <p class="jspsych-survey-multi-choice-preamble">
-          Before you see what other people think about the statement, we want to know what you think:
-        </p><br><br><br>`,
-  html: `
-        <!-- Pre-Sampling Epistemic Claim Rating -->
+          <p class="jspsych-survey-multi-choice-preamble">
+            Before you see what other people think about the statement, we want to know what you think:
+          </p><br><br>`,
+    html: `
+          <!-- Pre-Sampling Epistemic Claim Rating -->
 
-        <label for="pre-slider-epistemic-claim" class="jspsych-survey-multi-choice-question">
-          To what extent do you think this claim is true or false?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-epistemic-claim" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-epistemic-claim"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');"
-          >
-          <span class="jspsych-slider-left-anchor">Definitely false</span>
-          <span class="jspsych-slider-right-anchor">Definitely true</span>
-        </div><br><br><br>
-
-
-        <!-- Pre-Sampling Epistemic Plausible Rating -->
-
-        <label for="pre-slider-epistemic-plausible" class="jspsych-survey-multi-choice-question">
-          To what extent do you think the content of this claim is plausible?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-epistemic-plausible" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-epistemic-plausible"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');"
-          >
-          <span class="jspsych-slider-left-anchor">Definitely implausible</span>
-          <span class="jspsych-slider-right-anchor">Definitely plausible</span>
-        </div><br><br><br>
+          <label for="pre-slider-epistemic-claim" class="jspsych-survey-multi-choice-question">
+            To what extent do you think this claim is true or false?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-epistemic-claim" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-epistemic-claim"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
+            >
+            <span class="jspsych-slider-left-anchor">Definitely false</span>
+            <span class="jspsych-slider-right-anchor">Definitely true</span>
+          </div><br><br><br>
 
 
-        <!-- Pre-Sampling Epistemic Curiosity -->
+          <!-- Pre-Sampling Epistemic Plausible Rating -->
 
-        <label for="pre-slider-epistemic-curious" class="jspsych-survey-multi-choice-question">
-          How curious are you to learn about what other people think about this statement?<br><br>
-          <em style="font-size: 10pt;">
-            Remember that when answering the following question about how curious you are, 
-            keep in mind that you should only say you are extremely curious for the 
-            statements you are absolutely most curious to learn about.
-          </em>
-        </label>
-        <div style="position: relative;">
-          <input
-            name="pre-slider-epistemic-curious" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-epistemic-curious"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');"
-          >
-          <span class="jspsych-slider-left-anchor">Not at all curious</span>
-          <span class="jspsych-slider-right-anchor">Extremely curious</span>
-        </div><br><br><br>`,
-  button_label: "Next",
-  data: {
-    task: 'Pre-Sampling Epistemic Self'
-  },
-  request_response: true
+          <label for="pre-slider-epistemic-plausible" class="jspsych-survey-multi-choice-question">
+            To what extent do you think the content of this claim is plausible?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-epistemic-plausible" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-epistemic-plausible"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
+            >
+            <span class="jspsych-slider-left-anchor">Definitely implausible</span>
+            <span class="jspsych-slider-right-anchor">Definitely plausible</span>
+          </div><br><br><br>
+
+
+          <!-- Pre-Sampling Epistemic Curiosity -->
+
+          <label for="pre-slider-epistemic-curious" class="jspsych-survey-multi-choice-question">
+            How curious are you to learn about what other people think about this statement?<br>
+            <em style="font-size: 10pt;">
+              Remember that when answering the following question about how curious you are, 
+              keep in mind that you should only say you are extremely curious for the 
+              statements you are <u>absolutely</u> most curious to learn about.
+            </em>
+          </label>
+          <div style="position: relative;">
+            <input
+              name="pre-slider-epistemic-curious" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-epistemic-curious"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
+            >
+            <span class="jspsych-slider-left-anchor">Not at all curious</span>
+            <span class="jspsych-slider-right-anchor">Extremely curious</span>
+          </div><br><br><br>`,
+    button_label: "Next",
+    data: {
+      task: 'Pre-Sampling Epistemic Self'
+    },
+    request_response: true
+  };
 };
 
 // Epistemic Pre-Predictions: Other //
-const prePredictionsEpistemicOther = {
-  type: jsPsychSurveyHtmlForm,
-  preamble: `
-        <div class="quote">
-          <h3>Statement #1</h3>
-          <blockquote>
-            "Marie Curie discovered radium and polonium, which revolutionized 
-            medical treatments and contributed to the development of nuclear weapons."
-          </blockquote>
-        </div>
-        <p class="jspsych-survey-multi-choice-preamble">
-          Before you see what other people think about the statement, we want to know what you think:
-        </p><br><br><br>`,
-  html: `
-        <!-- Pre-Sampling Epistemic Estimate Rating -->
+function prePredictionsEpistemicOther(trialIndex) {
+  return {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `
+          <div class="quote">
+            <h3>Statement #` + (trialIndex + 1) + `</h3>
+            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+          </div>
+          <p class="jspsych-survey-multi-choice-preamble">
+            Before you see what other people think about the statement, we want to know what you think:
+          </p><br><br>`,
+    html: `
+          <!-- Pre-Sampling Epistemic Estimate Rating -->
 
-        <label for="pre-slider-epistemic-estimate-percent" class="jspsych-survey-multi-choice-question">
-          What percentage of people in the U.S. do you think consider this claim is true vs. think this is false?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-epistemic-estimate-percent" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-epistemic-estimate-percent"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');
-              $('#pre-slider-epistemic-estimate-percent-label').addClass('fade-out');
+          <label for="pre-slider-epistemic-estimate-percent" class="jspsych-survey-multi-choice-question">
+            What percentage of people in the U.S. do you think consider this claim is true vs. think this is false?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-epistemic-estimate-percent" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-epistemic-estimate-percent"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');
+                $('#pre-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
-              let rawRating = parseFloat(this.value);
-              let downRating = (100 - rawRating) + '%';
-              let upRating = rawRating + '%';
-            
-              $('#slider-downRating').text(downRating);
-              $('#slider-upRating').text(upRating);
-            "
-          >
-          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span class="jspsych-slider-left-anchor">Believe this claim is false</span>
-          <span class="jspsych-slider-right-anchor">Believe this claim is true</span>
-        </div><br><br><br>
+                let rawRating = parseFloat(this.value);
+                let downRating = (100 - rawRating) + '%';
+                let upRating = rawRating + '%';
+              
+                $('#slider-downRating').text(downRating);
+                $('#slider-upRating').text(upRating);
+              "
+            >
+            <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
+            <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
+            <span class="jspsych-slider-left-anchor">Believe this claim is false</span>
+            <span class="jspsych-slider-right-anchor">Believe this claim is true</span>
+          </div><br><br><br>
 
 
-        <!-- Pre-Sampling Epistemic Estimate Confidence -->
+          <!-- Pre-Sampling Epistemic Estimate Confidence -->
 
-        <label for="pre-slider-epistemic-confidence" class="jspsych-survey-multi-choice-question">
-          How confident are you in your answer?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-epistemic-confidence" 
-            type="range" 
-            class="jspsych-slider incomplete"
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-epistemic-confidence"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');"
-          >
-          <span class="jspsych-slider-left-anchor">Not at all confident</span>
-          <span class="jspsych-slider-right-anchor">Completely confident</span>
-        </div><br><br><br>`,
-  button_label: 'Next',
-  data: {
-    task: 'Pre-Sampling Epistemic Other'
-  },
-  request_response: true
+          <label for="pre-slider-epistemic-confidence" class="jspsych-survey-multi-choice-question">
+            How confident are you in your answer?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-epistemic-confidence" 
+              type="range" 
+              class="jspsych-slider incomplete"
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-epistemic-confidence"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
+            >
+            <span class="jspsych-slider-left-anchor">Not at all confident</span>
+            <span class="jspsych-slider-right-anchor">Completely confident</span>
+          </div><br><br><br>`,
+    button_label: 'Next',
+    data: {
+      task: 'Pre-Sampling Epistemic Other'
+    },
+    request_response: true
+  };
 };
 
 // Moral Pre-Predictions: Self //
-const prePredictionsMoralSelf = {
-  type: jsPsychSurveyHtmlForm,
-  preamble: `
-        <div class="quote">
-          <h3>Statement #1</h3>
-          <blockquote>
-            "Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."
-          </blockquote>
-        </div>
-        <p class="jspsych-survey-multi-choice-preamble">
-          Before you see what other people think about 
-          the statement, we want to know what you think:
-        </p><br><br><br>`,
-  html: `
-        <!-- Pre-Sampling Moral Action Rating -->
+function prePredictionsMoralSelf(trialIndex) {
+  return {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `
+          <div class="quote">
+            <h3>Statement #` + (trialIndex + 1) + `</h3>
+            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+          </div>
+          <p class="jspsych-survey-multi-choice-preamble">
+            Before you see what other people think about 
+            the statement, we want to know what you think:
+          </p><br><br>`,
+    html: `
+          <!-- Pre-Sampling Moral Action Rating -->
 
-        <label for="pre-slider-moral-action" class="jspsych-survey-multi-choice-question">
-          To what extent do you think this <em>action</em> is morally good or morally bad?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-action" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-action"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');"
-        >
-          <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
-          <span class="jspsych-slider-right-anchor">Definitely morally good</span>
-        </div><br><br><br>
-
-
-        <!-- Pre-Sampling Moral Person Rating -->
-
-        <label for="pre-slider-moral-person" class="jspsych-survey-multi-choice-question">
-          To what extent do you think this <em>person</em> is morally good or morally bad?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-person"
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-person"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');"
-          >
-          <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
-          <span class="jspsych-slider-right-anchor">Definitely morally good</span>
-        </div><br><br><br>
+          <label for="pre-slider-moral-action" class="jspsych-survey-multi-choice-question">
+            To what extent do you think this <em>action</em> is morally good or morally bad?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-moral-action" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-moral-action"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
+            >
+            <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
+            <span class="jspsych-slider-right-anchor">Definitely morally good</span>
+          </div><br><br><br>
 
 
-        <!-- Pre-Sampling Moral Curiosity -->
+          <!-- Pre-Sampling Moral Person Rating -->
 
-        <label for="pre-slider-moral-curious" class="jspsych-survey-multi-choice-question">
-          How curious are you to learn about what other people think about this statement?<br><br>
-          <em style="font-size: 10pt;">
-            Remember that when answering the following question about how curious you are, 
-            keep in mind that you should only say you are extremely curious for the 
-            statements you are absolutely most curious to learn about.
-          </em>
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-curious" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-curious"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');"
-          >
-          <span class="jspsych-slider-left-anchor">Not at all curious</span>
-          <span class="jspsych-slider-right-anchor">Extremely curious</span>
-        </div><br><br><br>`,
-  button_label: 'Next',
-  data: {
-    task: 'Pre-Sampling Moral Self'
-  },
-  request_response: true
+          <label for="pre-slider-moral-person" class="jspsych-survey-multi-choice-question">
+            To what extent do you think this <em>person</em> is morally good or morally bad?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-moral-person"
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-moral-person"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
+            >
+            <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
+            <span class="jspsych-slider-right-anchor">Definitely morally good</span>
+          </div><br><br><br>
+
+
+          <!-- Pre-Sampling Moral Curiosity -->
+
+          <label for="pre-slider-moral-curious" class="jspsych-survey-multi-choice-question">
+            How curious are you to learn about what other people think about this statement?<br>
+            <em style="font-size: 10pt;">
+              Remember that when answering the following question about how curious you are, 
+              keep in mind that you should only say you are extremely curious for the 
+              statements <u>you are absolutely</u> most curious to learn about.
+            </em>
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-moral-curious" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-moral-curious"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
+            >
+            <span class="jspsych-slider-left-anchor">Not at all curious</span>
+            <span class="jspsych-slider-right-anchor">Extremely curious</span>
+          </div><br><br><br>`,
+    button_label: 'Next',
+    data: {
+      task: 'Pre-Sampling Moral Self'
+    },
+    request_response: true
+  };
 };
 
 // Moral Pre-Predictions: Other //
-const prePredictionsMoralOther = {
-  type: jsPsychSurveyHtmlForm,
-  preamble: `
-        <div class="quote">
-          <h3>Statement #1</h3>
-          <blockquote>
-            "Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."
-          </blockquote>
-        </div>
-        <p class="jspsych-survey-multi-choice-preamble">
-          Before you see what other people think about the statement, we want to know what you think:
-        </p><br>`,
-  html: `
-        <!-- Pre-Sampling Moral Estimate Rating -->
+function prePredictionsMoralOther(trialIndex) {
+  return {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `
+          <div class="quote">
+            <h3>Statement #` + (trialIndex + 1) + `</h3>
+            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+          </div>
+          <p class="jspsych-survey-multi-choice-preamble">
+            Before you see what other people think about the statement, we want to know what you think:
+          </p><br><br>`,
+    html: `
+          <!-- Pre-Sampling Moral Estimate Rating -->
 
-        <label for="pre-slider-moral-estimate-percent" class="jspsych-survey-multi-choice-question">
-          What percentage of people in the U.S. do you think consider this action to be morally good vs. think this is morally bad?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-estimate-percent" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-estimate-percent"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');
+          <label for="pre-slider-moral-estimate-percent" class="jspsych-survey-multi-choice-question">
+            What percentage of people in the U.S. do you think consider this action to be morally good vs. think this is morally bad?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-moral-estimate-percent" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-moral-estimate-percent"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');
 
-              let rawRating = parseFloat(this.value);
-              let downRating = (100 - rawRating) + '%';
-              let upRating = rawRating + '%';
-            
-              $('#slider-downRating').text(downRating);
-              $('#slider-upRating').text(upRating);
-            "
-          >
-          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span class="jspsych-slider-left-anchor">Believe this action is morally bad</span>
-          <span class="jspsych-slider-right-anchor">Believe this action is morally good</span>
-        </div><br><br><br>
+                let rawRating = parseFloat(this.value);
+                let downRating = (100 - rawRating) + '%';
+                let upRating = rawRating + '%';
+              
+                $('#slider-downRating').text(downRating);
+                $('#slider-upRating').text(upRating);
+              "
+            >
+            <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
+            <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
+            <span class="jspsych-slider-left-anchor">Believe this action is morally bad</span>
+            <span class="jspsych-slider-right-anchor">Believe this action is morally good</span>
+          </div><br><br><br>
 
 
-        <!-- Pre-Sampling Moral Estimate Confidence -->
+          <!-- Pre-Sampling Moral Estimate Confidence -->
 
-        <label for="pre-slider-moral-confidence" class="jspsych-survey-multi-choice-question">
-          How confident are you in your answer?
-        <div style="position: relative;">
-          <input 
-            name="pre-slider-moral-confidence" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="pre-slider-moral-confidence"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');"
-          >
-          <span class="jspsych-slider-left-anchor">Not at all confident</span>
-          <span class="jspsych-slider-right-anchor">Completely confident</span>
-        </div><br><br><br>`,
-  button_label: 'Next',
-  data: {
-    task: 'Pre-Sampling Moral Other'
-  },
-  request_response: true
+          <label for="pre-slider-moral-confidence" class="jspsych-survey-multi-choice-question">
+            How confident are you in your answer?
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-moral-confidence" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-moral-confidence"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
+            >
+            <span class="jspsych-slider-left-anchor">Not at all confident</span>
+            <span class="jspsych-slider-right-anchor">Completely confident</span>
+          </div><br><br><br>`,
+    button_label: 'Next',
+    data: {
+      task: 'Pre-Sampling Moral Other'
+    },
+    request_response: true
+  };
 };
-
-if (participant_condition === 'epistemic') {
-  timeline.push(
-    prePredictionsEpistemicSelf,
-    prePredictionsEpistemicOther
-  );
-} else if (participant_condition === 'moral') {
-  timeline.push(
-    prePredictionsMoralSelf,
-    prePredictionsMoralOther
-  );
-};
-
-const epistemicStatements = [
-  `"Norman Borlaug, fathering the Green Revolution, increased crop yields worldwide but contributed to environmental degradation."`
-];
-
-const moralStatements = [
-  `"Fritz Haber, developing the Haber-Bosch process, revolutionized agriculture but also enabled the creation of deadly chemical weapons."`
-];
-
-const epistemicTrueResponsesArray = [
-  `"I reckon this is right."`,
-  `"Looks true to me."`,
-  `"I feel like this is on point."`,
-  `"This seems legit to me."`,
-  `"I'm pretty sure this is right."`,
-  `"It's my gut feeling this is true."`,
-  `"I'm convinced this is the real deal."`,
-  `"I'm betting this is correct."`,
-  `"This rings true for me."`,
-  `"Smells like truth to me."`,
-  `"I'm down with this being true."`,
-  `"My vibe says this is accurate."`,
-  `"I'm vibing with this as truth."`,
-  `"My money's on this being right."`,
-  `"It's pretty clear to me this is true."`,
-  `"To me, this hits the bullseye."`,
-  `"Sounds about right to me."`,
-  `"I think we're onto something here."`,
-  `"I'm picking up what this is putting down."`,
-  `"I can roll with this being true."`,
-  `"This is feeling true to me."`,
-  `"I'd say this is spot-on."`,
-  `"This looks legit to me."`,
-  `"I'm thinking this is the real deal."`,
-  `"I'm sensing truth here."`,
-  `"I'm totally on board with this."`,
-  `"This feels like a bullseye to me."`,
-  `"I bet this is accurate."`,
-  `"This is passing my smell test."`,
-  `"No BS detected here."`,
-  `"Something's right here, I reckon."`,
-  `"This adds up to me."`,
-  `"I'm calling truth on this."`,
-  `"This strikes me as accurate."`,
-  `"This sits right with me."`,
-  `"I'm sold on this."`,
-  `"This looks like a home run."`,
-  `"My spidey senses say this is true."`,
-  `"I think we're barking up the right tree here."`,
-  `"This one's landing for me."`,
-
-  `"I reckon this is right."`,
-  `"Looks true to me."`,
-  `"I feel like this is on point."`,
-  `"This seems legit to me."`,
-  `"I'm pretty sure this is right."`,
-  `"It's my gut feeling this is true."`,
-  `"I'm convinced this is the real deal."`,
-  `"I'm betting this is correct."`,
-  `"This rings true for me."`,
-  `"Smells like truth to me."`,
-  `"I'm down with this being true."`,
-  `"My vibe says this is accurate."`,
-  `"I'm vibing with this as truth."`,
-  `"My money's on this being right."`,
-  `"It's pretty clear to me this is true."`,
-  `"To me, this hits the bullseye."`,
-  `"Sounds about right to me."`,
-  `"I think we're onto something here."`,
-  `"I'm picking up what this is putting down."`,
-  `"I can roll with this being true."`,
-  `"This is feeling true to me."`,
-  `"I'd say this is spot-on."`,
-  `"This looks legit to me."`,
-  `"I'm thinking this is the real deal."`,
-  `"I'm sensing truth here."`,
-  `"I'm totally on board with this."`,
-  `"This feels like a bullseye to me."`,
-  `"I bet this is accurate."`,
-  `"This is passing my smell test."`,
-  `"No BS detected here."`,
-  `"Something's right here, I reckon."`,
-  `"This adds up to me."`,
-  `"I'm calling truth on this."`,
-  `"This strikes me as accurate."`,
-  `"This sits right with me."`,
-  `"I'm sold on this."`,
-  `"This looks like a home run."`,
-  `"My spidey senses say this is true."`,
-  `"I think we're barking up the right tree here."`,
-  `"This one's landing for me."`,
-
-  `"I reckon this is right."`,
-  `"Looks true to me."`,
-  `"I feel like this is on point."`,
-  `"This seems legit to me."`,
-  `"I'm pretty sure this is right."`,
-  `"It's my gut feeling this is true."`,
-  `"I'm convinced this is the real deal."`,
-  `"I'm betting this is correct."`,
-  `"This rings true for me."`,
-  `"Smells like truth to me."`,
-  `"I'm down with this being true."`,
-  `"My vibe says this is accurate."`,
-  `"I'm vibing with this as truth."`,
-  `"My money's on this being right."`,
-  `"It's pretty clear to me this is true."`,
-  `"To me, this hits the bullseye."`,
-  `"Sounds about right to me."`,
-  `"I think we're onto something here."`,
-  `"I'm picking up what this is putting down."`,
-  `"I can roll with this being true."`
-];
-
-const epistemicFalseResponsesArray = [
-  `"This is false."`,
-  `"I reckon this is off."`,
-  `"Doesn't look right to me."`,
-  `"I feel like this is off base."`,
-  `"This seems fishy to me."`,
-  `"I'm pretty sure this ain't right."`,
-  `"My gut says this is wrong."`,
-  `"I'm not buying this."`,
-  `"I'm doubting this is correct."`,
-  `"This doesn't ring true for me."`,
-  `"Smells like a fib to me."`,
-  `"I'm not down with this being true."`,
-  `"My vibe says this is off."`,
-  `"I'm not vibing with this as truth."`,
-  `"My money's on this being off."`,
-  `"It's pretty clear to me this is false."`,
-  `"To me, this misses the mark."`,
-  `"Doesn't sound right to me."`,
-  `"I think we're off track here."`,
-  `"I'm not picking up what this is putting down."`,
-  `"I can't roll with this being true."`,
-  `"I do not feel like this is actually true."`,
-  `"I'd say this is a no-go."`,
-  `"This is looking sketchy to me."`,
-  `"I'm thinking this isn't the case."`,
-  `"I think this is false."`,
-  `"Not sure I'm on board with this."`,
-  `"This feels like a misfire to me."`,
-  `"I bet this isn't accurate."`,
-  `"This isn't passing my smell test."`,
-  `"This is tripping my BS detector."`,
-  `"Something's off here, I reckon."`,
-  `"This doesn't add up to me."`,
-  `"I'm calling shenanigans on this."`,
-  `"This strikes me as wrong."`,
-  `"This doesn't sit right with me."`,
-  `"I'm not sold on this."`,
-  `"This looks like a swing and a miss."`,
-  `"My spidey senses say this isn't true."`,
-  `"I think we're barking up the wrong tree here."`,
-
-  `"This is false."`,
-  `"I reckon this is off."`,
-  `"Doesn't look right to me."`,
-  `"I feel like this is off base."`,
-  `"This seems fishy to me."`,
-  `"I'm pretty sure this ain't right."`,
-  `"My gut says this is wrong."`,
-  `"I'm not buying this."`,
-  `"I'm doubting this is correct."`,
-  `"This doesn't ring true for me."`,
-  `"Smells like a fib to me."`,
-  `"I'm not down with this being true."`,
-  `"My vibe says this is off."`,
-  `"I'm not vibing with this as truth."`,
-  `"My money's on this being off."`,
-  `"It's pretty clear to me this is false."`,
-  `"To me, this misses the mark."`,
-  `"Doesn't sound right to me."`,
-  `"I think we're off track here."`,
-  `"I'm not picking up what this is putting down."`,
-  `"I can't roll with this being true."`,
-  `"I do not feel like this is actually true."`,
-  `"I'd say this is a no-go."`,
-  `"This is looking sketchy to me."`,
-  `"I'm thinking this isn't the case."`,
-  `"I think this is false."`,
-  `"Not sure I'm on board with this."`,
-  `"This feels like a misfire to me."`,
-  `"I bet this isn't accurate."`,
-  `"This isn't passing my smell test."`,
-  `"This is tripping my BS detector."`,
-  `"Something's off here, I reckon."`,
-  `"This doesn't add up to me."`,
-  `"I'm calling shenanigans on this."`,
-  `"This strikes me as wrong."`,
-  `"This doesn't sit right with me."`,
-  `"I'm not sold on this."`,
-  `"This looks like a swing and a miss."`,
-  `"My spidey senses say this isn't true."`,
-  `"I think we're barking up the wrong tree here."`,
-
-  `"This is false."`,
-  `"I reckon this is off."`,
-  `"Doesn't look right to me."`,
-  `"I feel like this is off base."`,
-  `"This seems fishy to me."`,
-  `"I'm pretty sure this ain't right."`,
-  `"My gut says this is wrong."`,
-  `"I'm not buying this."`,
-  `"I'm doubting this is correct."`,
-  `"This doesn't ring true for me."`,
-  `"Smells like a fib to me."`,
-  `"I'm not down with this being true."`,
-  `"My vibe says this is off."`,
-  `"I'm not vibing with this as truth."`,
-  `"My money's on this being off."`,
-  `"It's pretty clear to me this is false."`,
-  `"To me, this misses the mark."`,
-  `"Doesn't sound right to me."`,
-  `"I think we're off track here."`,
-  `"I'm not picking up what this is putting down."`
-];
-
-const moralGoodResponsesArray = [
-  `"I think this person is morally good."`,
-  `"This person seems morally good to me."`,
-  `"They're as honest as the day is long, in my book."`,
-  `"This one's got a heart of gold, I reckon."`,
-  `"They're a good person, no doubt about it."`,
-  `"This person's pure and good, through and through."`,
-  `"They're as good as they come."`,
-  `"I'm pretty convinced they're a good stand-up person."`,
-  `"They've got a moral code that's rock solid."`,
-  `"I'd stake my reputation on them being decent."`,
-  `"They're about as morally good as you can get."`,
-  `"This one's got their moral ducks in a row."`,
-  `"They're good people, for sure."`,
-  `"I believe they've got their moral act together."`,
-  `"I'd put my money on them being upright."`,
-  `"This person's got good vibes, all around."`,
-  `"They're a straight arrow, if you ask me."`,
-  `"I reckon they're morally sound."`,
-  `"They're a paragon of virtue, in my eyes."`,
-  `"I feel like they're one of the good ones."`,
-  `"They've got a moral compass that's on point."`,
-
-  `"I think this person is morally good."`,
-  `"This person seems morally good to me."`,
-  `"They're as honest as the day is long, in my book."`,
-  `"This one's got a heart of gold, I reckon."`,
-  `"They're a good person, no doubt about it."`,
-  `"This person's pure and good, through and through."`,
-  `"They're as good as they come."`,
-  `"I'm pretty convinced they're a good stand-up person."`,
-  `"They've got a moral code that's rock solid."`,
-  `"I'd stake my reputation on them being decent."`,
-  `"They're about as morally good as you can get."`,
-  `"This one's got their moral ducks in a row."`,
-  `"They're good people, for sure."`,
-  `"I believe they've got their moral act together."`,
-  `"I'd put my money on them being upright."`,
-  `"This person's got good vibes, all around."`,
-  `"They're a straight arrow, if you ask me."`,
-  `"I reckon they're morally sound."`,
-  `"They're a paragon of virtue, in my eyes."`,
-  `"I feel like they're one of the good ones."`,
-  `"They've got a moral compass that's on point."`,
-
-  `"I think this person is morally good."`,
-  `"This person seems morally good to me."`,
-  `"They're as honest as the day is long, in my book."`,
-  `"This one's got a heart of gold, I reckon."`,
-  `"They're a good person, no doubt about it."`,
-  `"This person's pure and good, through and through."`,
-  `"They're as good as they come."`,
-  `"I'm pretty convinced they're a good stand-up person."`,
-  `"They've got a moral code that's rock solid."`,
-  `"I'd stake my reputation on them being decent."`,
-  `"They're about as morally good as you can get."`
-];
-
-const moralBadResponsesArray = [
-  `"I think this person is morally bad."`,
-  `"This person seems morally bad to me."`,
-  `"This one's morally bad."`,
-  `"They're a bad apple, no doubt about it."`,
-  `"This person's sketchy, through and through."`,
-  `"This person is morally bad."`,
-  `"I'm pretty convinced they're not on the up-and-up."`,
-  `"They've got a moral code that's warped."`,
-  `"I wouldn't trust them as far as I could throw them."`,
-  `"They're morally off the rails, for sure."`,
-  `"This one's got their moral wires crossed."`,
-  `"They're bad news, for sure."`,
-  `"I believe they've got a skewed sense of right and wrong."`,
-  `"I wouldn't bet on them doing the right thing."`,
-  `"This person gives off bad vibes, all around."`,
-  `"They're morally twisted, if you ask me."`,
-  `"I reckon they're morally bankrupt."`,
-  `"They're a moral train wreck, in my eyes."`,
-  `"I feel like they're one of the bad ones."`,
-  `"They've got a moral compass that's way off."`,
-
-  `"I think this person is morally bad."`,
-  `"This person seems morally bad to me."`,
-  `"This one's morally bad."`,
-  `"They're a bad apple, no doubt about it."`,
-  `"This person's sketchy, through and through."`,
-  `"This person is morally bad."`,
-  `"I'm pretty convinced they're not on the up-and-up."`,
-  `"They've got a moral code that's warped."`,
-  `"I wouldn't trust them as far as I could throw them."`,
-  `"They're morally off the rails, for sure."`,
-  `"This one's got their moral wires crossed."`,
-  `"They're bad news, for sure."`,
-  `"I believe they've got a skewed sense of right and wrong."`,
-  `"I wouldn't bet on them doing the right thing."`,
-  `"This person gives off bad vibes, all around."`,
-  `"They're morally twisted, if you ask me."`,
-  `"I reckon they're morally bankrupt."`,
-  `"They're a moral train wreck, in my eyes."`,
-  `"I feel like they're one of the bad ones."`,
-  `"They've got a moral compass that's way off."`,
-
-  `"I think this person is morally bad."`,
-  `"This person seems morally bad to me."`,
-  `"This one's morally bad."`,
-  `"They're a bad apple, no doubt about it."`,
-  `"This person's sketchy, through and through."`,
-  `"This person is morally bad."`,
-  `"I'm pretty convinced they're not on the up-and-up."`,
-  `"They've got a moral code that's warped."`,
-  `"I wouldn't trust them as far as I could throw them."`,
-  `"They're morally off the rails, for sure."`
-];
 
 const avatarNames = Array.from({ length: 100 }, (_, i) => "avatar" + i);
 const avatarPhotos = Array.from({ length: 100 }, (_, i) => `./avatars/photo${i + 1}.png`);
 
-//associate words and items (images) in a dictionary
+// associate words and items (images) in a dictionary
 let avatarDictionary = {};
 for (let i = 0; i < 100; i++) {
 
   // convert each item to a dictionary containing the image and the word // use normally
   avatarData = {
     photo: avatarPhotos[i],
-    statement: epistemicTrueResponsesArray[i]
   };
 
   // add this dictionary to the overall stimulus dictionary
@@ -1287,7 +944,7 @@ for (let i = 0; i < 100; i++) {
 // to balance where the target is on each trial
 const currentLocationList = [...Array(100).keys()];
 
-let select = {
+let selectionTask = {
   type: jsPsychSelectionLearning,
   currentLocationList: currentLocationList,
   avatarNames: avatarDictionary,
@@ -1306,286 +963,328 @@ for (let i = 1; i <= 100; i++) {
   let imageIndex = currentLocationList[i - 1];
   let imageValue = avatarDictionary[avatarNames[imageIndex]].image;
 
-  select = Object.assign(select, { [imageProperty]: imageValue });
+  selectionTask = Object.assign(selectionTask, { [imageProperty]: imageValue });
 };
 
-timeline.push(select);
-
-
 // Epistemic Post-Predictions: Self //
-const postPredictionsEpistemicSelf = {
-  type: jsPsychSurveyHtmlForm,
-  preamble: `
-        <div class="quote">
-          <h3>Statement #1</h3>
-          <blockquote>
-            "Marie Curie discovered radium and polonium, 
-            which revolutionized medical treatments and 
-            contributed to the development of nuclear weapons."
-          </blockquote>
-        </div>
-        <p class="jspsych-survey-multi-choice-preamble">
-          Now that you've had the chance to see what other people 
-          think about the statement, we want to know what you think again.
-          Please answer the following questions:<br><br>
-        </p><br>`,
-  html: `
-        <!-- Post-Sampling Epistemic Estimate Rating -->
+function postPredictionsEpistemicSelf(trialIndex) {
+  return {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `
+          <div class="quote">
+            <h3>Statement #` + (trialIndex + 1) + `</h3>
+            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+          </div>
+          <p class="jspsych-survey-multi-choice-preamble">
+            Now that you've had the chance to see what other people 
+            think about the statement, we want to know what you think again.
+            Please answer the following questions:
+          </p><br><br>`,
+    html: `
+          <!-- Post-Sampling Epistemic Estimate Rating -->
 
-        <label for="post-slider-epistemic-claim">
-          To what extent do you think this claim is true or false?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="post-slider-epistemic-claim" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-epistemic-claim"
-            oninput="this.classList.remove('incomplete');"
-          >
-          <span class="jspsych-slider-left-anchor">Definitely false</span>
-          <span class="jspsych-slider-right-anchor">Definitely true</span>
-        </div><br><br><br>
-        
+          <label for="post-slider-epistemic-claim" class="jspsych-survey-multi-choice-question">
+            To what extent do you think this claim is true or false?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="post-slider-epistemic-claim" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="post-slider-epistemic-claim"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
+            >
+            <span class="jspsych-slider-left-anchor">Definitely false</span>
+            <span class="jspsych-slider-right-anchor">Definitely true</span>
+          </div><br><br><br>
+          
 
-        <!-- Post-Sampling Epistemic Plausible Rating -->
+          <!-- Post-Sampling Epistemic Plausible Rating -->
 
-        <label for="post-slider-epistemic-plausible" class="jspsych-survey-multi-choice-question">
-          To what extent do you think the content of this claim is plausible?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="post-slider-epistemic-plausible" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-epistemic-plausible"
-            oninput="this.classList.remove('incomplete')"
-          >
-          <span class="jspsych-slider-left-anchor">Definitely implausible</span>
-          <span class="jspsych-slider-right-anchor">Definitely plausible</span>
-        </div><br><br><br>`,
-  button_label: 'Next',
-  data: {
-    task: 'Estimate'
-  },
-  request_response: true
-}
+          <label for="post-slider-epistemic-plausible" class="jspsych-survey-multi-choice-question">
+            To what extent do you think the content of this claim is plausible?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="post-slider-epistemic-plausible" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="post-slider-epistemic-plausible"
+              oninput="this.classList.remove('incomplete')"
+            >
+            <span class="jspsych-slider-left-anchor">Definitely implausible</span>
+            <span class="jspsych-slider-right-anchor">Definitely plausible</span>
+          </div><br><br><br>`,
+    button_label: 'Next',
+    data: {
+      task: 'Estimate'
+    },
+    request_response: true
+  };
+};
 
 // Epistemic Post-Predictions: Other //
-const postPredictionsEpistemicOther = {
-  type: jsPsychSurveyHtmlForm,
-  preamble: `
-        <div class="quote">
-          <h3>Statement #1</h3>
-          <blockquote>
-            "Marie Curie discovered radium and polonium, 
-            which revolutionized medical treatments and 
-            contributed to the development of nuclear weapons."
-          </blockquote>
-        </div>
-        <p class="jspsych-survey-multi-choice-preamble">
-          Now that you've had the chance to see what other people 
-          think about the statement, we want to know what you think again.
-          Please answer the following questions:<br><br>
-        </p><br>`,
-  html: `
-        <!-- Post-Sampling Epistemic Estimate -->
+function postPredictionsEpistemicOther(trialIndex) {
+  return {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `
+          <div class="quote">
+            <h3>Statement #` + (trialIndex + 1) + `</h3>
+            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+          </div>
+          <p class="jspsych-survey-multi-choice-preamble">
+            Now that you've had the chance to see what other people 
+            think about the statement, we want to know what you think again.
+            Please answer the following questions:
+          </p><br><br>`,
+    html: `
+          <!-- Post-Sampling Epistemic Estimate -->
 
-        <label for="post-slider-epistemic-estimate-percent" class="jspsych-survey-multi-choice-question">
-          What percentage of people in the U.S. do you think believe this claim is true vs. think this is false?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="post-slider-epistemic-estimate-percent" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-epistemic-estimate-percent"
-            oninput="
-              this.classList.remove('incomplete');
-              $('#post-slider-epistemic-estimate-percent-label').addClass('fade-out');
+          <label for="post-slider-epistemic-estimate-percent" class="jspsych-survey-multi-choice-question">
+            What percentage of people in the U.S. do you think believe this claim is true vs. think this is false?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="post-slider-epistemic-estimate-percent" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="post-slider-epistemic-estimate-percent"
+              oninput="
+                this.classList.remove('incomplete');
+                $('#post-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
-              let rawRating = parseFloat(this.value);
-              let downRating = (100 - rawRating) + '%';
-              let upRating = rawRating + '%';
-            
-              $('#slider-downRating').text(downRating);
-              $('#slider-upRating').text(upRating);
-            "
-          >
-          <output style="position: absolute; left: 0; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span class="jspsych-slider-left-anchor">Believe this claim is false</span>
-          <span class="jspsych-slider-right-anchor">Believe this claim is true</span>
-        </div><br><br><br>
+                let rawRating = parseFloat(this.value);
+                let downRating = (100 - rawRating) + '%';
+                let upRating = rawRating + '%';
+              
+                $('#slider-downRating').text(downRating);
+                $('#slider-upRating').text(upRating);
+              "
+            >
+            <output style="position: absolute; left: 0; font-size: 14pt;" id="slider-downRating">50%</output>
+            <output style="position: absolute; right: 0; font-size: 14pt;"id="slider-upRating">50%</output><br>
+            <span class="jspsych-slider-left-anchor">Believe this claim is false</span>
+            <span class="jspsych-slider-right-anchor">Believe this claim is true</span>
+          </div><br><br><br>
 
 
-        <!-- Post-Sampling Epistemic Estimate Confidence -->
+          <!-- Post-Sampling Epistemic Estimate Confidence -->
 
-        <label for="post-slider-epistemic-confidence" class="jspsych-survey-multi-choice-question">
-          How confident are you in your answer?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="post-slider-epistemic-confidence" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-epistemic-confidence"
-            oninput="this.classList.remove('incomplete');"
-          >
-          <span class="jspsych-slider-left-anchor">Not at all confident</span>
-          <span class="jspsych-slider-right-anchor">Completely confident</span>
-        </div><br><br><br>`,
-  button_label: 'Next',
-  data: {
-    task: 'Estimate'
-  },
-  request_response: true
+          <label for="post-slider-epistemic-confidence" class="jspsych-survey-multi-choice-question">
+            How confident are you in your answer?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="post-slider-epistemic-confidence" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="post-slider-epistemic-confidence"
+              oninput="this.classList.remove('incomplete');"
+            >
+            <span class="jspsych-slider-left-anchor">Not at all confident</span>
+            <span class="jspsych-slider-right-anchor">Completely confident</span>
+          </div><br><br><br>`,
+    button_label: 'Next',
+    data: {
+      task: 'Estimate'
+    },
+    request_response: true
+  };
 };
 
 // Moral Post-Predictions Self //
-const postPredictionsMoralSelf = {
-  type: jsPsychSurveyHtmlForm,
-  preamble: `
-        <div class="quote">
-          <h3>Statement #1</h3>
-          <blockquote>
-            "Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."
-          </blockquote>
-        </div>
-        <p class="jspsych-survey-multi-choice-preamble">
-          Now that you've had the chance to see what other people 
-          think about the statement, we want to know what you think again.
-          Please answer the following questions:
-        </p><br><br><br>`,
-  html: `
-        <!-- Post-Sampling Moral Action Rating -->
+function postPredictionsMoralSelf(trialIndex) {
+  return {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `
+          <div class="quote">
+            <h3>Statement #` + (trialIndex + 1) + `</h3>
+            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+          </div>
+          <p class="jspsych-survey-multi-choice-preamble">
+            Now that you've had the chance to see what other people 
+            think about the statement, we want to know what you think again.
+            Please answer the following questions:
+          </p><br><br>`,
+    html: `
+          <!-- Post-Sampling Moral Action Rating -->
 
-        <label for="post-slider-moral-action" class="jspsych-survey-multi-choice-question">
-          To what extent do you think this <em>action</em> is morally good or morally bad? 
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="post-slider-moral-action" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-moral-action"
-            oninput="this.classList.remove('incomplete');"
-          >
-          <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
-          <span class="jspsych-slider-right-anchor">Definitely morally good</span>
-        </div><br><br><br>
-        
+          <label for="post-slider-moral-action" class="jspsych-survey-multi-choice-question">
+            To what extent do you think this <em>action</em> is morally good or morally bad? 
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="post-slider-moral-action" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="post-slider-moral-action"
+              oninput="this.classList.remove('incomplete');"
+            >
+            <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
+            <span class="jspsych-slider-right-anchor">Definitely morally good</span>
+          </div><br><br><br>
+          
 
-        <!-- Post-Sampling Moral Person Rating -->
+          <!-- Post-Sampling Moral Person Rating -->
 
-        <label for="post-slider-moral-person" class="jspsych-survey-multi-choice-question">
-          To what extent do you think this <em>person</em> is morally good or morally bad? 
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="post-slider-moral-person"
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-moral-person"
-            oninput="this.classList.remove('incomplete');"
-          >
-          <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
-          <span class="jspsych-slider-right-anchor">Definitely morally good</span>
-        </div><br><br><br>`,
-  button_label: 'Next',
-  data: {
-    task: 'Estimate'
-  },
-  request_response: true
+          <label for="post-slider-moral-person" class="jspsych-survey-multi-choice-question">
+            To what extent do you think this <em>person</em> is morally good or morally bad? 
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="post-slider-moral-person"
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="post-slider-moral-person"
+              oninput="this.classList.remove('incomplete');"
+            >
+            <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
+            <span class="jspsych-slider-right-anchor">Definitely morally good</span>
+          </div><br><br><br>`,
+    button_label: 'Next',
+    data: {
+      task: 'Estimate'
+    },
+    request_response: true
+  };
 };
 
 // Moral Post-Predictions Other //
-const postPredictionsMoralOther = {
-  type: jsPsychSurveyHtmlForm,
-  preamble: `
-        <div class="quote">
-          <h3>Statement #1</h3>
-          <blockquote>
-            "Marie Curie discovered radium and polonium, which revolutionized medical treatments and contributed to the development of nuclear weapons."
-          </blockquote>
-        </div>
-        <p class="jspsych-survey-multi-choice-preamble">
-          Now that you've had the chance to see what other people 
-          think about the statement, we want to know what you think again.
-          Please answer the following questions:
-        </p><br><br><br>`,
-  html: `
-        <!-- Post-Sampling Moral Estimate Rating -->
+function postPredictionsMoralOther(trialIndex) {
+  return {
+    type: jsPsychSurveyHtmlForm,
+    preamble: `
+          <div class="quote">
+            <h3>Statement #` + (trialIndex + 1) + `</h3>
+            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+          </div>
+          <p class="jspsych-survey-multi-choice-preamble">
+            Now that you've had the chance to see what other people 
+            think about the statement, we want to know what you think again.
+            Please answer the following questions:
+          </p><br><br>`,
+    html: `
+          <!-- Post-Sampling Moral Estimate Rating -->
 
-        <label for="post-slider-moral-estimate-percent" class="jspsych-survey-multi-choice-question">
-          What percentage of people in the U.S. do you think consider this action to be morally good vs. think this is morally bad?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="post-slider-moral-estimate-percent" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-moral-estimate-percent"
-            oninput="
-              this.classList.remove('incomplete');
-            
-              let rawRating = parseFloat(this.value);
-              let downRating = (100 - rawRating) + '%';
-              let upRating = rawRating + '%';
-            
-              $('#slider-downRating').text(downRating);
-              $('#slider-upRating').text(upRating);
-            "
-          >
-          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-          <span class="jspsych-slider-left-anchor">Believe this action is morally bad</span>
-          <span class="jspsych-slider-right-anchor">Believe this action is morally good</span>
-        </div><br><br><br>
+          <label for="post-slider-moral-estimate-percent" class="jspsych-survey-multi-choice-question">
+            What percentage of people in the U.S. do you think consider this action to be morally good vs. think this is morally bad?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="post-slider-moral-estimate-percent" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="post-slider-moral-estimate-percent"
+              oninput="
+                this.classList.remove('incomplete');
+              
+                let rawRating = parseFloat(this.value);
+                let downRating = (100 - rawRating) + '%';
+                let upRating = rawRating + '%';
+              
+                $('#slider-downRating').text(downRating);
+                $('#slider-upRating').text(upRating);
+              "
+            >
+            <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
+            <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
+            <span class="jspsych-slider-left-anchor">Believe this action is morally bad</span>
+            <span class="jspsych-slider-right-anchor">Believe this action is morally good</span>
+          </div><br><br><br>
 
-        
-        <!-- Post-Sampling Moral Estimate Confidence -->
+          
+          <!-- Post-Sampling Moral Estimate Confidence -->
 
-        <label for="post-slider-moral-confidence" class="jspsych-survey-multi-choice-question">
-          How confident are you in your answer?
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="post-slider-moral-confidence" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="post-slider-moral-confidence"
-            oninput="this.classList.remove('incomplete');"
-          >
-          <span class="jspsych-slider-left-anchor">Not at all confident</span>
-          <span class="jspsych-slider-right-anchor">Completely confident</span>
-        </div><br><br><br>`,
-  button_label: 'Next',
-  data: {
-    task: 'Estimate'
-  },
-  request_response: true
+          <label for="post-slider-moral-confidence" class="jspsych-survey-multi-choice-question">
+            How confident are you in your answer?
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="post-slider-moral-confidence" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="post-slider-moral-confidence"
+              oninput="this.classList.remove('incomplete');"
+            >
+            <span class="jspsych-slider-left-anchor">Not at all confident</span>
+            <span class="jspsych-slider-right-anchor">Completely confident</span>
+          </div><br><br><br>`,
+    button_label: 'Next',
+    data: {
+      task: 'Estimate'
+    },
+    request_response: true
+  };
 };
+
+
+function newTrialPage(trialIndex) {
+  return {
+    type: jsPsychInstructions,
+    pages: [`
+          <h2><strong>Trial ` + (trialIndex + 1) + `/8 Completed!</strong></h2>
+          <p style="text-align: left;">
+            Great Job! You will now advance to the next trial. 
+            Please click the button below to continue.
+          </p>`
+    ],
+    show_clickable_nav: true
+  };
+};
+
 
 if (participant_condition === 'epistemic') {
-  timeline.push(
-    postPredictionsEpistemicSelf,
-    postPredictionsEpistemicOther
-  );
+  // timeline.push(
+    // instructionsEpistemic,
+    // instructionsMoralComprehensionCheck
+  // );
+  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+    timeline.push(
+      prePredictionsEpistemicSelf(trialIndex),
+      prePredictionsEpistemicOther(trialIndex),
+      selectionTask,
+      postPredictionsEpistemicSelf(trialIndex),
+      postPredictionsEpistemicOther(trialIndex),
+    );
+    if (trialIndex != trials.length - 1) {
+      timeline.push(
+        newTrialPage(trialIndex)
+      );
+    };
+  };
 } else if (participant_condition === 'moral') {
   timeline.push(
-    postPredictionsMoralSelf,
-    postPredictionsMoralOther
+    // instructionsMoral,
+    // instructionsMoralComprehensionCheck
   );
+  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+    timeline.push(
+      prePredictionsMoralSelf(trialIndex),
+      prePredictionsMoralOther(trialIndex),
+      selectionTask,
+      postPredictionsMoralSelf(trialIndex),
+      postPredictionsMoralOther(trialIndex),
+    );
+    if (trialIndex != trials.length - 1) {
+      timeline.push(
+        newTrialPage(trialIndex)
+      );
+    };
+  };
 };
+
+
+// DEMOGRAPHICS //
 
 // Value Opinion Question //
 const valueOpinionQuestions = {
@@ -1971,18 +1670,9 @@ const politicsQuestions = {
 
 timeline.push(politicsQuestions);
 
-const demandDeviceQuestions = {
+const demandEffectsQuestions = {
   type: jsPsychSurveyMultiChoice,
   questions: [
-    {
-      name: 'device',
-      prompt:
-        `<p class="jspsych-survey-multi-choice-question">
-              What kind of device did you use to complete this study?
-            </p>`,
-      options: deviceTypeResponses,
-      horizontal: true
-    },
     {
       name: 'pressure',
       prompt:
@@ -2012,7 +1702,7 @@ const demandDeviceQuestions = {
         </p>`
 };
 
-timeline.push(demandDeviceQuestions);
+timeline.push(demandEffectsQuestions);
 
 const bigFiveQuestions = {
   type: jsPsychSurveyMultiChoice,

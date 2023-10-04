@@ -193,7 +193,7 @@ timeline.push(consentForm);
 const instructionsEpistemic = {
   type: jsPsychInstructions,
   pages: [`
-        <h2><strong>Instructions (1/7)</strong></h2>
+        <h2><strong>Instructions (1/6)</strong></h2>
         <p style="text-align: left;">
           Welcome to this experiment! On the following pages, you will see a 
           series of statements describing actions taken by prominent people, 
@@ -212,7 +212,7 @@ const instructionsEpistemic = {
           </strong>
         </p>`,
 
-    `<h2><strong>Instructions (2/7)</strong></h2>
+    `<h2><strong>Instructions (2/6)</strong></h2>
         <p style="text-align: left;">
           We found out what percentage of people in the U.S. believe the statements you will see are true 
           or false in a previous study. For that study, we made sure to recruit a nationally representative 
@@ -220,14 +220,14 @@ const instructionsEpistemic = {
           in the <strong>U.S. more broadly.</strong>
         </p>`,
 
-    `<h2><strong>Instructions (3/7)</strong></h2>
+    `<h2><strong>Instructions (3/6)</strong></h2>
         <p style="text-align: left;">
           These statements are all structured the same way. They will make a claim about something a real 
           person from history did do, and then some of the outcomes of that supposed action. Your job is 
           to tell us whether you think other people think the statement about that person is or is not true.
         </p>`,
 
-    `<h2><strong>Instructions (4/7)</strong></h2>
+    `<h2><strong>Instructions (4/6)</strong></h2>
         <p style="text-align: left;">
           For example, if you saw the following statement:
         </p>
@@ -243,7 +243,7 @@ const instructionsEpistemic = {
           <strong>true (or false) statement.</strong>
         </p>`,
 
-    `<h2><strong>Instructions (5/7)</strong></h2>
+    `<h2><strong>Instructions (5/6)</strong></h2>
         <div class="quote">
           <h3>Example Claim</h3>
           <blockquote>
@@ -289,7 +289,7 @@ const instructionsEpistemic = {
           </span>
         </div>`,
 
-    `<h2><strong>Instructions (6/7)</strong></h2>
+    `<h2><strong>Instructions (6/6)</strong></h2>
         <p style="text-align: left;">
           To help you share your opinion about the statements, you will have the opportunity 
           to see what people in that previous study thought about the statements. You will see 
@@ -299,20 +299,20 @@ const instructionsEpistemic = {
           Every time you click on an avatar, you will see whether that 
           <strong>one person thought that particular statement was true or false.</strong> 
           You can view the opinions of as many people as you'd like before making your estimate.
-        </p>`,
-
-    `<h2><strong>Instructions (7/7)</strong></h2>
-        <p style="text-align: left;">
-          We will ask you several other questions about these statements,
-          including how curious you are to learn more about what other people think about them.
-          When answering questions about curiosity, sometimes people say that they are curious
-          about <em>everything</em> when they actually differ slightly in how curious they are.
-        </p>
-        <p style="text-align: left;">  
-          When answering the question of how curious you are, keep in mind that <strong>you shouldn't
-          say you are extremely curious about all of them.</strong> Make sure to reserve answering that way
-          for the options you are the absolute most curious to learn about.
         </p>`
+
+    // `<h2><strong>Instructions (7/7)</strong></h2>
+    //     <p style="text-align: left;">
+    //       We will ask you several other questions about these statements,
+    //       including how curious you are to learn more about what other people think about them.
+    //       When answering questions about curiosity, sometimes people say that they are curious
+    //       about <em>everything</em> when they actually differ slightly in how curious they are.
+    //     </p>
+    //     <p style="text-align: left;">  
+    //       When answering the question of how curious you are, keep in mind that <strong>you shouldn't
+    //       say you are extremely curious about all of them.</strong> Make sure to reserve answering that way
+    //       for the options you are the absolute most curious to learn about.
+    //     </p>`
   ],
   show_clickable_nav: true
 };
@@ -321,7 +321,7 @@ const instructionsEpistemic = {
 const instructionsMoral = {
   type: jsPsychInstructions,
   pages: [`
-        <h2><strong>Instructions (1/7)</strong></h2>
+        <h2><strong>Instructions (1/6)</strong></h2>
         <p style="text-align: left;">
           Welcome to this experiment! On the following pages, you will see a series of 
           statements describing actions taken by prominent people, such as celebrities 
@@ -340,7 +340,7 @@ const instructionsMoral = {
           </strong>
         </p>`,
 
-    `<h2><strong>Instructions (2/7)</strong></h2>
+    `<h2><strong>Instructions (2/6)</strong></h2>
         <p style="text-align: left;">
           We found out what percentage of people in the U.S. believe that each action you will see is 
           considered morally good in a previous study. For that study, we made sure to recruit a 
@@ -348,7 +348,7 @@ const instructionsMoral = {
           represent the views of people in the <strong>U.S. more broadly.</strong>
         </p>`,
 
-    `<h2><strong>Instructions (3/7)</strong></h2>
+    `<h2><strong>Instructions (3/6)</strong></h2>
         <p style="text-align: left;">
           These statements are all structured the same way. They will make a claim about something 
           a real person from history did (or did not) do, and then some of the outcomes of that 
@@ -373,7 +373,7 @@ const instructionsMoral = {
           <strong>morally good (or bad) action.</strong>
         </p>`,
 
-    `<h2><strong>Instructions (5/7)</strong></h2>
+    `<h2><strong>Instructions (5/6)</strong></h2>
         <div class="quote">
           <h3>Example Claim</h3>
           <blockquote>
@@ -419,7 +419,7 @@ const instructionsMoral = {
           </span>
         </div>`,
 
-    `<h2><strong>Instructions (6/7)</strong></h2>
+    `<h2><strong>Instructions (6/6)</strong></h2>
         <p style="text-align: left;">
           To help you share your opinion about the statements, you will have the opportunity 
           to see what people in that previous study thought about the statements. You will see 
@@ -429,29 +429,29 @@ const instructionsMoral = {
           Every time you click on an avatar, you will see whether that 
           <strong>one person thought that particular statement was morally good or bad.</strong> 
           You can view the opinions of as many people as you'd like before making your estimate.
-        </p>`,
-
-    `<h2><strong>Instructions (7/7)</strong></h2>
-        <p style="text-align: left;">
-          We will ask you several other questions about these statements,
-          including how curious you are to learn more about what other people think about them.
-          When answering questions about curiosity, sometimes people say that they are curious
-          about <em>everything</em> when they actually differ slightly in how curious they are.
-        </p>
-        <p style="text-align: left;">
-          When answering the question of how curious you are, keep in mind that <strong>you shouldn't
-          say you are extremely curious about all of them.</strong> Make sure to reserve answering that way
-          for the options you are the absolute most curious to learn about.
         </p>`
+
+    // `<h2><strong>Instructions (7/7)</strong></h2>
+    //     <p style="text-align: left;">
+    //       We will ask you several other questions about these statements,
+    //       including how curious you are to learn more about what other people think about them.
+    //       When answering questions about curiosity, sometimes people say that they are curious
+    //       about <em>everything</em> when they actually differ slightly in how curious they are.
+    //     </p>
+    //     <p style="text-align: left;">
+    //       When answering the question of how curious you are, keep in mind that <strong>you shouldn't
+    //       say you are extremely curious about all of them.</strong> Make sure to reserve answering that way
+    //       for the options you are the absolute most curious to learn about.
+    //     </p>`
   ],
   show_clickable_nav: true
 };
 
-// if (participant_condition === 'epistemic') {
-//   timeline.push(instructionsEpistemic);
-// } else if (participant_condition === 'moral') {
-//   timeline.push(instructionsMoral);
-// };
+if (participant_condition === 'epistemic') {
+  timeline.push(instructionsEpistemic);
+} else if (participant_condition === 'moral') {
+  timeline.push(instructionsMoral);
+};
 
 const instructionsEpistemicComprehensionCheck = {
   type: jsPsychSurveyMultiChoice,
@@ -1232,9 +1232,9 @@ function newTrialPage(trialIndex) {
   return {
     type: jsPsychInstructions,
     pages: [`
-          <h2><strong>Trial ` + (trialIndex + 1) + `/8 Completed!</strong></h2>
+          <h2><strong>Trial ` + (trialIndex + 1) + `/2 Completed!</strong></h2>
           <p style="text-align: left;">
-            Great Job! You will now advance to the next trial. 
+            Great Job! You will now advance to the second trial. 
             Please click the button below to continue.
           </p>`
     ],
@@ -1245,10 +1245,10 @@ function newTrialPage(trialIndex) {
 
 if (participant_condition === 'epistemic') {
   // timeline.push(
-    // instructionsEpistemic,
-    // instructionsMoralComprehensionCheck
+  //   instructionsEpistemic,
+  //   instructionsEpistemicComprehensionCheck
   // );
-  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+  for (let trialIndex = 0; trialIndex < 2; trialIndex++) {
     timeline.push(
       prePredictionsEpistemicSelf(trialIndex),
       prePredictionsEpistemicOther(trialIndex),
@@ -1256,18 +1256,18 @@ if (participant_condition === 'epistemic') {
       postPredictionsEpistemicSelf(trialIndex),
       postPredictionsEpistemicOther(trialIndex),
     );
-    if (trialIndex != trials.length - 1) {
+    if (trialIndex != 1) {
       timeline.push(
         newTrialPage(trialIndex)
       );
     };
   };
 } else if (participant_condition === 'moral') {
-  timeline.push(
-    // instructionsMoral,
-    // instructionsMoralComprehensionCheck
-  );
-  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+  // timeline.push(
+  //   instructionsMoral,
+  //   instructionsMoralComprehensionCheck
+  // );
+  for (let trialIndex = 0; trialIndex < 2; trialIndex++) {
     timeline.push(
       prePredictionsMoralSelf(trialIndex),
       prePredictionsMoralOther(trialIndex),
@@ -1275,7 +1275,7 @@ if (participant_condition === 'epistemic') {
       postPredictionsMoralSelf(trialIndex),
       postPredictionsMoralOther(trialIndex),
     );
-    if (trialIndex != trials.length - 1) {
+    if (trialIndex != 1) {
       timeline.push(
         newTrialPage(trialIndex)
       );

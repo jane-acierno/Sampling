@@ -26,7 +26,8 @@ const session_id = jsPsych.data.getURLVariable('SESSION_ID');
 let participant_condition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
 
 // Define your array of possible trials
-const trials = jsPsych.randomization.shuffle([1, 2, 3, 4, 5, 6, 7, 8]).slice(0, 2);  // Number of trials, can just remove if it's 8
+const trials = jsPsych.randomization.shuffle([0, 1, 2, 3, 4, 5, 6, 7]).slice(0, 2);  // Number of trials, can just remove if it's 8
+console.log(trials)
 
 jsPsych.data.addProperties({
   subject_id: subject_id,
@@ -398,8 +399,9 @@ const instructionsMoral = {
             value="50" min="0" max="100" step="1" 
             id="practice-slider-moral-estimate-percent"
             oninput="
-              this.classList.remove('incomplete')
-              $('#practice-slider-moral-estimate-percent-label').addClass('fade-out')
+              this.classList.remove('incomplete');
+              this.classList.add('clicked');
+              $('#practice-slider-moral-estimate-percent-label').addClass('fade-out');
 
               let rawRating = parseFloat(this.value);
               let downRating = (100 - rawRating) + '%';
@@ -1008,7 +1010,9 @@ function postPredictionsEpistemicSelf(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-epistemic-plausible"
-              oninput="this.classList.remove('incomplete')"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
             >
             <span class="jspsych-slider-left-anchor">Definitely implausible</span>
             <span class="jspsych-slider-right-anchor">Definitely plausible</span>
@@ -1079,7 +1083,9 @@ function postPredictionsEpistemicOther(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-epistemic-confidence"
-              oninput="this.classList.remove('incomplete');"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -1119,7 +1125,9 @@ function postPredictionsMoralSelf(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-moral-action"
-              oninput="this.classList.remove('incomplete');"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -1138,7 +1146,9 @@ function postPredictionsMoralSelf(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-moral-person"
-              oninput="this.classList.remove('incomplete');"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -1180,6 +1190,7 @@ function postPredictionsMoralOther(trialIndex) {
               id="post-slider-moral-estimate-percent"
               oninput="
                 this.classList.remove('incomplete');
+                this.classList.add('clicked');
               
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';
@@ -1208,7 +1219,9 @@ function postPredictionsMoralOther(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-moral-confidence"
-              oninput="this.classList.remove('incomplete');"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('clicked');"
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -1373,8 +1386,8 @@ const demographicsQuestions = {
             style="padding: 5px; width: 40px;" 
             class="incomplete"
             oninput="
-              this.classList.remove('incomplete')
-            "
+              this.classList.remove('incomplete');
+              this.classList.add('clicked');"
           >
         </div>
         

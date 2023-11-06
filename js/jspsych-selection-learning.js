@@ -32,7 +32,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				default: undefined,
 				array: true,
 			},
-			condition: {
+			participantCondition: {
 				type: jspsych.ParameterType.STRING,
 				pretty_name: "Condition",
 				default: undefined,
@@ -70,15 +70,36 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			// Generate circles
 			const avatarCircleContainer = $('#avatar-grid');
 			for (let i = 0; i < 100; i++) {
-				const avatarCircle = $(`<div class='avatar-circle' id='circle${i + 1}'></div>`);
+				const avatarCircle = $(`<div class='avatar-circle' id='circle${trial.randomizedLocationList[i] + 1}'></div>`);
 				avatarCircleContainer.append(avatarCircle);
 			}
 
 			for (let i = 0; i < 100; i++) {
 				const circleId = $(`#circle${i + 1}`);
-				const avatarPhoto = $(`<img class='avatar-photo' src='./avatars/photo${i + 1}.webp'>`);
+				const avatarPhoto = $(`<img class='avatar-photo' src='./avatars/photo${trial.randomizedLocationList[i] + 1}.webp'>`);
 				circleId.append(avatarPhoto);
 			}
+
+			// Generate ratings
+			if (trial.participantCondition == 'epistemic') {
+				var selectionRatings = {
+					0: trial.selectionRatings['epistemicRatingsQ12'],
+					1: trial.selectionRatings['epistemicRatingsQ26'],
+					2: trial.selectionRatings['epistemicRatingsQ27'],
+					3: trial.selectionRatings['epistemicRatingsQ29'],
+					4: trial.selectionRatings['epistemicRatingsQ30']
+				}
+			} else if (trial.participantCondition == 'moral') {
+				var selectionRatings = {
+					0: trial.selectionRatings['moralRatingsQ12'],
+					1: trial.selectionRatings['moralRatingsQ26'],
+					2: trial.selectionRatings['moralRatingsQ27'],
+					3: trial.selectionRatings['moralRatingsQ29'],
+					4: trial.selectionRatings['moralRatingsQ30']
+				}
+			};
+
+
 
 			const samplingPromptContainer = $('#prompt-container');
 			samplingPromptContainer.html(`
@@ -97,9 +118,17 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			var learningStartRT = "NA";
 			var trialDuration = "NA";
 			var selections = [];
-			var rt_array = [];
+			var rt_array = []
+			
+			var sliderRatings = [];
+			
+			for (var i = 0; i < trial.randomizedLocationList.length; i++) {
+				var newIndex = trial.randomizedLocationList[i];
+				sliderRatings.push(selectionRatings[trial.trialIndex][newIndex]);
+			};
 
-			var sliderRatings = [...Array(100).fill(0)];  // TODO: Update this!
+			console.log(trial.randomizedLocationList)
+			console.log(sliderRatings)
 
 			var start_time = (new Date()).getTime();
 
@@ -132,7 +161,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				let textDownRating = "NA";
 				let textUpRating = "NA";
 
-				if (trial.condition == "epistemic") {
+				if (trial.participantCondition == "epistemic") {
 					ratingPrompt = "How likely do you think it is that this claim is true or false?";
 					textDownRating = "Definitely false";
 					textUpRating = "Definitely true";
@@ -236,7 +265,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 								  .addClass('jspsych-selection-learning-button')
 								  .on('click', function (e) {
 								
-									// disable all the buttons after a response
+								// disable all the buttons after a response
 								$('.jspsych-selection-learning-button').off('click')
 																	   .attr('disabled', 'disabled');
 								

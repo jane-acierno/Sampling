@@ -27,7 +27,7 @@ let participantCondition = jsPsych.randomization.sampleWithoutReplacement(['epis
 const trials = jsPsych.randomization.shuffle([0, 1, 2, 3, 4]).slice(0, 2);
 
 jsPsych.data.addProperties({
-  subjectId: subjectId,
+  subject_id: subject_id,
   studyId: studyId,
   sessionId: sessionId,
   participantCondition: participantCondition
@@ -1383,14 +1383,14 @@ function newTrialPage(trialIndex) {
 
 
 if (participantCondition === 'epistemic') {
-  // timeline.push(
-  //   instructionsEpistemic,
-  //   instructionsEpistemicComprehensionCheck
-  // );
+  timeline.push(
+    instructionsEpistemic,
+    instructionsEpistemicComprehensionCheck
+  );
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
     timeline.push(
-      // prePredictionsEpistemicSelf(trialIndex),
-      // prePredictionsEpistemicOther(trialIndex),
+      prePredictionsEpistemicSelf(trialIndex),
+      prePredictionsEpistemicOther(trialIndex),
       selectionTask(trialIndex, participantCondition),
       postPredictionsEpistemicSelf(trialIndex),
       postPredictionsEpistemicOther(trialIndex),
@@ -1402,14 +1402,14 @@ if (participantCondition === 'epistemic') {
     };
   };
 } else if (participantCondition === 'moral') {
-  // timeline.push(
-  //   instructionsMoral,
-  //   instructionsMoralComprehensionCheck
-  // );
+  timeline.push(
+    instructionsMoral,
+    instructionsMoralComprehensionCheck
+  );
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
     timeline.push(
-      // prePredictionsMoralSelf(trialIndex),
-      // prePredictionsMoralOther(trialIndex),
+      prePredictionsMoralSelf(trialIndex),
+      prePredictionsMoralOther(trialIndex),
       selectionTask(trialIndex, participantCondition),
       postPredictionsMoralSelf(trialIndex),
       postPredictionsMoralOther(trialIndex),
@@ -2011,13 +2011,6 @@ timeline.push(exitFullscreen);
 //preload all images
 const imageSet = avatarPhotos;
 
-// /* finish connection with pavlovia.org */
-// const pavlovia_finish = {
-// 	type: "pavlovia",
-// 	command: "finish"
-// 	};
-// timeline.push(pavlovia_finish);
-
 jsPsych.pluginAPI.preloadImages(imageSet, function () {
   startExperiment();
 });
@@ -2030,6 +2023,8 @@ const save_data = {
   filename: filename,
   data_string: ()=>jsPsych.data.get().csv()
 };
+
+timeline.push(save_data);
 
 //function to initialize the experiment; will be called once all images are preloaded
 function startExperiment() {

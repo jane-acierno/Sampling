@@ -407,10 +407,10 @@ const instructionsMoral = {
           <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
           <output style="position: absolute; right: 0%; font-size: 14pt; "id="slider-upRating">50%</output><br>
           <span class="jspsych-slider-left-anchor">
-            Believe Robert Oppenheimer is <strong>morally bad</strong>
+            <strong>Definitely morally bad</strong>
           </span>
           <span class="jspsych-slider-right-anchor">
-            Believe Robert Oppenheimer is <strong>morally good</strong>
+            <strong>Definitely morally good</strong>
           </span>
         </div>`,
 
@@ -1450,7 +1450,7 @@ const valueOpinionQuestions = {
   request_response: true
 };
 
-timeline.push(valueOpinionQuestions);
+// timeline.push(valueOpinionQuestions);
 
 // Need for Cognitive Control //
 const nfcQuestions = {

@@ -1953,6 +1953,19 @@ const bigFiveQuestions = {
 
 timeline.push(bigFiveQuestions);
 
+// DataPipe conclude data collection
+const save_data = {
+  type: jsPsychPipe,
+  action: "save",
+  experiment_id: "oA2BJCIcu8jQ",
+  filename: filename,
+  data_string: ()=>jsPsych.data.get().csv()
+};
+
+timeline.push(save_data);
+
+
+
 // CREATE FINAL EXPERIMENT MESSAGE/ DEBRIEF AFTER DATA SUCCESSFULLY STORED
 // including a random code participants can use to confirm they took the study (for payment on Amazon Mechanical Turk)
 
@@ -2015,18 +2028,7 @@ jsPsych.pluginAPI.preloadImages(imageSet, function () {
   startExperiment();
 });
 
-// DataPipe conclude data collection
-const save_data = {
-  type: jsPsychPipe,
-  action: "save",
-  experiment_id: "oA2BJCIcu8jQ",
-  filename: filename,
-  data_string: ()=>jsPsych.data.get().csv()
-};
-
-timeline.push(save_data);
-
 //function to initialize the experiment; will be called once all images are preloaded
 function startExperiment() {
   jsPsych.run(timeline);
-}
+};

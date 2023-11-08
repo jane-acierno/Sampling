@@ -1661,40 +1661,6 @@ const politicsQuestions = {
 
 timeline.push(politicsQuestions);
 
-const demandEffectsQuestions = {
-  type: jsPsychSurveyMultiChoice,
-  questions: [
-    {
-      name: 'pressure',
-      prompt:
-        `<p class="jspsych-survey-multi-choice-question">
-              Did you feel pressure to respond in a particular way to any of the questions?
-            </p>`,
-      options: demandEffectsResponses,
-      horizontal: true
-    },
-    {
-      name: 'judgment',
-      prompt:
-        `<p class="jspsych-survey-multi-choice-question">
-              Did you feel as though you might be judged for your responses to the questions you answered?
-            </p>`,
-      options: demandEffectsResponses,
-      horizontal: true
-    }
-  ],
-  randomize_question_order: true,
-  request_response: true,
-  scale_width: 500,
-  preamble:
-    `<p class="jspsych-survey-multi-choice-preamble">
-          For these final questions, please answer as honestly as you can.
-          The answers to these questions will <strong>not</strong> affect whether or not you receive credit/payment for participation!
-        </p>`
-};
-
-timeline.push(demandEffectsQuestions);
-
 const bigFiveQuestions = {
   type: jsPsychSurveyMultiChoice,
   questions: [
@@ -1804,6 +1770,40 @@ const bigFiveQuestions = {
 };
 
 timeline.push(bigFiveQuestions);
+
+const demandEffectsQuestions = {
+  type: jsPsychSurveyMultiChoice,
+  questions: [
+    {
+      name: 'pressure',
+      prompt:
+        `<p class="jspsych-survey-multi-choice-question">
+              Did you feel pressure to respond in a particular way to any of the questions?
+            </p>`,
+      options: demandEffectsResponses,
+      horizontal: true
+    },
+    {
+      name: 'judgment',
+      prompt:
+        `<p class="jspsych-survey-multi-choice-question">
+              Did you feel as though you might be judged for your responses to the questions you answered?
+            </p>`,
+      options: demandEffectsResponses,
+      horizontal: true
+    }
+  ],
+  randomize_question_order: true,
+  request_response: true,
+  scale_width: 500,
+  preamble:
+    `<p class="jspsych-survey-multi-choice-preamble">
+          For these final questions, please answer as honestly as you can.
+          The answers to these questions will <strong>not</strong> affect whether or not you receive credit/payment for participation!
+        </p>`
+};
+
+timeline.push(demandEffectsQuestions);
 
 // DataPipe conclude data collection
 const save_data = {

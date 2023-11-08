@@ -496,17 +496,17 @@ const instructionsEpistemicComprehensionCheck = {
           The experiment will begin on the next page.
           
           As a reminder, you will see a series of statements and be asked to estimate 
-          how many people think the outcome of the action in the statement is morally good (vs. morally bad).<br><br>
+          how many people think the outcome of the action in the statement is true (vs. false).<br><br>
 
           We will first ask you a few questions about the statement you will see and what you think 
           before you get to see any information about what others think. Then, you will see a page 
-          of many different avatars that each represent real participants' morally good vs. morally bad 
-          opinions about the outcomes of the action in the statement you read.<br><br>
+          of many different avatars that each represent real participants' opinions 
+          about the outcomes of the action in the statement you read.<br><br>
 
           <strong>
             You are free to review as many opinions as you would like before providing us 
             your final estimate of the percentage of people in the U.S. who consider 
-            the outcome of the action to be morally good (vs. morally bad).
+            the outcome of the action to be true (vs. false).
           </strong>
 
           To make sure you fully understand the instructions for this study, please answer the questions below: 
@@ -571,8 +571,8 @@ const instructionsMoralComprehensionCheck = {
 
       We will first ask you a few questions about the statement you will see and what you think 
       before you get to see any information about what others think. Then, you will see a page 
-      of many different avatars that each represent real participants' morally good vs. morally bad 
-      opinions about the outcomes of the action in the statement you read.<br><br>
+      of many different avatars that each represent real participants' opinions about 
+      the outcomes of the action in the statement you read. <br><br>
 
       <strong>
         You are free to review as many opinions as you would like before providing us 

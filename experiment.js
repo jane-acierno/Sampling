@@ -1234,14 +1234,14 @@ function newTrialPage(trialIndex) {
 
 
 if (participantCondition === 'epistemic') {
-  // timeline.push(
-  //   instructionsEpistemic,
-  //   instructionsEpistemicComprehensionCheck
-  // );
+  timeline.push(
+    instructionsEpistemic,
+    instructionsEpistemicComprehensionCheck
+  );
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
     timeline.push(
-      // prePredictionsEpistemicSelf(trialIndex),
-      // prePredictionsEpistemicOther(trialIndex),
+      prePredictionsEpistemicSelf(trialIndex),
+      prePredictionsEpistemicOther(trialIndex),
       selectionTask(trialIndex, participantCondition),
       postPredictionsEpistemicSelf(trialIndex),
       postPredictionsEpistemicOther(trialIndex),
@@ -1253,14 +1253,14 @@ if (participantCondition === 'epistemic') {
     };
   };
 } else if (participantCondition === 'moral') {
-  // timeline.push(
-  //   instructionsMoral,
-  //   instructionsMoralComprehensionCheck
-  // );
+  timeline.push(
+    instructionsMoral,
+    instructionsMoralComprehensionCheck
+  );
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
     timeline.push(
-      // prePredictionsMoralSelf(trialIndex),
-      // prePredictionsMoralOther(trialIndex),
+      prePredictionsMoralSelf(trialIndex),
+      prePredictionsMoralOther(trialIndex),
       selectionTask(trialIndex, participantCondition),
       postPredictionsMoralSelf(trialIndex),
       postPredictionsMoralOther(trialIndex),

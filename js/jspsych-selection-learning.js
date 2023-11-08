@@ -346,7 +346,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 					const learningStartTime = (new Date()).getTime();
 
-					//display buttons
 					let buttons = [];
 					if (Array.isArray(trial.button_html)) {
 						if (trial.button_html.length == trial.choices.length) {
@@ -380,7 +379,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 								
 								// hide button
 								$('.jspsych-selection-learning-button').hide();
-								choice = $('#' + this.id).data('choice');
+								let choice = $('#' + this.id).data('choice');
 
 								const curTime = Date.now();
 								const learningStartRT = curTime - learningStartTime;

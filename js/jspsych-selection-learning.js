@@ -53,8 +53,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						<h2>Sampling Task</h2>
 						<p>
 							Now you can see what other people think. 
-							Click on any of the people below to see whether that person thinks the action 
-							described in the statement above is morally good or morally bad.
+							Click on any of the people below to see that person's opinion.
 						</p>
 					</div>
 				</div>

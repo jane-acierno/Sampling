@@ -377,7 +377,7 @@ const instructionsMoral = {
         </div><br>
         <label for="practice-slider-moral-estimate-percent">
           As practice, please estimate what percentage of people in the U.S. believe, 
-          based on these outcomes, that Robert Oppenheimer is morally good or morally bad:<br><br>
+          based on these outcomes, that this action is morally good or morally bad:<br><br>
           <strong>
             <code style="font-size: 10pt;" id="practice-slider-moral-estimate-percent-label">
               <i class="fa-solid fa-arrow-left" id="fa-arrow-left"></i>&nbsp;(slide to adjust)&nbsp;<i class="fa-solid fa-arrow-right" id="fa-arrow-right"></i>

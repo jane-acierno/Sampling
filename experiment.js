@@ -319,8 +319,7 @@ const instructionsMoral = {
         <p style="text-align: left;">
           Welcome to this experiment! On the following pages, you will see a series of 
           statements describing actions taken by prominent people, such as celebrities 
-          and historical figures. Some of these actions are generally considered morally
-          good actions. All of the people in these statements are real people.
+          and historical figures. All of the people in these statements are real people.
         </p>
         <p style="text-align: left;">
           Your task is to assess the percentage of individuals in the United States who 

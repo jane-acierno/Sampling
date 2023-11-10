@@ -294,19 +294,6 @@ const instructionsEpistemic = {
           <strong>one person thought that particular statement was true or false.</strong> 
           You can view the opinions of as many people as you'd like before making your estimate.
         </p>`
-
-    // `<h2><strong>Instructions (7/7)</strong></h2>
-    //     <p style="text-align: left;">
-    //       We will ask you several other questions about these statements,
-    //       including how curious you are to learn more about what other people think about them.
-    //       When answering questions about curiosity, sometimes people say that they are curious
-    //       about <em>everything</em> when they actually differ slightly in how curious they are.
-    //     </p>
-    //     <p style="text-align: left;">  
-    //       When answering the question of how curious you are, keep in mind that <strong>you shouldn't
-    //       say you are extremely curious about all of them.</strong> Make sure to reserve answering that way
-    //       for the options you are the absolute most curious to learn about.
-    //     </p>`
   ],
   show_clickable_nav: true
 };
@@ -424,19 +411,6 @@ const instructionsMoral = {
           <strong>one person thought that particular statement was morally good or bad.</strong> 
           You can view the opinions of as many people as you'd like before making your estimate.
         </p>`
-
-    // `<h2><strong>Instructions (7/7)</strong></h2>
-    //     <p style="text-align: left;">
-    //       We will ask you several other questions about these statements,
-    //       including how curious you are to learn more about what other people think about them.
-    //       When answering questions about curiosity, sometimes people say that they are curious
-    //       about <em>everything</em> when they actually differ slightly in how curious they are.
-    //     </p>
-    //     <p style="text-align: left;">
-    //       When answering the question of how curious you are, keep in mind that <strong>you shouldn't
-    //       say you are extremely curious about all of them.</strong> Make sure to reserve answering that way
-    //       for the options you are the absolute most curious to learn about.
-    //     </p>`
   ],
   show_clickable_nav: true
 };
@@ -458,7 +432,7 @@ const instructionsEpistemicComprehensionCheck = {
         "Estimate the percentage of people in the U.S. who have heard this statement before"
       ],
       correct: 'Estimate the percentage of people in the U.S. who believe the statement is true',
-      hint: `That's not quite right. Remember, you are trying to estimate what percentage of people in the U.S. believe the statement is true</em>.`,
+      hint: `That's not quite right. Remember, you are trying to estimate what percentage of people in the U.S. believe the statement is <strong>true</strong></em>.`,
       required: true,
     },
     {
@@ -473,21 +447,9 @@ const instructionsEpistemicComprehensionCheck = {
         "False"
       ],
       correct: 'True',
-      hint: `That's not quite right. Remember, you will have the chance to view the opinions of as many people as you'd like before making your estimate.`,
+      hint: `That's not quite right. Remember, you will have the chance to view the opinions of <strong>as many people as you'd like</strong> before making your estimate.`,
       required: true,
     },
-    //        {
-    //          name: 'epistemic_comp_check_3',
-    //          prompt: `
-    //            <strong>
-    //              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
-    //              You will earn a bonus for each statement if your estimate is within __ percent of the true number:
-    //            </strong>`,
-    //          options: ["5%", "10%", "15%", "20%"],
-    //          correct: "10%",
-    //          hint: `That's not quite right. Remember, you will earn a bonus for each statement if your estimate is within <em>10%</em> of the true number.`,
-    //          required: true
-    //        },
   ],
   preamble: `
         <h2 style="text-align: center;">Instructions Review</h2> 
@@ -529,7 +491,7 @@ const instructionsMoralComprehensionCheck = {
         "Estimate the percentage of people in the U.S. who have heard this statement before"
       ],
       correct: 'Estimate the percentage of people in the U.S. who believe the actions that the historical figures took were morally good',
-      hint: `That's not quite right. Remember, you are trying to estimate what percentage of people in the U.S. believe the actions that the historical figures took were <em>morally good</em>.`,
+      hint: `That's not quite right. Remember, you are trying to estimate what percentage of people in the U.S. believe the actions that the historical figures took were <strong>morally good</strong>.`,
       required: true,
     },
     {
@@ -544,21 +506,9 @@ const instructionsMoralComprehensionCheck = {
         "False"
       ],
       correct: 'True',
-      hint: `That's not quite right. Remember, you will have the chance to view the opinions of as many people as you'd like before making your estimate.`,
+      hint: `That's not quite right. Remember, you will have the chance to view the opinions of <strong>as many people as you'd like</strong> before making your estimate.`,
       required: true,
     },
-    //        {
-    //          name: 'moral_comp_check_3',
-    //          prompt: `
-    //            <strong>
-    //              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
-    //              You will earn a bonus for each statement if your estimate is within __ percent of the true number:
-    //            </strong>`,
-    //          options: ["5%", "10%", "15%", "20%"],
-    //          correct: "10%",
-    //          hint: `That's not quite right. Remember, you will earn a bonus for each statement if your estimate is within <em>10%</em> of the true number.`,
-    //          required: true
-    //        },
   ],
   preamble: `
     <h2 style="text-align: center;">Instructions</h2> 
@@ -921,6 +871,7 @@ function selectionTask (trialIndex, participantCondition) {
     trialIndex: trialIndex,
     avatars: avatarDictionary,
     participantCondition: participantCondition,
+    statement: statements[trials[trialIndex]],
     choices: [
       "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;Read more",
       "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"

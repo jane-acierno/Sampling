@@ -53,8 +53,11 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						<h2>Sampling Task</h2>
 						<p>
 							Now you can see what other people think. 
-							Click on any of the people below to see that person's opinion.
+							Click on any of the people below to see that person's opinion on the following sentence:
 						</p>
+						<blockquote>
+							${trial.statement}
+						</blockquote>
 					</div>
 				</div>
 

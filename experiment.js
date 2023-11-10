@@ -651,7 +651,7 @@ function prePredictionsEpistemicOther(trialIndex) {
           <!-- Pre-Sampling Epistemic Estimate Rating -->
 
           <label for="pre-slider-epistemic-estimate-percent" class="jspsych-survey-multi-choice-question">
-            What percentage of people in the U.S. do you think consider this claim is true vs. think this is false?
+            What percentage of people in the U.S. do you think believe this claim is true vs. think this is false?
           </label>
           <div style="position: relative;">
             <input 

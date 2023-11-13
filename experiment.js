@@ -5,7 +5,6 @@ let timeline = [];
 const jsPsych = initJsPsych({
   use_webaudio: false,
   display_element: 'jspsych-target',
-  display_element: 'jspsych-target',
   show_progress_bar: false,
   default_iti: 0,
   on_finish: function (data) {
@@ -14,11 +13,12 @@ const jsPsych = initJsPsych({
   }
 });
 
-const subject_id = jsPsych.randomization.randomID(10);
-const filename = `${subject_id}.csv`;
-
+const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
 const studyId = jsPsych.data.getURLVariable('STUDY_ID');
 const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
+
+// const filename = `${participantId}.csv`;
+const filename = `${Math.floor(Math.random() * 100)}.csv`;
 
 // Randomize assignment of condition: epistemic / moral
 let participantCondition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
@@ -27,13 +27,13 @@ let participantCondition = jsPsych.randomization.sampleWithoutReplacement(['epis
 const trials = jsPsych.randomization.shuffle([0, 1, 2, 3, 4]).slice(0, 2);
 
 jsPsych.data.addProperties({
-  subject_id: subject_id,
+  participantId: participantId,
   studyId: studyId,
   sessionId: sessionId,
   participantCondition: participantCondition
 });
 
-//  Options
+// Options
 const valueOpinionOptions = ['Yes', 'Somewhat', 'No'];
 
 // Need for (Cognitive) Closure (NFC)
@@ -83,7 +83,7 @@ const enterFullscreen = {
   delay_after: 0
 };
 
-// timeline.push(enterFullscreen)
+timeline.push(enterFullscreen)
 
 // CONSENT FORM //
 const consentForm = {
@@ -162,7 +162,7 @@ const consentForm = {
             </p>`,
       options: ["Consent not given", "Consent given"],
       horizontal: true,
-      required: true,
+      required: true
     }
   ],
   preamble: '<h2 style="text-align: center"><strong>Consent Form</strong></h2>',
@@ -295,7 +295,7 @@ const instructionsEpistemic = {
           You can view the opinions of as many people as you'd like before making your estimate.
         </p>`
   ],
-  show_clickable_nav: true
+  show_clickable_nav: true,
 };
 
 // MORAL INSTRUCTIONS //
@@ -568,7 +568,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre-slider-epistemic-claim" 
+              name="pre_slider_epistemic_claim" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -589,7 +589,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre-slider-epistemic-plausible" 
+              name="pre_slider_epistemic_plausible" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -615,7 +615,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input
-              name="pre-slider-epistemic-curious" 
+              name="pre_slider_epistemic_curious" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -628,10 +628,20 @@ function prePredictionsEpistemicSelf(trialIndex) {
             <span class="jspsych-slider-right-anchor">Extremely curious</span>
           </div><br><br><br>`,
     button_label: "Next",
-    data: {
-      task: 'Pre-Sampling Epistemic Self'
-    },
-    request_response: true
+    request_response: true,
+    on_finish: function (data) {
+      let preSamplingEpistemicSelfData = data.response;
+  
+      preSamplingEpistemicSelfData = {
+        pre_slider_epistemic_claim: preSamplingEpistemicSelfData['pre_slider_epistemic_claim'],
+        pre_slider_epistemic_plausible: preSamplingEpistemicSelfData['pre_slider_epistemic_plausible'],
+        pre_slider_epistemic_curious: preSamplingEpistemicSelfData['pre_slider_epistemic_curious']
+      };
+  
+      jsPsych.data
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(preSamplingEpistemicSelfData);
+    }
   };
 };
 
@@ -655,7 +665,7 @@ function prePredictionsEpistemicOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre-slider-epistemic-estimate-percent" 
+              name="pre_slider_epistemic_estimate_percent" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -687,7 +697,7 @@ function prePredictionsEpistemicOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre-slider-epistemic-confidence" 
+              name="pre_slider_epistemic_confidence" 
               type="range" 
               class="jspsych-slider incomplete"
               value="50" min="0" max="100" step="1" 
@@ -700,10 +710,19 @@ function prePredictionsEpistemicOther(trialIndex) {
             <span class="jspsych-slider-right-anchor">Completely confident</span>
           </div><br><br><br>`,
     button_label: 'Next',
-    data: {
-      task: 'Pre-Sampling Epistemic Other'
-    },
-    request_response: true
+    request_response: true,
+    on_finish: function (data) {
+      let preSamplingEpistemicOtherData = data.response;
+  
+      preSamplingEpistemicOtherData = {
+        pre_slider_epistemic_estimate_percent: preSamplingEpistemicOtherData['pre_slider_epistemic_estimate_percent'],
+        pre_slider_epistemic_confidence: preSamplingEpistemicOtherData['pre_slider_epistemic_confidence'],
+      };
+  
+      jsPsych.data
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(preSamplingEpistemicOtherData);
+    }
   };
 };
 
@@ -775,7 +794,7 @@ function prePredictionsMoralSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre-slider-moral-curious" 
+              name="pre_slider_moral_curious" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -788,10 +807,20 @@ function prePredictionsMoralSelf(trialIndex) {
             <span class="jspsych-slider-right-anchor">Extremely curious</span>
           </div><br><br><br>`,
     button_label: 'Next',
-    data: {
-      task: 'Pre-Sampling Moral Self'
-    },
-    request_response: true
+    request_response: true,
+    on_finish: function (data) {
+      let preSamplingMoralSelfData = data.response;
+  
+      preSamplingMoralSelfData = {
+        pre_slider_moral_claim: preSamplingMoralSelfData['pre_slider_moral_claim'],
+        pre_slider_moral_plausible: preSamplingMoralSelfData['pre_slider_moral_plausible'],
+        pre_slider_moral_curious: preSamplingMoralSelfData['pre_slider_moral_curious']
+      };
+  
+      jsPsych.data
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(preSamplingMoralSelfData);
+    }
   };
 };
 
@@ -815,7 +844,7 @@ function prePredictionsMoralOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre-slider-moral-estimate-percent" 
+              name="pre_slider_moral_estimate_percent" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -845,7 +874,7 @@ function prePredictionsMoralOther(trialIndex) {
             How confident are you in your answer?
           <div style="position: relative;">
             <input 
-              name="pre-slider-moral-confidence" 
+              name="pre_slider_moral_confidence" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -858,14 +887,23 @@ function prePredictionsMoralOther(trialIndex) {
             <span class="jspsych-slider-right-anchor">Completely confident</span>
           </div><br><br><br>`,
     button_label: 'Next',
-    data: {
-      task: 'Pre-Sampling Moral Other'
-    },
-    request_response: true
+    request_response: true,
+    on_finish: function (data) {
+      let preSamplingMoralOtherData = data.response;
+  
+      preSamplingMoralOtherData = {
+        pre_slider_moral_estimate_percent: preSamplingMoralOtherData['pre_slider_moral_estimate_percent'],
+        pre_slider_moral_confidence: preSamplingMoralOtherData['pre_slider_moral_confidence'],
+      };
+  
+      jsPsych.data
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(preSamplingMoralOtherData);
+    }
   };
 };
 
-function selectionTask (trialIndex, participantCondition) {
+function selectionTask(trialIndex, participantCondition) {
   return {
     type: jsPsychSelectionLearning,
     trialIndex: trialIndex,
@@ -873,11 +911,10 @@ function selectionTask (trialIndex, participantCondition) {
     participantCondition: participantCondition,
     statement: statements[trials[trialIndex]],
     choices: [
-      "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;Read more",
+      "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;Continue sampling",
       "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
-    ],
-    data: { trialType: "selection" }
-  }
+    ]
+  };
 };
 
 const avatarNames = Array.from({ length: 100 }, (_, i) => "avatar" + i);
@@ -891,7 +928,7 @@ for (let i = 0; i < 100; i++) {
 
   let avatarName = 'image' + i;
   let avatar = avatarDictionary[avatarNames[i + 1]].image;
-  
+
   selectionTask = Object.assign(selectionTask, { [avatarName]: avatar });
 };
 
@@ -917,7 +954,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post-slider-epistemic-claim" 
+              name="post_slider_epistemic_claim" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -938,7 +975,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post-slider-epistemic-plausible" 
+              name="post_slider_epistemic_plausible" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -951,10 +988,19 @@ function postPredictionsEpistemicSelf(trialIndex) {
             <span class="jspsych-slider-right-anchor">Definitely plausible</span>
           </div><br><br><br>`,
     button_label: 'Next',
-    data: {
-      task: 'Estimate'
-    },
-    request_response: true
+    request_response: true,
+    on_finish: function (data) {
+      let postSamplingEpistemicSelfData = data.response;
+  
+      postSamplingEpistemicSelfData = {
+        post_slider_epistemic_claim: postSamplingEpistemicSelfData['post_slider_epistemic_claim'],
+        post_slider_epistemic_plausible: postSamplingEpistemicSelfData['post_slider_epistemic_plausible'],
+      };
+  
+      jsPsych.data
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(postSamplingEpistemicSelfData);
+    }
   };
 };
 
@@ -980,13 +1026,14 @@ function postPredictionsEpistemicOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post-slider-epistemic-estimate-percent" 
+              name="post_slider_epistemic_estimate_percent" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-epistemic-estimate-percent"
               oninput="
                 this.classList.remove('incomplete');
+                this.classList.add('clicked');
                 $('#post-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
                 let rawRating = parseFloat(this.value);
@@ -1011,7 +1058,7 @@ function postPredictionsEpistemicOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post-slider-epistemic-confidence" 
+              name="post_slider_epistemic_confidence" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1024,10 +1071,19 @@ function postPredictionsEpistemicOther(trialIndex) {
             <span class="jspsych-slider-right-anchor">Completely confident</span>
           </div><br><br><br>`,
     button_label: 'Next',
-    data: {
-      task: 'Estimate'
-    },
-    request_response: true
+    request_response: true,
+    on_finish: function (data) {
+      let postSamplingEpistemicOtherData = data.response;
+  
+      postSamplingEpistemicOtherData = {
+        post_slider_epistemic_estimate_percent: postSamplingEpistemicOtherData['post_slider_epistemic_estimate_percent'],
+        post_slider_epistemic_confidence: postSamplingEpistemicOtherData['post_slider_epistemic_confidence'],
+      };
+  
+      jsPsych.data
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(postSamplingEpistemicOtherData);
+    }
   };
 };
 
@@ -1053,7 +1109,7 @@ function postPredictionsMoralSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post-slider-moral-action" 
+              name="post_slider_moral_action" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1074,7 +1130,7 @@ function postPredictionsMoralSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post-slider-moral-person"
+              name="post_slider_moral_person"
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1087,10 +1143,19 @@ function postPredictionsMoralSelf(trialIndex) {
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
           </div><br><br><br>`,
     button_label: 'Next',
-    data: {
-      task: 'Estimate'
-    },
-    request_response: true
+    request_response: true,
+    on_finish: function (data) {
+      let postSamplingMoralSelfData = data.response;
+  
+      postSamplingMoralSelfData = {
+        post_slider_moral_action: postSamplingMoralSelfData['post_slider_moral_action'],
+        post_slider_moral_person: postSamplingMoralSelfData['post_slider_moral_person']
+      };
+  
+      jsPsych.data
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(postSamplingMoralSelfData);
+    }
   };
 };
 
@@ -1116,7 +1181,7 @@ function postPredictionsMoralOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post-slider-moral-estimate-percent" 
+              name="post_slider_moral_estimate_percent" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1147,7 +1212,7 @@ function postPredictionsMoralOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post-slider-moral-confidence" 
+              name="post_slider_moral_confidence" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1160,13 +1225,21 @@ function postPredictionsMoralOther(trialIndex) {
             <span class="jspsych-slider-right-anchor">Completely confident</span>
           </div><br><br><br>`,
     button_label: 'Next',
-    data: {
-      task: 'Estimate'
-    },
-    request_response: true
+    request_response: true,
+    on_finish: function (data) {
+      let postSamplingMoralOtherData = data.response;
+  
+      postSamplingMoralOtherData = {
+        post_slider_moral_estimate_percent: postSamplingMoralOtherData['post_slider_moral_estimate_percent'],
+        post_slider_moral_confidence: postSamplingMoralOtherData['post_slider_moral_confidence'],
+      };
+  
+      jsPsych.data
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(postSamplingMoralOtherData);
+    }
   };
 };
-
 
 function newTrialPage(trialIndex) {
   return {
@@ -1181,7 +1254,6 @@ function newTrialPage(trialIndex) {
     show_clickable_nav: true
   };
 };
-
 
 if (participantCondition === 'epistemic') {
   timeline.push(
@@ -1226,33 +1298,6 @@ if (participantCondition === 'epistemic') {
 
 // DEMOGRAPHICS //
 
-// Value Opinion Question //
-const valueOpinionQuestions = {
-  type: jsPsychSurveyMultiChoice,
-  preamble: `
-        <p class="jspsych-survey-multi-choice-preamble">
-          Do you value the opinion of the following people?
-        </p>`,
-  randomize_question_order: true,
-  questions: [
-    {
-      name: 'liberal_value_opinion',
-      prompt: '<p class="jspsych-survey-multi-choice-question">Liberals</p>',
-      options: valueOpinionOptions,
-      horizontal: true
-    },
-    {
-      name: 'conservative_value_opinion',
-      prompt: '<p class="jspsych-survey-multi-choice-question">Conservatives</p>',
-      options: valueOpinionOptions,
-      horizontal: true
-    }
-  ],
-  request_response: true
-};
-
-// timeline.push(valueOpinionQuestions);
-
 // Need for Cognitive Control //
 const nfcQuestions = {
   type: jsPsychSurveyMultiChoice,
@@ -1295,7 +1340,22 @@ const nfcQuestions = {
   request_response: true,
   preamble: `<p class="jspsych-survey-multi-choice-preamble">
           Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:</p>`,
-  scale_width: 500
+  scale_width: 500,
+  on_finish: function (data) {
+    let nfcData = data.response;
+
+    nfcData = {
+      nfc_1_simple_complex: nfcData['nfc_1_simple_complex'],
+      nfc_2_responsibility: nfcData['nfc_2_responsibility'],
+      nfc_3_not_fun: nfcData['nfc_3_not_fun'],
+      nfc_4_little_thought: nfcData['nfc_4_little_thought'],
+      nfc_5_new_solutions: nfcData['nfc_5_new_solutions'],
+    };
+
+    jsPsych.data
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(nfcData);
+  }
 };
 
 timeline.push(nfcQuestions);
@@ -1334,12 +1394,12 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-indigenous" 
-              name="race_ethnicity" 
-              value="race_ethnicity_indigenous" 
+              name="race_ethnicity_indigenous" 
+              value="Indigenous American or Alaskan Native" 
               class="demographics-race-ethnicity incomplete"
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
-                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
               "
@@ -1350,12 +1410,12 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-asian" 
-              name="race_ethnicity" 
-              value="race_ethnicity_asian" 
+              name="race_ethnicity_asian" 
+              value="Asian or Asian-American" 
               class="demographics-race-ethnicity incomplete"
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
-                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
               "
@@ -1366,12 +1426,12 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-black" 
-              name="race_ethnicity" 
-              value="race_ethnicity_black" 
+              name="race_ethnicity_black" 
+              value="African or African-American" 
               class="demographics-race-ethnicity incomplete"
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
-                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
               "
@@ -1382,12 +1442,12 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-native" 
-              name="race_ethnicity" 
-              value="race_ethnicity_native" 
+              name="race_ethnicity_native" 
+              value="Native Hawaiian or Pacific Islander" 
               class="demographics-race-ethnicity incomplete"
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
-                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
               "
@@ -1398,12 +1458,12 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-white" 
-              name="race_ethnicity" 
-              value="race_ethnicity_white" 
+              name="race_ethnicity_white" 
+              value="White" 
               class="demographics-race-ethnicity incomplete"
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
-                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
               "
@@ -1414,12 +1474,12 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-hispanic" 
-              name="race_ethnicity" 
-              value="race_ethnicity_hispanic" 
+              name="race_ethnicity_hispanic" 
+              value="Hispanic/Latino/a/e/x" 
               class="demographics-race-ethnicity incomplete"
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
-                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
               "
@@ -1430,12 +1490,12 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-other" 
-              name="race_ethnicity" 
-              value="race_ethnicity_other" 
+              name="race_ethnicity_other" 
+              value="Other" 
               class="demographics-race-ethnicity incomplete"
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
-                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
               "
@@ -1446,12 +1506,12 @@ const demographicsQuestions = {
             <input 
               type="checkbox"
               id="race-ethnicity-prefer-not" 
-              name="race_ethnicity" 
-              value="race_ethnicity_prefer_not" 
+              name="race_ethnicity_prefer_not" 
+              value="Prefer not to disclose" 
               class="demographics-race-ethnicity incomplete"
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
-                for (var i = 0; i < demographicsRaceEthnicity.length; i++) {
+                for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
               "
@@ -1469,12 +1529,12 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-man" 
-              name="gender" 
-              value="gender_man" 
+              name="gender_man" 
+              value="Man" 
               class="demographics-gender incomplete"
               oninput="
                 let demographicsGender = document.querySelectorAll('.demographics-gender');
-                for (var i = 0; i < demographicsGender.length; i++) {
+                for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
               "
@@ -1485,12 +1545,12 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-woman" 
-              name="gender" 
-              value="gender_woman" 
+              name="gender_woman" 
+              value="Woman" 
               class="demographics-gender incomplete"
               oninput="
                 let demographicsGender = document.querySelectorAll('.demographics-gender');
-                for (var i = 0; i < demographicsGender.length; i++) {
+                for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
               "
@@ -1501,12 +1561,12 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-non-binary" 
-              name="gender" 
-              value="gender_non_binary" 
+              name="gender_non_binary" 
+              value="Non-binary" 
               class="demographics-gender incomplete"
               oninput="
                 let demographicsGender = document.querySelectorAll('.demographics-gender');
-                for (var i = 0; i < demographicsGender.length; i++) {
+                for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
               "
@@ -1517,12 +1577,12 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-other" 
-              name="gender" 
-              value="gender_other" 
+              name="gender_other" 
+              value="Other" 
               class="demographics-gender incomplete"
               oninput="
                 let demographicsGender = document.querySelectorAll('.demographics-gender');
-                for (var i = 0; i < demographicsGender.length; i++) {
+                for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
               "
@@ -1533,12 +1593,12 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-prefer-not" 
-              name="gender" 
-              value="gender_prefer_not" 
+              name="gender_prefer_not" 
+              value="Prefer not to disclose" 
               class="demographics-gender incomplete"
               oninput="
                 let demographicsGender = document.querySelectorAll('.demographics-gender');
-                for (var i = 0; i < demographicsGender.length; i++) {
+                for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
               "
@@ -1548,28 +1608,78 @@ const demographicsQuestions = {
         </div>
         
         <style id="jspsych-survey-multi-choice-css">
-          .jspsych-survey-multi-choice-question { margin-top: 2em; margin-bottom: 2em; text-align: left; }
-          .jspsych-survey-multi-choice-option { font-size: 10pt; line-height: 2; }
-          .jspsych-survey-multi-choice-horizontal .jspsych-survey-multi-choice-option { 
-            display: inline-block; margin-left: 1em; margin-right: 1em; vertical-align: top; text-align: center; 
-          } label.jspsych-survey-multi-choice-text input[type='radio'] {margin-right: 1em;}
+          .jspsych-survey-multi-choice-question { 
+            margin-top: 2em; 
+            margin-bottom: 2em; 
+            text-align: left; 
+          } .jspsych-survey-multi-choice-option { 
+            font-size: 10pt; 
+            line-height: 2; 
+          } .jspsych-survey-multi-choice-horizontal .jspsych-survey-multi-choice-option { 
+            display: inline-block; 
+            margin-left: 1em; 
+            margin-right: 1em; 
+            vertical-align: top; 
+            text-align: center; 
+          } label.jspsych-survey-multi-choice-text input[type='radio'] {
+            margin-right: 1em;
+          }
         </style>
       `,
   button_label: 'Next',
-  data: {
-    task: 'Estimate'
-  },
   request_response: true,
   on_finish: function (data) {
-    const demographics = data.response;
+    let demographicsData = data.response;
 
-    let age = Number(demographics['age']);
-    let race = demographics['race_ethnicity'];
-    let gender = demographics['gender'];
+    // Age
+    const age = Number(demographicsData['age']);
+
+    // Race
+    let race_ethnicity = [];
+    race_ethnicity.push(
+      demographicsData['race_ethnicity_indigenous'],
+      demographicsData['race_ethnicity_asian'],
+      demographicsData['race_ethnicity_black'],
+      demographicsData['race_ethnicity_native'],
+      demographicsData['race_ethnicity_white'],
+      demographicsData['race_ethnicity_hispanic'],
+      demographicsData['race_ethnicity_other'],
+    )
+    race_ethnicity = race_ethnicity.filter(value => value !== null)
+    if (race_ethnicity == []) {
+      race_ethnicity = null;
+    } else {
+      race_ethnicity = race_ethnicity.sort()
+        .join(",");
+    };
+
+    // Gender
+    let gender = '';
+    if (demographicsData['gender_man']) {
+      gender = 'Man';
+    } else if (demographicsData['gender_woman']) {
+      gender = 'Woman';
+    } else if (demographicsData['gender_non_binary']) {
+      gender = 'Non-Binary';
+    } else if (demographicsData['gender_other']) {
+      gender = 'Other';
+    }
+
+    // Create a new object with the formatted data
+    demographicsData = {
+      age: age,
+      race_ethnicity: race_ethnicity,
+      gender: gender
+    };
+
+    jsPsych.data
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(demographicsData);
   }
 };
 
 timeline.push(demographicsQuestions);
+
 
 const politicsQuestions = {
   type: jsPsychSurveyMultiChoice,
@@ -1606,7 +1716,20 @@ const politicsQuestions = {
         <p class="jspsych-survey-multi-choice-preamble">
           Please answer the following questions about your political ideology:
         </p>`,
-  request_response: true
+  request_response: true,
+  on_finish: function (data) {
+    let politicalData = data.response;
+
+    politicalData = {
+      political_ideology_economic: politicalData['political_ideology_economic'],
+      political_ideology_social: politicalData['political_ideology_social'],
+      political_ideology_overall: politicalData['political_ideology_overall']
+    };
+
+    jsPsych.data
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(politicalData);
+  }
 };
 
 timeline.push(politicsQuestions);
@@ -1716,10 +1839,31 @@ const bigFiveQuestions = {
           if one characteristic applies more strongly than the other. Show how much
           you agree with the items below. You can work quickly; your first feeling 
           is generally best.
-        </p>`
+        </p>`,
+  on_finish: function (data) {
+    let bigFiveData = data.response;
+
+    bigFiveData = {
+      extraversion_1: bigFiveData['extraversion_1'],
+      agreeableness_2_r: bigFiveData['agreeableness_2_r'],
+      conscientiousness_3: bigFiveData['conscientiousness_3'],
+      emotional_stability_4_r: bigFiveData['emotional_stability_4_r'],
+      openness_5: bigFiveData['openness_5'],
+      extraversion_6_r: bigFiveData['extraversion_6_r'],
+      agreeableness_7: bigFiveData['agreeableness_7'],
+      conscientiousness_8_r: bigFiveData['conscientiousness_8_r'],
+      emotional_stability_9: bigFiveData['emotional_stability_9'],
+      openness_10_r: bigFiveData['openness_10_r']
+    };
+
+    jsPsych.data
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(bigFiveData);
+  }
 };
 
 timeline.push(bigFiveQuestions);
+
 
 const demandEffectsQuestions = {
   type: jsPsychSurveyMultiChoice,
@@ -1748,12 +1892,63 @@ const demandEffectsQuestions = {
   scale_width: 500,
   preamble:
     `<p class="jspsych-survey-multi-choice-preamble">
-          For these final questions, please answer as honestly as you can.
-          The answers to these questions will <strong>not</strong> affect whether or not you receive credit/payment for participation!
-        </p>`
+        For these final questions, please answer as honestly as you can.
+        The answers to these questions will <strong>not</strong> affect whether or not you receive credit/payment for participation!
+      </p>`,
+  on_finish: function (data) {
+    let demandEffectsData = data.response;
+
+    bigFiveData = {
+      pressure: demandEffectsData['pressure'],
+      judgment: demandEffectsData['judgment']
+    };
+
+    jsPsych.data
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(demandEffectsData);
+  }
 };
 
 timeline.push(demandEffectsQuestions);
+
+
+// Guess Study Purpose / Questions + Comments
+var feedback = {
+  type: jsPsychSurveyText,
+  questions: [
+    {
+      name: 'guess_study_purpose',
+      prompt:
+        `<p class="jspsych-survey-multi-choice-question" style='text-align: "center !important;"'>
+          What do you think this study was about?
+        </p>`,
+      rows: 10
+    },
+    {
+      name: 'feedback',
+      prompt:
+        `<p class="jspsych-survey-multi-choice-question" style='text-align: "center !important;"'>
+          Do you have any additional comments? We appreciate any and all feedback!
+        </p>`,
+      rows: 10
+    }
+  ],
+  on_finish: function (data) {
+    let purposeFeedbackData = data.response;
+
+    bigFiveData = {
+      guess_study_purpose: purposeFeedbackData['guess_study_purpose'],
+      feedback: purposeFeedbackData['feedback']
+    };
+
+    jsPsych.data
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(purposeFeedbackData);
+  }
+}
+
+timeline.push(feedback);
+
 
 // DataPipe conclude data collection
 const save_data = {
@@ -1761,40 +1956,10 @@ const save_data = {
   action: "save",
   experiment_id: "oA2BJCIcu8jQ",
   filename: filename,
-  data_string: ()=>jsPsych.data.get().csv()
+  data_string: () => jsPsych.data.get().csv()
 };
 
 timeline.push(save_data);
-
-
-
-// CREATE FINAL EXPERIMENT MESSAGE/ DEBRIEF AFTER DATA SUCCESSFULLY STORED
-// including a random code participants can use to confirm they took the study (for payment on Amazon Mechanical Turk)
-
-//create random code for final message
-//start code creation script
-function randomLetter() {
-  const a_z = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  let int = Math.floor(Math.random() * a_z.length);
-  let randLetter = a_z[int];
-  return randLetter;
-};
-
-const secretCode = "Crossact"; // this is the 'key'
-let code = "";
-
-for (let i = 0; i < 7; i++) {
-  code = code.concat(randomLetter());
-};
-
-code = code.concat(secretCode);
-
-for (let i = 0; i < 10; i++) {
-  code = code.concat(randomLetter());
-};
-//end code creation script
-
-//debrief and code message
 
 const finalInstructions = {
   type: jsPsychInstructions,
@@ -1807,7 +1972,7 @@ const finalInstructions = {
   show_clickable_nav: false
 };
 
-//add instructions trial to experiment
+// Add instructions trial to experiment
 timeline.push(finalInstructions);
 
 // Exit fullscreen
@@ -1819,18 +1984,15 @@ const exitFullscreen = {
 
 timeline.push(exitFullscreen);
 
-// PRELOADING
-// this should be handled within the plugins, but I've gotten mixed results relying on this,
-// so to be extra sure, preload all relevant files prior to starting the experiment
 
-//preload all images
+// Preload all images
 const imageSet = avatarPhotos;
 
 jsPsych.pluginAPI.preloadImages(imageSet, function () {
   startExperiment();
 });
 
-//function to initialize the experiment; will be called once all images are preloaded
+// Function to initialize the experiment; will be called once all images are preloaded
 function startExperiment() {
   jsPsych.run(timeline);
 };

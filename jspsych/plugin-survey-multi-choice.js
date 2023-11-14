@@ -288,7 +288,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                             if (question.correct) {
                                 var correctCheck = [...Array(trial.questions.length).fill(false)];
                             }
-                            for (var i = 0; i < trial.questions.length; i++) {
+                            for (let i = 0; i < trial.questions.length; i++) {
                                 var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
                                 var id = "Q" + i;
                                 var val;
@@ -315,7 +315,10 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                                         hintmatch.item(i).style.visibility = "hidden";
                                         correctCheck[i] = true;
                                     }
-                                } else {
+                                } 
+                            }   
+                            if (question.hint) {
+                                if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
                                     var trial_data = {
                                         rt: response_time,
                                         response: question_data,
@@ -323,9 +326,17 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                                     };
                                     display_element.innerHTML = "";
                                     // next trial
-                                    that.jsPsych.finishTrial(trial_data);
-                                    return false; // break out of loop, otherwise the else statement will be executed and we skip a trial!!
+                                    this.jsPsych.finishTrial(trial_data);
                                 }
+                            } else {
+                                var trial_data = {
+                                    rt: response_time,
+                                    response: question_data,
+                                    question_order: question_order,
+                                };
+                                display_element.innerHTML = "";
+                                // next trial
+                                this.jsPsych.finishTrial(trial_data);
                             }
                         });
 
@@ -342,7 +353,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         if (question.correct) {
                             var correctCheck = [...Array(trial.questions.length).fill(false)];
                         }
-                        for (var i = 0; i < trial.questions.length; i++) {
+                        for (let i = 0; i < trial.questions.length; i++) {
                             var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
                             let id = "Q" + i;
                             var val;
@@ -403,7 +414,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                     if (question.correct) {
                         var correctCheck = [...Array(trial.questions.length).fill(false)];
                     }
-                    for (var i = 0; i < trial.questions.length; i++) {
+                    for (let i = 0; i < trial.questions.length; i++) {
                         var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
                         var id = "Q" + i;
                         var val;

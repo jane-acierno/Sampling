@@ -568,7 +568,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre_slider_epistemic_claim" 
+              name="pre-slider-epistemic-claim" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -589,7 +589,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre_slider_epistemic_plausible" 
+              name="pre-slider-epistemic-plausible" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -615,7 +615,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input
-              name="pre_slider_epistemic_curious" 
+              name="pre-slider-epistemic-curious" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -631,11 +631,33 @@ function prePredictionsEpistemicSelf(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let preSamplingEpistemicSelfData = data.response;
+
+      let pre_slider_epistemic_claim_check = "";
+      let pre_slider_epistemic_plausible_check = "";
+      let pre_slider_epistemic_curious_check = "";
+
+      if ($('#pre-slider-epistemic-claim').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_epistemic_claim_check = null;
+      } else {
+        pre_slider_epistemic_claim_check = preSamplingEpistemicSelfData['pre-slider-epistemic-claim'];
+      };
+
+      if ($('#pre-slider-epistemic-plausible').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_epistemic_plausible_check = null;
+      } else {
+        pre_slider_epistemic_plausible_check = preSamplingEpistemicSelfData['pre-slider-epistemic-plausible'];
+      };
+
+      if ($('#pre-slider-epistemic-curious').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_epistemic_curious_check = null;
+      } else {
+        pre_slider_epistemic_curious_check = preSamplingEpistemicSelfData['pre-slider-epistemic-curious'];
+      };
   
       preSamplingEpistemicSelfData = {
-        pre_slider_epistemic_claim: preSamplingEpistemicSelfData['pre_slider_epistemic_claim'],
-        pre_slider_epistemic_plausible: preSamplingEpistemicSelfData['pre_slider_epistemic_plausible'],
-        pre_slider_epistemic_curious: preSamplingEpistemicSelfData['pre_slider_epistemic_curious']
+        pre_slider_epistemic_claim: pre_slider_epistemic_claim_check,
+        pre_slider_epistemic_plausible: pre_slider_epistemic_plausible_check,
+        pre_slider_epistemic_curious: pre_slider_epistemic_curious_check
       };
   
       jsPsych.data
@@ -665,7 +687,7 @@ function prePredictionsEpistemicOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre_slider_epistemic_estimate_percent" 
+              name="pre-slider-epistemic-estimate-percent" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -697,7 +719,7 @@ function prePredictionsEpistemicOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre_slider_epistemic_confidence" 
+              name="pre-slider-epistemic-confidence" 
               type="range" 
               class="jspsych-slider incomplete"
               value="50" min="0" max="100" step="1" 
@@ -714,9 +736,24 @@ function prePredictionsEpistemicOther(trialIndex) {
     on_finish: function (data) {
       let preSamplingEpistemicOtherData = data.response;
   
+      let pre_slider_epistemic_estimate_percent_check = "";
+      let pre_slider_epistemic_confidence_check = "";
+
+      if ($('#pre-slider-epistemic-estimate-percent').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_epistemic_estimate_percent_check = null;
+      } else {
+        pre_slider_epistemic_estimate_percent_check = preSamplingEpistemicOtherData['pre-slider-epistemic-estimate-percent'];
+      };
+
+      if ($('#pre-slider-epistemic-confidence').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_epistemic_confidence_check = null;
+      } else {
+        pre_slider_epistemic_confidence_check = preSamplingEpistemicOtherData['pre-slider-epistemic-confidence'];
+      };
+
       preSamplingEpistemicOtherData = {
-        pre_slider_epistemic_estimate_percent: preSamplingEpistemicOtherData['pre_slider_epistemic_estimate_percent'],
-        pre_slider_epistemic_confidence: preSamplingEpistemicOtherData['pre_slider_epistemic_confidence'],
+        pre_slider_epistemic_estimate_percent: pre_slider_epistemic_estimate_percent_check,
+        pre_slider_epistemic_confidence: pre_slider_epistemic_confidence_check,
       };
   
       jsPsych.data
@@ -794,7 +831,7 @@ function prePredictionsMoralSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre_slider_moral_curious" 
+              name="pre-slider-moral-curious" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -810,11 +847,33 @@ function prePredictionsMoralSelf(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let preSamplingMoralSelfData = data.response;
-  
+
+      let pre_slider_moral_action_check = "";
+      let pre_slider_moral_person_check = "";
+      let pre_slider_moral_curious_check = "";
+
+      if ($('#pre-slider-moral-action').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_moral_action_check = null;
+      } else {
+        pre_slider_moral_action_check = preSamplingMoralSelfData['pre-slider-moral-action'];
+      };
+
+      if ($('#pre-slider-moral-person').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_moral_person_check = null;
+      } else {
+        pre_slider_moral_person_check = preSamplingMoralSelfData['pre-slider-moral-person'];
+      };
+
+      if ($('#pre-slider-moral-curious').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_moral_curious_check = null;
+      } else {
+        pre_slider_moral_curious_check = preSamplingMoralSelfData['pre-slider-moral-curious'];
+      };
+
       preSamplingMoralSelfData = {
-        pre_slider_moral_claim: preSamplingMoralSelfData['pre_slider_moral_claim'],
-        pre_slider_moral_plausible: preSamplingMoralSelfData['pre_slider_moral_plausible'],
-        pre_slider_moral_curious: preSamplingMoralSelfData['pre_slider_moral_curious']
+        pre_slider_moral_action: pre_slider_moral_action_check,
+        pre_slider_moral_person: pre_slider_moral_person_check,
+        pre_slider_moral_curious: pre_slider_moral_curious_check
       };
   
       jsPsych.data
@@ -844,7 +903,7 @@ function prePredictionsMoralOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="pre_slider_moral_estimate_percent" 
+              name="pre-slider-moral-estimate-percent" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -874,7 +933,7 @@ function prePredictionsMoralOther(trialIndex) {
             How confident are you in your answer?
           <div style="position: relative;">
             <input 
-              name="pre_slider_moral_confidence" 
+              name="pre-slider-moral-confidence" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -890,10 +949,25 @@ function prePredictionsMoralOther(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let preSamplingMoralOtherData = data.response;
-  
+      
+      let pre_slider_moral_estimate_percent_check = "";
+      let pre_slider_moral_confidence_check = "";
+
+      if ($('#pre-slider-moral-estimate-percent').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_moral_estimate_percent_check = null;
+      } else {
+        pre_slider_moral_estimate_percent_check = preSamplingMoralOtherData['pre-slider-moral-estimate-percent'];
+      };
+
+      if ($('#pre-slider-moral-confidence').attr('class') == 'jspsych-slider incomplete') {
+        pre_slider_moral_confidence_check = null;
+      } else {
+        pre_slider_moral_confidence_check = preSamplingMoralOtherData['pre-slider-moral-confidence'];
+      };
+
       preSamplingMoralOtherData = {
-        pre_slider_moral_estimate_percent: preSamplingMoralOtherData['pre_slider_moral_estimate_percent'],
-        pre_slider_moral_confidence: preSamplingMoralOtherData['pre_slider_moral_confidence'],
+        pre_slider_moral_estimate_percent: pre_slider_moral_estimate_percent_check,
+        pre_slider_moral_confidence: pre_slider_moral_confidence_check,
       };
   
       jsPsych.data
@@ -954,7 +1028,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post_slider_epistemic_claim" 
+              name="post-slider-epistemic-claim" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -975,7 +1049,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post_slider_epistemic_plausible" 
+              name="post-slider-epistemic-plausible" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -991,10 +1065,25 @@ function postPredictionsEpistemicSelf(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let postSamplingEpistemicSelfData = data.response;
+
+      let post_slider_epistemic_claim_check = "";
+      let post_slider_epistemic_plausible_check = "";
+
+      if ($('#post-slider-epistemic-claim').attr('class') == 'jspsych-slider incomplete') {
+        post_slider_epistemic_claim_check = null;
+      } else {
+        post_slider_epistemic_claim_check = postSamplingEpistemicSelfData['post-slider-epistemic-claim'];
+      };
+
+      if ($('#post-slider-epistemic-plausible').attr('class') == 'jspsych-slider incomplete') {
+        post_slider_epistemic_plausible_check = null;
+      } else {
+        post_slider_epistemic_plausible_check = postSamplingEpistemicSelfData['post-slider-epistemic-plausible'];
+      };
   
       postSamplingEpistemicSelfData = {
-        post_slider_epistemic_claim: postSamplingEpistemicSelfData['post_slider_epistemic_claim'],
-        post_slider_epistemic_plausible: postSamplingEpistemicSelfData['post_slider_epistemic_plausible'],
+        post_slider_epistemic_claim: post_slider_epistemic_claim_check,
+        post_slider_epistemic_plausible: post_slider_epistemic_plausible_check,
       };
   
       jsPsych.data
@@ -1026,7 +1115,7 @@ function postPredictionsEpistemicOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post_slider_epistemic_estimate_percent" 
+              name="post-slider-epistemic-estimate-percent" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1058,7 +1147,7 @@ function postPredictionsEpistemicOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post_slider_epistemic_confidence" 
+              name="post-slider-epistemic-confidence" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1075,9 +1164,24 @@ function postPredictionsEpistemicOther(trialIndex) {
     on_finish: function (data) {
       let postSamplingEpistemicOtherData = data.response;
   
+      let post_slider_epistemic_estimate_percent_check = "";
+      let post_slider_epistemic_confidence_check = "";
+
+      if ($('#post-slider-epistemic-estimate-percent').attr('class') == 'jspsych-slider incomplete') {
+        post_slider_epistemic_estimate_percent_check = null;
+      } else {
+        post_slider_epistemic_estimate_percent_check = postSamplingEpistemicOtherData['post-slider-epistemic-estimate-percent'];
+      };
+
+      if ($('#post-slider-epistemic-confidence').attr('class') == 'jspsych-slider incomplete') {
+        post_slider_epistemic_confidence_check = null;
+      } else {
+        post_slider_epistemic_confidence_check = postSamplingEpistemicOtherData['post-slider-epistemic-confidence'];
+      };
+
       postSamplingEpistemicOtherData = {
-        post_slider_epistemic_estimate_percent: postSamplingEpistemicOtherData['post_slider_epistemic_estimate_percent'],
-        post_slider_epistemic_confidence: postSamplingEpistemicOtherData['post_slider_epistemic_confidence'],
+        post_slider_epistemic_estimate_percent: post_slider_epistemic_estimate_percent_check,
+        post_slider_epistemic_confidence: post_slider_epistemic_confidence_check,
       };
   
       jsPsych.data
@@ -1109,7 +1213,7 @@ function postPredictionsMoralSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post_slider_moral_action" 
+              name="post-slider-moral-action" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1130,7 +1234,7 @@ function postPredictionsMoralSelf(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post_slider_moral_person"
+              name="post-slider-moral-person"
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1147,9 +1251,24 @@ function postPredictionsMoralSelf(trialIndex) {
     on_finish: function (data) {
       let postSamplingMoralSelfData = data.response;
   
+      let post_slider_moral_action_check = "";
+      let post_slider_moral_person_check = "";
+
+      if ($('#post-slider-moral-action').attr('class') == 'jspsych-slider incomplete') {
+        post_slider_moral_action_check = null;
+      } else {
+        post_slider_moral_action_check = postSamplingMoralSelfData['post-slider-moral-action'];
+      };
+
+      if ($('#post-slider-moral-person').attr('class') == 'jspsych-slider incomplete') {
+        post_slider_moral_person_check = null;
+      } else {
+        post_slider_moral_person_check = postSamplingMoralSelfData['post-slider-moral-person'];
+      };
+
       postSamplingMoralSelfData = {
-        post_slider_moral_action: postSamplingMoralSelfData['post_slider_moral_action'],
-        post_slider_moral_person: postSamplingMoralSelfData['post_slider_moral_person']
+        post_slider_moral_action: post_slider_moral_action_check,
+        post_slider_moral_person: post_slider_moral_person_check,
       };
   
       jsPsych.data
@@ -1181,7 +1300,7 @@ function postPredictionsMoralOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post_slider_moral_estimate_percent" 
+              name="post-slider-moral-estimate-percent" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1212,7 +1331,7 @@ function postPredictionsMoralOther(trialIndex) {
           </label>
           <div style="position: relative;">
             <input 
-              name="post_slider_moral_confidence" 
+              name="post-slider-moral-confidence" 
               type="range" 
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
@@ -1229,9 +1348,24 @@ function postPredictionsMoralOther(trialIndex) {
     on_finish: function (data) {
       let postSamplingMoralOtherData = data.response;
   
+      let post_slider_moral_estimate_percent_check = "";
+      let post_slider_moral_confidence_check = "";
+
+      if ($('#post-slider-moral-estimate-percent').attr('class') == 'jspsych-slider incomplete') {
+        post_slider_moral_estimate_percent_check = null;
+      } else {
+        post_slider_moral_estimate_percent_check = postSamplingMoralOtherData['post-slider-moral-estimate-percent'];
+      };
+
+      if ($('#post-slider-moral-confidence').attr('class') == 'jspsych-slider incomplete') {
+        post_slider_moral_confidence_check = null;
+      } else {
+        post_slider_moral_confidence_check = postSamplingMoralOtherData['post-slider-moral-confidence'];
+      };
+
       postSamplingMoralOtherData = {
-        post_slider_moral_estimate_percent: postSamplingMoralOtherData['post_slider_moral_estimate_percent'],
-        post_slider_moral_confidence: postSamplingMoralOtherData['post_slider_moral_confidence'],
+        post_slider_moral_estimate_percent: post_slider_moral_estimate_percent_check,
+        post_slider_moral_confidence: post_slider_moral_confidence_check,
       };
   
       jsPsych.data
@@ -1303,41 +1437,41 @@ const nfcQuestions = {
   type: jsPsychSurveyMultiChoice,
   questions: [
     {
-      name: 'nfc_1_simple_complex',
+      name: 'nfc-1-simple-complex',
       prompt: '<p class="jspsych-survey-multi-choice-question">I would prefer complex to simple problems.</p>',
       options: nfcResponses,
     },
     {
-      name: 'nfc_2_responsibility',
+      name: 'nfc-2-responsibility',
       prompt: `<p class="jspsych-survey-multi-choice-question">
               I like to have the responsibility of handling a situation that requires a lot of thinking.</p>`,
       options: nfcResponses,
     },
     {
-      name: 'nfc_3_not_fun',
+      name: 'nfc-3-not-fun',
       prompt: '<p class="jspsych-survey-multi-choice-question">Thinking is not my idea of fun.</p>',
       options: nfcResponses,
     },
     {
-      name: 'nfc_4_little_thought',
+      name: 'nfc-4-little_thought',
       prompt: `<p class="jspsych-survey-multi-choice-question">
               I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>`,
       options: nfcResponses,
     },
     {
-      name: 'nfc_5_new_solutions',
+      name: 'nfc-5-new-solutions',
       prompt: `<p class="jspsych-survey-multi-choice-question">I really enjoy a task that involves coming up with new solutions to problems.</p>`,
       options: nfcResponses,
     },
     {
-      name: 'nfc_6_intellectual',
+      name: 'nfc-6-intellectual',
       prompt: `<p class="jspsych-survey-multi-choice-question">
               I would prefer a task that is intellectual, difficult, and important to one that is somewhat important but does not require much thought.</p>`,
       options: nfcResponses,
     }
   ],
   randomize_question_order: true,
-  request_response: true,
+  request_response: false,
   preamble: `<p class="jspsych-survey-multi-choice-preamble">
           Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:</p>`,
   scale_width: 500,
@@ -1345,11 +1479,12 @@ const nfcQuestions = {
     let nfcData = data.response;
 
     nfcData = {
-      nfc_1_simple_complex: nfcData['nfc_1_simple_complex'],
-      nfc_2_responsibility: nfcData['nfc_2_responsibility'],
-      nfc_3_not_fun: nfcData['nfc_3_not_fun'],
-      nfc_4_little_thought: nfcData['nfc_4_little_thought'],
-      nfc_5_new_solutions: nfcData['nfc_5_new_solutions'],
+      nfc_1_simple_complex: nfc_1_simple_complex_check,
+      nfc_2_responsibility: nfc_2_responsibility_check,
+      nfc_3_not_fun: nfc_3_not_fun_check,
+      nfc_4_little_thought: nfc_4_little_thought_check,
+      nfc_5_new_solutions: nfc_5_new_solutions_check,
+      nfc_6_intellectual: nfc_6_intellectual_check
     };
 
     jsPsych.data
@@ -1394,7 +1529,7 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-indigenous" 
-              name="race_ethnicity_indigenous" 
+              name="race-ethnicity-indigenous" 
               value="Indigenous American or Alaskan Native" 
               class="demographics-race-ethnicity incomplete"
               oninput="
@@ -1410,7 +1545,7 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-asian" 
-              name="race_ethnicity_asian" 
+              name="race-ethnicity-asian" 
               value="Asian or Asian-American" 
               class="demographics-race-ethnicity incomplete"
               oninput="
@@ -1426,7 +1561,7 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-black" 
-              name="race_ethnicity_black" 
+              name="race-ethnicity-black" 
               value="African or African-American" 
               class="demographics-race-ethnicity incomplete"
               oninput="
@@ -1442,7 +1577,7 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-native" 
-              name="race_ethnicity_native" 
+              name="race-ethnicity-native" 
               value="Native Hawaiian or Pacific Islander" 
               class="demographics-race-ethnicity incomplete"
               oninput="
@@ -1458,7 +1593,7 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-white" 
-              name="race_ethnicity_white" 
+              name="race-ethnicity-white" 
               value="White" 
               class="demographics-race-ethnicity incomplete"
               oninput="
@@ -1474,7 +1609,7 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-hispanic" 
-              name="race_ethnicity_hispanic" 
+              name="race-ethnicity-hispanic" 
               value="Hispanic/Latino/a/e/x" 
               class="demographics-race-ethnicity incomplete"
               oninput="
@@ -1490,7 +1625,7 @@ const demographicsQuestions = {
             <input 
               type="checkbox" 
               id="race-ethnicity-other" 
-              name="race_ethnicity_other" 
+              name="race-ethnicity-other" 
               value="Other" 
               class="demographics-race-ethnicity incomplete"
               oninput="
@@ -1506,7 +1641,7 @@ const demographicsQuestions = {
             <input 
               type="checkbox"
               id="race-ethnicity-prefer-not" 
-              name="race_ethnicity_prefer_not" 
+              name="race-ethnicity-prefer-not" 
               value="Prefer not to disclose" 
               class="demographics-race-ethnicity incomplete"
               oninput="
@@ -1529,7 +1664,7 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-man" 
-              name="gender_man" 
+              name="gender-man" 
               value="Man" 
               class="demographics-gender incomplete"
               oninput="
@@ -1545,7 +1680,7 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-woman" 
-              name="gender_woman" 
+              name="gender-woman" 
               value="Woman" 
               class="demographics-gender incomplete"
               oninput="
@@ -1561,7 +1696,7 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-non-binary" 
-              name="gender_non_binary" 
+              name="gender-non-binary" 
               value="Non-binary" 
               class="demographics-gender incomplete"
               oninput="
@@ -1577,7 +1712,7 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-other" 
-              name="gender_other" 
+              name="gender-other" 
               value="Other" 
               class="demographics-gender incomplete"
               oninput="
@@ -1593,7 +1728,7 @@ const demographicsQuestions = {
             <input 
               type="radio" 
               id="gender-prefer-not" 
-              name="gender_prefer_not" 
+              name="gender-prefer-not" 
               value="Prefer not to disclose" 
               class="demographics-gender incomplete"
               oninput="
@@ -1637,13 +1772,13 @@ const demographicsQuestions = {
     // Race
     let race_ethnicity = [];
     race_ethnicity.push(
-      demographicsData['race_ethnicity_indigenous'],
-      demographicsData['race_ethnicity_asian'],
-      demographicsData['race_ethnicity_black'],
-      demographicsData['race_ethnicity_native'],
-      demographicsData['race_ethnicity_white'],
-      demographicsData['race_ethnicity_hispanic'],
-      demographicsData['race_ethnicity_other'],
+      demographicsData['race-ethnicity-indigenous'],
+      demographicsData['race-ethnicity-asian'],
+      demographicsData['race-ethnicity-black'],
+      demographicsData['race-ethnicity-native'],
+      demographicsData['race-ethnicity-white'],
+      demographicsData['race-ethnicity-hispanic'],
+      demographicsData['race-ethnicity-other'],
     )
     race_ethnicity = race_ethnicity.filter(value => value !== null)
     if (race_ethnicity == []) {
@@ -1655,13 +1790,13 @@ const demographicsQuestions = {
 
     // Gender
     let gender = '';
-    if (demographicsData['gender_man']) {
+    if (demographicsData['gender-man']) {
       gender = 'Man';
-    } else if (demographicsData['gender_woman']) {
+    } else if (demographicsData['gender-woman']) {
       gender = 'Woman';
-    } else if (demographicsData['gender_non_binary']) {
+    } else if (demographicsData['gender-non-binary']) {
       gender = 'Non-Binary';
-    } else if (demographicsData['gender_other']) {
+    } else if (demographicsData['gender-other']) {
       gender = 'Other';
     }
 
@@ -1685,7 +1820,7 @@ const politicsQuestions = {
   type: jsPsychSurveyMultiChoice,
   questions: [
     {
-      name: 'political_ideology_economic',
+      name: 'political-ideology-economic',
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               Which response best captures your political beliefs surrounding <strong>economic</strong> issues?
@@ -1694,7 +1829,7 @@ const politicsQuestions = {
       horizontal: true
     },
     {
-      name: 'political_ideology_social',
+      name: 'political-ideology-social',
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               Which response best captures your political beliefs surrounding <strong>social</strong> issues?
@@ -1703,7 +1838,7 @@ const politicsQuestions = {
       horizontal: true
     },
     {
-      name: 'political_ideology_overall',
+      name: 'political-ideology-overall',
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               Which response best captures your <strong>overall</strong> political beliefs?
@@ -1721,9 +1856,9 @@ const politicsQuestions = {
     let politicalData = data.response;
 
     politicalData = {
-      political_ideology_economic: politicalData['political_ideology_economic'],
-      political_ideology_social: politicalData['political_ideology_social'],
-      political_ideology_overall: politicalData['political_ideology_overall']
+      political_ideology_economic: politicalData['political-ideology-economic'],
+      political_ideology_social: politicalData['political-ideology-social'],
+      political_ideology_overall: politicalData['political-ideology-overall']
     };
 
     jsPsych.data
@@ -1738,7 +1873,7 @@ const bigFiveQuestions = {
   type: jsPsychSurveyMultiChoice,
   questions: [
     {
-      name: "extraversion_1",
+      name: "extraversion-1",
       prompt: `
             <p class="jspsych-survey-multi-choice-question"> \
               I see myself as <strong>extraverted, enthusiastic.</strong> \
@@ -1747,7 +1882,7 @@ const bigFiveQuestions = {
       horizontal: true
     },
     {
-      name: "agreeableness_2_r",
+      name: "agreeableness-2-r",
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               I see myself as <strong>critical, quarrelsome.</strong>
@@ -1756,7 +1891,7 @@ const bigFiveQuestions = {
       horizontal: true
     },
     {
-      name: "conscientiousness_3",
+      name: "conscientiousness-3",
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               I see myself as <strong>dependable, self-disciplined.</strong>
@@ -1765,7 +1900,7 @@ const bigFiveQuestions = {
       horizontal: true
     },
     {
-      name: "emotional_stability_4_r",
+      name: "emotional-stability-4-r",
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               I see myself as <strong>anxious, easily upset.</strong>
@@ -1774,7 +1909,7 @@ const bigFiveQuestions = {
       horizontal: true
     },
     {
-      name: "openness_5",
+      name: "openness-5",
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               I see myself as <strong>open to new experiences, complex.</strong>
@@ -1783,7 +1918,7 @@ const bigFiveQuestions = {
       horizontal: true
     },
     {
-      name: "extraversion_6_r",
+      name: "extraversion-6-r",
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               I see myself as <strong>reserved, quiet.</strong>
@@ -1792,7 +1927,7 @@ const bigFiveQuestions = {
       horizontal: true
     },
     {
-      name: "agreeableness_7",
+      name: "agreeableness-7",
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               I see myself as <strong>sympathetic, warm.</strong>
@@ -1801,7 +1936,7 @@ const bigFiveQuestions = {
       horizontal: true
     },
     {
-      name: "conscientiousness_8_r",
+      name: "conscientiousness-8-r",
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               I see myself as <strong>disorganized, careless.</strong>
@@ -1810,7 +1945,7 @@ const bigFiveQuestions = {
       horizontal: true
     },
     {
-      name: "emotional_stability_9",
+      name: "emotional-stability-9",
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               I see myself as <strong>calm, emotionally stable.</strong>
@@ -1819,7 +1954,7 @@ const bigFiveQuestions = {
       horizontal: true
     },
     {
-      name: "openness_10_r",
+      name: "openness-10-r",
       prompt: `
             <p class="jspsych-survey-multi-choice-question">
               I see myself as <strong>conventional, uncreative.</strong>
@@ -1844,16 +1979,16 @@ const bigFiveQuestions = {
     let bigFiveData = data.response;
 
     bigFiveData = {
-      extraversion_1: bigFiveData['extraversion_1'],
-      agreeableness_2_r: bigFiveData['agreeableness_2_r'],
-      conscientiousness_3: bigFiveData['conscientiousness_3'],
-      emotional_stability_4_r: bigFiveData['emotional_stability_4_r'],
-      openness_5: bigFiveData['openness_5'],
-      extraversion_6_r: bigFiveData['extraversion_6_r'],
-      agreeableness_7: bigFiveData['agreeableness_7'],
-      conscientiousness_8_r: bigFiveData['conscientiousness_8_r'],
-      emotional_stability_9: bigFiveData['emotional_stability_9'],
-      openness_10_r: bigFiveData['openness_10_r']
+      extraversion_1: bigFiveData['extraversion-1'],
+      agreeableness_2_r: bigFiveData['agreeableness-2-r'],
+      conscientiousness_3: bigFiveData['conscientiousness-3'],
+      emotional_stability_4_r: bigFiveData['emotional_stability-4-r'],
+      openness_5: bigFiveData['openness-5'],
+      extraversion_6_r: bigFiveData['extraversion-6-r'],
+      agreeableness_7: bigFiveData['agreeableness-7'],
+      conscientiousness_8_r: bigFiveData['conscientiousness-8-r'],
+      emotional_stability_9: bigFiveData['emotional_stability-9'],
+      openness_10_r: bigFiveData['openness-10-r']
     };
 
     jsPsych.data
@@ -1917,7 +2052,7 @@ var feedback = {
   type: jsPsychSurveyText,
   questions: [
     {
-      name: 'guess_study_purpose',
+      name: 'guess-study-purpose',
       prompt:
         `<p class="jspsych-survey-multi-choice-question" style='text-align: "center !important;"'>
           What do you think this study was about?
@@ -1937,7 +2072,7 @@ var feedback = {
     let purposeFeedbackData = data.response;
 
     bigFiveData = {
-      guess_study_purpose: purposeFeedbackData['guess_study_purpose'],
+      guess_study_purpose: purposeFeedbackData['guess-study-purpose'],
       feedback: purposeFeedbackData['feedback']
     };
 

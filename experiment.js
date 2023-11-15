@@ -562,7 +562,8 @@ function prePredictionsEpistemicSelf(trialIndex) {
           </p><br><br>`,
     html: `
           <!-- Pre-Sampling Epistemic Claim Rating -->
-
+          
+          <input type="hidden" name="pre-slider-epistemic-claim-clicked" value="false">
           <label for="pre-slider-epistemic-claim" class="jspsych-survey-multi-choice-question">
             To what extent do you think this claim is true or false?
           </label>
@@ -576,6 +577,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('pre-slider-epistemic-claim-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Definitely false</span>
             <span class="jspsych-slider-right-anchor">Definitely true</span>
@@ -584,6 +586,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
 
           <!-- Pre-Sampling Epistemic Plausible Rating -->
 
+          <input type="hidden" name="pre-slider-epistemic-plausible-clicked" value="false">
           <label for="pre-slider-epistemic-plausible" class="jspsych-survey-multi-choice-question">
             To what extent do you think the content of this claim is plausible?
           </label>
@@ -597,6 +600,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('pre-slider-epistemic-plausible-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Definitely implausible</span>
             <span class="jspsych-slider-right-anchor">Definitely plausible</span>
@@ -605,6 +609,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
 
           <!-- Pre-Sampling Epistemic Curiosity -->
 
+          <input type="hidden" name="pre-slider-epistemic-curious-clicked" value="false">
           <label for="pre-slider-epistemic-curious" class="jspsych-survey-multi-choice-question">
             How curious are you to learn about what other people think about this statement?<br>
             <em style="font-size: 10pt;">
@@ -623,6 +628,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('pre-slider-epistemic-curious-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Not at all curious</span>
             <span class="jspsych-slider-right-anchor">Extremely curious</span>
@@ -632,37 +638,21 @@ function prePredictionsEpistemicSelf(trialIndex) {
     on_finish: function (data) {
       let preSamplingEpistemicSelfData = data.response;
 
-      let pre_slider_epistemic_claim_check = "";
-      let pre_slider_epistemic_plausible_check = "";
-      let pre_slider_epistemic_curious_check = "";
+      let pre_slider_epistemic_claim_check = preSamplingEpistemicSelfData['pre-slider-epistemic-claim-clicked'] === 'true' ? responses['pre-slider-epistemic-claim'] : null;
+      let pre_slider_epistemic_plausible_check = preSamplingEpistemicSelfData['pre-slider-epistemic-plausible-clicked'] === 'true' ? responses['pre-slider-epistemic-plausible'] : null;
+      let pre_slider_epistemic_curious_check = preSamplingEpistemicSelfData['pre-slider-epistemic-curious-clicked'] === 'true' ? responses['pre-slider-epistemic-curious'] : null;
 
-      if ($('#pre-slider-epistemic-claim').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_epistemic_claim_check = null;
-      } else {
-        pre_slider_epistemic_claim_check = preSamplingEpistemicSelfData['pre-slider-epistemic-claim'];
-      };
-
-      if ($('#pre-slider-epistemic-plausible').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_epistemic_plausible_check = null;
-      } else {
-        pre_slider_epistemic_plausible_check = preSamplingEpistemicSelfData['pre-slider-epistemic-plausible'];
-      };
-
-      if ($('#pre-slider-epistemic-curious').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_epistemic_curious_check = null;
-      } else {
-        pre_slider_epistemic_curious_check = preSamplingEpistemicSelfData['pre-slider-epistemic-curious'];
-      };
-  
       preSamplingEpistemicSelfData = {
         pre_slider_epistemic_claim: pre_slider_epistemic_claim_check,
         pre_slider_epistemic_plausible: pre_slider_epistemic_plausible_check,
         pre_slider_epistemic_curious: pre_slider_epistemic_curious_check
       };
+
+      console.log(preSamplingEpistemicSelfData)
   
       jsPsych.data
-        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-        .addToAll(preSamplingEpistemicSelfData);
+             .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+             .addToAll(preSamplingEpistemicSelfData);
     }
   };
 };
@@ -682,6 +672,7 @@ function prePredictionsEpistemicOther(trialIndex) {
     html: `
           <!-- Pre-Sampling Epistemic Estimate Rating -->
 
+          <input type="hidden" name="pre-slider-epistemic-estimate-percent-clicked" value="false">
           <label for="pre-slider-epistemic-estimate-percent" class="jspsych-survey-multi-choice-question">
             What percentage of people in the U.S. do you think believe this claim is true vs. think this is false?
           </label>
@@ -695,6 +686,8 @@ function prePredictionsEpistemicOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');
+                document.getElementsByName('pre-slider-epistemic-estimate-percent-clicked')[0].value = 'true';"
+                
                 $('#pre-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
                 let rawRating = parseFloat(this.value);
@@ -714,6 +707,7 @@ function prePredictionsEpistemicOther(trialIndex) {
 
           <!-- Pre-Sampling Epistemic Estimate Confidence -->
 
+          <input type="hidden" name="pre-slider-epistemic-confidence-clicked" value="false">
           <label for="pre-slider-epistemic-confidence" class="jspsych-survey-multi-choice-question">
             How confident are you in your answer?
           </label>
@@ -727,6 +721,7 @@ function prePredictionsEpistemicOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('pre-slider-epistemic-confidence-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -736,20 +731,8 @@ function prePredictionsEpistemicOther(trialIndex) {
     on_finish: function (data) {
       let preSamplingEpistemicOtherData = data.response;
   
-      let pre_slider_epistemic_estimate_percent_check = "";
-      let pre_slider_epistemic_confidence_check = "";
-
-      if ($('#pre-slider-epistemic-estimate-percent').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_epistemic_estimate_percent_check = null;
-      } else {
-        pre_slider_epistemic_estimate_percent_check = preSamplingEpistemicOtherData['pre-slider-epistemic-estimate-percent'];
-      };
-
-      if ($('#pre-slider-epistemic-confidence').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_epistemic_confidence_check = null;
-      } else {
-        pre_slider_epistemic_confidence_check = preSamplingEpistemicOtherData['pre-slider-epistemic-confidence'];
-      };
+      let pre_slider_epistemic_estimate_percent_check = preSamplingEpistemicOtherData['pre-slider-epistemic-estimate-percent-clicked'] === 'true' ? responses['pre-slider-epistemic-estimate-percent'] : null;
+      let pre_slider_epistemic_confidence_check = preSamplingEpistemicOtherData['pre-slider-epistemic-confidence-clicked'] === 'true' ? responses['pre-slider-epistemic-confidence'] : null;
 
       preSamplingEpistemicOtherData = {
         pre_slider_epistemic_estimate_percent: pre_slider_epistemic_estimate_percent_check,
@@ -778,7 +761,8 @@ function prePredictionsMoralSelf(trialIndex) {
           </p><br><br>`,
     html: `
           <!-- Pre-Sampling Moral Action Rating -->
-
+          
+          <input type="hidden" name="pre-slider-moral-action-clicked" value="false">
           <label for="pre-slider-moral-action" class="jspsych-survey-multi-choice-question">
             To what extent do you think this <em>action</em> is morally good or morally bad?
           </label>
@@ -792,6 +776,7 @@ function prePredictionsMoralSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('pre-slider-moral-action-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -800,6 +785,7 @@ function prePredictionsMoralSelf(trialIndex) {
 
           <!-- Pre-Sampling Moral Person Rating -->
 
+          <input type="hidden" name="pre-slider-moral-person-clicked" value="false">
           <label for="pre-slider-moral-person" class="jspsych-survey-multi-choice-question">
             To what extent do you think this <em>person</em> is morally good or morally bad?
           </label>
@@ -813,6 +799,7 @@ function prePredictionsMoralSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('pre-slider-moral-person-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -821,6 +808,7 @@ function prePredictionsMoralSelf(trialIndex) {
 
           <!-- Pre-Sampling Moral Curiosity -->
 
+          <input type="hidden" name="pre-slider-moral-curious-clicked" value="false">
           <label for="pre-slider-moral-curious" class="jspsych-survey-multi-choice-question">
             How curious are you to learn about what other people think about this statement?<br>
             <em style="font-size: 10pt;">
@@ -839,6 +827,7 @@ function prePredictionsMoralSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('pre-slider-moral-curious-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Not at all curious</span>
             <span class="jspsych-slider-right-anchor">Extremely curious</span>
@@ -848,27 +837,9 @@ function prePredictionsMoralSelf(trialIndex) {
     on_finish: function (data) {
       let preSamplingMoralSelfData = data.response;
 
-      let pre_slider_moral_action_check = "";
-      let pre_slider_moral_person_check = "";
-      let pre_slider_moral_curious_check = "";
-
-      if ($('#pre-slider-moral-action').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_moral_action_check = null;
-      } else {
-        pre_slider_moral_action_check = preSamplingMoralSelfData['pre-slider-moral-action'];
-      };
-
-      if ($('#pre-slider-moral-person').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_moral_person_check = null;
-      } else {
-        pre_slider_moral_person_check = preSamplingMoralSelfData['pre-slider-moral-person'];
-      };
-
-      if ($('#pre-slider-moral-curious').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_moral_curious_check = null;
-      } else {
-        pre_slider_moral_curious_check = preSamplingMoralSelfData['pre-slider-moral-curious'];
-      };
+      let pre_slider_moral_action_check = preSamplingMoralSelfData['pre-slider-moral-action-clicked'] === 'true' ? responses['pre-slider-moral-action'] : null;
+      let pre_slider_moral_person_check = preSamplingMoralSelfData['pre-slider-moral-person-clicked'] === 'true' ? responses['pre-slider-moral-person'] : null;
+      let pre_slider_moral_curious_check = preSamplingMoralSelfData['pre-slider-moral-curious-clicked'] === 'true' ? responses['pre-slider-moral-curious'] : null;
 
       preSamplingMoralSelfData = {
         pre_slider_moral_action: pre_slider_moral_action_check,
@@ -876,6 +847,8 @@ function prePredictionsMoralSelf(trialIndex) {
         pre_slider_moral_curious: pre_slider_moral_curious_check
       };
   
+      console.log(preSamplingMoralSelfData);
+
       jsPsych.data
         .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
         .addToAll(preSamplingMoralSelfData);
@@ -898,6 +871,7 @@ function prePredictionsMoralOther(trialIndex) {
     html: `
           <!-- Pre-Sampling Moral Estimate Rating -->
 
+          <input type="hidden" name="pre-slider-moral-estimate-percent-clicked" value="false">
           <label for="pre-slider-moral-estimate-percent" class="jspsych-survey-multi-choice-question">
             What percentage of people in the U.S. do you think consider this action to be morally good vs. think this is morally bad?
           </label>
@@ -911,6 +885,7 @@ function prePredictionsMoralOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');
+                document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';"
 
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';
@@ -929,6 +904,7 @@ function prePredictionsMoralOther(trialIndex) {
 
           <!-- Pre-Sampling Moral Estimate Confidence -->
 
+          <input type="hidden" name="pre-slider-moral-confidence-clicked" value="false">
           <label for="pre-slider-moral-confidence" class="jspsych-survey-multi-choice-question">
             How confident are you in your answer?
           <div style="position: relative;">
@@ -941,6 +917,7 @@ function prePredictionsMoralOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('pre-slider-moral-confidence-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -950,20 +927,8 @@ function prePredictionsMoralOther(trialIndex) {
     on_finish: function (data) {
       let preSamplingMoralOtherData = data.response;
       
-      let pre_slider_moral_estimate_percent_check = "";
-      let pre_slider_moral_confidence_check = "";
-
-      if ($('#pre-slider-moral-estimate-percent').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_moral_estimate_percent_check = null;
-      } else {
-        pre_slider_moral_estimate_percent_check = preSamplingMoralOtherData['pre-slider-moral-estimate-percent'];
-      };
-
-      if ($('#pre-slider-moral-confidence').attr('class') == 'jspsych-slider incomplete') {
-        pre_slider_moral_confidence_check = null;
-      } else {
-        pre_slider_moral_confidence_check = preSamplingMoralOtherData['pre-slider-moral-confidence'];
-      };
+      let pre_slider_moral_estimate_percent_check = preSamplingMoralOtherData['pre-slider-moral-estimate-percent-clicked'] === 'true' ? responses['pre-slider-moral-estimate-percent'] : null;
+      let pre_slider_moral_confidence_check = preSamplingMoralOtherData['pre-slider-moral-confidence-clicked'] === 'true' ? responses['pre-slider-moral-confidence'] : null;
 
       preSamplingMoralOtherData = {
         pre_slider_moral_estimate_percent: pre_slider_moral_estimate_percent_check,
@@ -971,8 +936,8 @@ function prePredictionsMoralOther(trialIndex) {
       };
   
       jsPsych.data
-        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-        .addToAll(preSamplingMoralOtherData);
+             .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+             .addToAll(preSamplingMoralOtherData);
     }
   };
 };
@@ -1023,6 +988,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
     html: `
           <!-- Post-Sampling Epistemic Estimate Rating -->
 
+          <input type="hidden" name="post-slider-epistemic-claim-clicked" value="false">
           <label for="post-slider-epistemic-claim" class="jspsych-survey-multi-choice-question">
             To what extent do you think this claim is true or false?
           </label>
@@ -1036,6 +1002,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('post-slider-epistemic-claim-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Definitely false</span>
             <span class="jspsych-slider-right-anchor">Definitely true</span>
@@ -1044,6 +1011,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
 
           <!-- Post-Sampling Epistemic Plausible Rating -->
 
+          <input type="hidden" name="post-slider-epistemic-plausible-clicked" value="false">
           <label for="post-slider-epistemic-plausible" class="jspsych-survey-multi-choice-question">
             To what extent do you think the content of this claim is plausible?
           </label>
@@ -1057,6 +1025,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('post-slider-epistemic-plausible-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Definitely implausible</span>
             <span class="jspsych-slider-right-anchor">Definitely plausible</span>
@@ -1066,26 +1035,14 @@ function postPredictionsEpistemicSelf(trialIndex) {
     on_finish: function (data) {
       let postSamplingEpistemicSelfData = data.response;
 
-      let post_slider_epistemic_claim_check = "";
-      let post_slider_epistemic_plausible_check = "";
-
-      if ($('#post-slider-epistemic-claim').attr('class') == 'jspsych-slider incomplete') {
-        post_slider_epistemic_claim_check = null;
-      } else {
-        post_slider_epistemic_claim_check = postSamplingEpistemicSelfData['post-slider-epistemic-claim'];
-      };
-
-      if ($('#post-slider-epistemic-plausible').attr('class') == 'jspsych-slider incomplete') {
-        post_slider_epistemic_plausible_check = null;
-      } else {
-        post_slider_epistemic_plausible_check = postSamplingEpistemicSelfData['post-slider-epistemic-plausible'];
-      };
-  
+      let post_slider_epistemic_claim_check = postSamplingEpistemicSelfData['post-slider-epistemic-claim-clicked'] === 'true' ? responses['post-slider-epistemic-claim'] : null;
+      let post_slider_epistemic_plausible_check = postSamplingEpistemicSelfData['post-slider-epistemic-plausible-clicked'] === 'true' ? responses['post-slider-epistemic-plausible'] : null;
+     
       postSamplingEpistemicSelfData = {
         post_slider_epistemic_claim: post_slider_epistemic_claim_check,
-        post_slider_epistemic_plausible: post_slider_epistemic_plausible_check,
+        post_slider_epistemic_plausible: post_slider_epistemic_plausible_check
       };
-  
+
       jsPsych.data
         .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
         .addToAll(postSamplingEpistemicSelfData);
@@ -1110,6 +1067,7 @@ function postPredictionsEpistemicOther(trialIndex) {
     html: `
           <!-- Post-Sampling Epistemic Estimate -->
 
+          <input type="hidden" name="post-slider-epistemic-estimate-percent-clicked" value="false">
           <label for="post-slider-epistemic-estimate-percent" class="jspsych-survey-multi-choice-question">
             What percentage of people in the U.S. do you think believe this claim is true vs. think this is false?
           </label>
@@ -1123,6 +1081,7 @@ function postPredictionsEpistemicOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');
+                document.getElementsByName('post-slider-epistemic-estimate-percent-clicked')[0].value = 'true';"
                 $('#post-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
                 let rawRating = parseFloat(this.value);
@@ -1142,6 +1101,7 @@ function postPredictionsEpistemicOther(trialIndex) {
 
           <!-- Post-Sampling Epistemic Estimate Confidence -->
 
+          <input type="hidden" name="post-slider-epistemic-confidence-clicked" value="false">
           <label for="post-slider-epistemic-confidence" class="jspsych-survey-multi-choice-question">
             How confident are you in your answer?
           </label>
@@ -1155,6 +1115,7 @@ function postPredictionsEpistemicOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('post-slider-epistemic-confidence-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -1163,27 +1124,15 @@ function postPredictionsEpistemicOther(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let postSamplingEpistemicOtherData = data.response;
-  
-      let post_slider_epistemic_estimate_percent_check = "";
-      let post_slider_epistemic_confidence_check = "";
-
-      if ($('#post-slider-epistemic-estimate-percent').attr('class') == 'jspsych-slider incomplete') {
-        post_slider_epistemic_estimate_percent_check = null;
-      } else {
-        post_slider_epistemic_estimate_percent_check = postSamplingEpistemicOtherData['post-slider-epistemic-estimate-percent'];
-      };
-
-      if ($('#post-slider-epistemic-confidence').attr('class') == 'jspsych-slider incomplete') {
-        post_slider_epistemic_confidence_check = null;
-      } else {
-        post_slider_epistemic_confidence_check = postSamplingEpistemicOtherData['post-slider-epistemic-confidence'];
-      };
-
+      
+      let post_slider_epistemic_estimate_percent_check = postSamplingEpistemicOtherData['post-slider-epistemic-estimate-percent-clicked'] === 'true' ? responses['post-slider-epistemic-estimate-percent'] : null;
+      let post_slider_epistemic_confidence_check = postSamplingEpistemicOtherData['post-slider-epistemic-confidence-clicked'] === 'true' ? responses['post-slider-epistemic-confidence'] : null;
+      
       postSamplingEpistemicOtherData = {
         post_slider_epistemic_estimate_percent: post_slider_epistemic_estimate_percent_check,
-        post_slider_epistemic_confidence: post_slider_epistemic_confidence_check,
+        post_slider_epistemic_confidence: post_slider_epistemic_confidence_check
       };
-  
+
       jsPsych.data
         .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
         .addToAll(postSamplingEpistemicOtherData);
@@ -1208,6 +1157,7 @@ function postPredictionsMoralSelf(trialIndex) {
     html: `
           <!-- Post-Sampling Moral Action Rating -->
 
+          <input type="hidden" name="post-slider-moral-action-clicked" value="false">
           <label for="post-slider-moral-action" class="jspsych-survey-multi-choice-question">
             To what extent do you think this <em>action</em> is morally good or morally bad? 
           </label>
@@ -1221,6 +1171,7 @@ function postPredictionsMoralSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('post-slider-moral-action-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -1229,6 +1180,7 @@ function postPredictionsMoralSelf(trialIndex) {
 
           <!-- Post-Sampling Moral Person Rating -->
 
+          <input type="hidden" name="post-slider-moral-person-clicked" value="false">
           <label for="post-slider-moral-person" class="jspsych-survey-multi-choice-question">
             To what extent do you think this <em>person</em> is morally good or morally bad? 
           </label>
@@ -1242,6 +1194,7 @@ function postPredictionsMoralSelf(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('post-slider-moral-person-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -1250,27 +1203,15 @@ function postPredictionsMoralSelf(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let postSamplingMoralSelfData = data.response;
-  
-      let post_slider_moral_action_check = "";
-      let post_slider_moral_person_check = "";
 
-      if ($('#post-slider-moral-action').attr('class') == 'jspsych-slider incomplete') {
-        post_slider_moral_action_check = null;
-      } else {
-        post_slider_moral_action_check = postSamplingMoralSelfData['post-slider-moral-action'];
-      };
-
-      if ($('#post-slider-moral-person').attr('class') == 'jspsych-slider incomplete') {
-        post_slider_moral_person_check = null;
-      } else {
-        post_slider_moral_person_check = postSamplingMoralSelfData['post-slider-moral-person'];
-      };
+      let post_slider_moral_action_check = postSamplingMoralSelfData['post-slider-moral-action-clicked'] === 'true' ? responses['post-slider-moral-action'] : null;
+      let post_slider_moral_person_check = postSamplingMoralSelfData['post-slider-moral-person-clicked'] === 'true' ? responses['post-slider-moral-person'] : null;
 
       postSamplingMoralSelfData = {
         post_slider_moral_action: post_slider_moral_action_check,
-        post_slider_moral_person: post_slider_moral_person_check,
+        post_slider_moral_person: post_slider_moral_person_check
       };
-  
+
       jsPsych.data
         .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
         .addToAll(postSamplingMoralSelfData);
@@ -1295,6 +1236,7 @@ function postPredictionsMoralOther(trialIndex) {
     html: `
           <!-- Post-Sampling Moral Estimate Rating -->
 
+          <input type="hidden" name="post-slider-moral-estimate-percent-clicked" value="false">
           <label for="post-slider-moral-estimate-percent" class="jspsych-survey-multi-choice-question">
             What percentage of people in the U.S. do you think consider this action to be morally good vs. think this is morally bad?
           </label>
@@ -1308,6 +1250,7 @@ function postPredictionsMoralOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');
+                document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';"
               
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';
@@ -1325,7 +1268,8 @@ function postPredictionsMoralOther(trialIndex) {
 
           
           <!-- Post-Sampling Moral Estimate Confidence -->
-
+          
+          <input type="hidden" name="post-slider-moral-confidence-clicked" value="false">
           <label for="post-slider-moral-confidence" class="jspsych-survey-multi-choice-question">
             How confident are you in your answer?
           </label>
@@ -1339,6 +1283,7 @@ function postPredictionsMoralOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');"
+                document.getElementsByName('post-slider-moral-confidence-clicked')[0].value = 'true';"
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -1347,25 +1292,14 @@ function postPredictionsMoralOther(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let postSamplingMoralOtherData = data.response;
-  
-      let post_slider_moral_estimate_percent_check = "";
-      let post_slider_moral_confidence_check = "";
-
-      if ($('#post-slider-moral-estimate-percent').attr('class') == 'jspsych-slider incomplete') {
-        post_slider_moral_estimate_percent_check = null;
-      } else {
-        post_slider_moral_estimate_percent_check = postSamplingMoralOtherData['post-slider-moral-estimate-percent'];
-      };
-
-      if ($('#post-slider-moral-confidence').attr('class') == 'jspsych-slider incomplete') {
-        post_slider_moral_confidence_check = null;
-      } else {
-        post_slider_moral_confidence_check = postSamplingMoralOtherData['post-slider-moral-confidence'];
-      };
+      
+      let post_slider_moral_estimate_percent_check = postSamplingMoralOtherData['post-slider-moral-estimate-percent-clicked'] === 'true' ? responses['post-slider-moral-estimate-percent'] : null;
+      let post_slider_moral_confidence_check = postSamplingMoralOtherData['post-slider-moral-confidence-clicked'] === 'true' ? responses['post-slider-moral-confidence'] : null;
+      
 
       postSamplingMoralOtherData = {
         post_slider_moral_estimate_percent: post_slider_moral_estimate_percent_check,
-        post_slider_moral_confidence: post_slider_moral_confidence_check,
+        post_slider_moral_confidence: post_slider_moral_confidence_check
       };
   
       jsPsych.data
@@ -1390,17 +1324,17 @@ function newTrialPage(trialIndex) {
 };
 
 if (participantCondition === 'epistemic') {
-  timeline.push(
-    instructionsEpistemic,
-    instructionsEpistemicComprehensionCheck
-  );
+  // timeline.push(
+  //   instructionsEpistemic,
+  //   instructionsEpistemicComprehensionCheck
+  // );
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
     timeline.push(
-      prePredictionsEpistemicSelf(trialIndex),
-      prePredictionsEpistemicOther(trialIndex),
-      selectionTask(trialIndex, participantCondition),
-      postPredictionsEpistemicSelf(trialIndex),
-      postPredictionsEpistemicOther(trialIndex),
+      // prePredictionsEpistemicSelf(trialIndex),
+      // prePredictionsEpistemicOther(trialIndex),
+      // selectionTask(trialIndex, participantCondition),
+      // postPredictionsEpistemicSelf(trialIndex),
+      // postPredictionsEpistemicOther(trialIndex),
     );
     if (trialIndex != trials.length - 1) {
       timeline.push(
@@ -1409,17 +1343,17 @@ if (participantCondition === 'epistemic') {
     };
   };
 } else if (participantCondition === 'moral') {
-  timeline.push(
-    instructionsMoral,
-    instructionsMoralComprehensionCheck
-  );
+  // timeline.push(
+  //   instructionsMoral,
+  //   instructionsMoralComprehensionCheck
+  // );
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
     timeline.push(
-      prePredictionsMoralSelf(trialIndex),
-      prePredictionsMoralOther(trialIndex),
-      selectionTask(trialIndex, participantCondition),
-      postPredictionsMoralSelf(trialIndex),
-      postPredictionsMoralOther(trialIndex),
+      // prePredictionsMoralSelf(trialIndex),
+      // prePredictionsMoralOther(trialIndex),
+      // selectionTask(trialIndex, participantCondition),
+      // postPredictionsMoralSelf(trialIndex),
+      // postPredictionsMoralOther(trialIndex),
     );
     if (trialIndex != trials.length - 1) {
       timeline.push(
@@ -1453,7 +1387,7 @@ const nfcQuestions = {
       options: nfcResponses,
     },
     {
-      name: 'nfc-4-little_thought',
+      name: 'nfc-4-little-thought',
       prompt: `<p class="jspsych-survey-multi-choice-question">
               I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>`,
       options: nfcResponses,
@@ -1471,7 +1405,7 @@ const nfcQuestions = {
     }
   ],
   randomize_question_order: true,
-  request_response: false,
+  request_response: true,
   preamble: `<p class="jspsych-survey-multi-choice-preamble">
           Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:</p>`,
   scale_width: 500,
@@ -1479,17 +1413,19 @@ const nfcQuestions = {
     let nfcData = data.response;
 
     nfcData = {
-      nfc_1_simple_complex: nfc_1_simple_complex_check,
-      nfc_2_responsibility: nfc_2_responsibility_check,
-      nfc_3_not_fun: nfc_3_not_fun_check,
-      nfc_4_little_thought: nfc_4_little_thought_check,
-      nfc_5_new_solutions: nfc_5_new_solutions_check,
-      nfc_6_intellectual: nfc_6_intellectual_check
+      nfc_1_simple_complex: nfcData['nfc-1-simple-complex'],
+      nfc_2_responsibility: nfcData['nfc-2-responsibility'],
+      nfc_3_not_fun: nfcData['nfc-3-not-fun'],
+      nfc_4_little_thought: nfcData['nfc-4-little-thought'],
+      nfc_5_new_solutions: nfcData['nfc-5-new-solutions'],
+      nfc_6_intellectual: nfcData['nfc-6-intellectual']
     };
 
+    console.log(nfcData)
+
     jsPsych.data
-      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-      .addToAll(nfcData);
+           .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+           .addToAll(nfcData);
   }
 };
 
@@ -1769,25 +1705,6 @@ const demographicsQuestions = {
     // Age
     const age = Number(demographicsData['age']);
 
-    // Race
-    let race_ethnicity = [];
-    race_ethnicity.push(
-      demographicsData['race-ethnicity-indigenous'],
-      demographicsData['race-ethnicity-asian'],
-      demographicsData['race-ethnicity-black'],
-      demographicsData['race-ethnicity-native'],
-      demographicsData['race-ethnicity-white'],
-      demographicsData['race-ethnicity-hispanic'],
-      demographicsData['race-ethnicity-other'],
-    )
-    race_ethnicity = race_ethnicity.filter(value => value !== null)
-    if (race_ethnicity == []) {
-      race_ethnicity = null;
-    } else {
-      race_ethnicity = race_ethnicity.sort()
-        .join(",");
-    };
-
     // Gender
     let gender = '';
     if (demographicsData['gender-man']) {
@@ -1803,9 +1720,18 @@ const demographicsQuestions = {
     // Create a new object with the formatted data
     demographicsData = {
       age: age,
-      race_ethnicity: race_ethnicity,
+      race_ethnicity_indigenous: demographicsData['race-ethnicity-indigenous'],
+      race_ethnicity_asian: demographicsData['race-ethnicity-asian'],
+      race_ethnicity_black: demographicsData['race-ethnicity-black'],
+      race_ethnicity_native: demographicsData['race-ethnicity-native'],
+      race_ethnicity_white: demographicsData['race-ethnicity-white'],
+      race_ethnicity_hispanic: demographicsData['race-ethnicity-hispanic'],
+      race_ethnicity_other: demographicsData['race-ethnicity-other'],
+      race_ethnicity_na: demographicsData['race-ethnicity-prefer-not'],
       gender: gender
     };
+
+    console.log(demographicsData);
 
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
@@ -1860,6 +1786,8 @@ const politicsQuestions = {
       political_ideology_social: politicalData['political-ideology-social'],
       political_ideology_overall: politicalData['political-ideology-overall']
     };
+
+    console.log(politicalData)
 
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
@@ -1991,6 +1919,8 @@ const bigFiveQuestions = {
       openness_10_r: bigFiveData['openness-10-r']
     };
 
+    console.log(bigFiveData)
+
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
       .addToAll(bigFiveData);
@@ -2033,10 +1963,12 @@ const demandEffectsQuestions = {
   on_finish: function (data) {
     let demandEffectsData = data.response;
 
-    bigFiveData = {
+    demandEffectsData = {
       pressure: demandEffectsData['pressure'],
       judgment: demandEffectsData['judgment']
     };
+
+    console.log(demandEffectsData);
 
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
@@ -2071,10 +2003,12 @@ var feedback = {
   on_finish: function (data) {
     let purposeFeedbackData = data.response;
 
-    bigFiveData = {
+    purposeFeedbackData = {
       guess_study_purpose: purposeFeedbackData['guess-study-purpose'],
       feedback: purposeFeedbackData['feedback']
     };
+
+    console.log(purposeFeedbackData);
 
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())

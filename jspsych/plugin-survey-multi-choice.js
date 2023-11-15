@@ -231,22 +231,22 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                             '" ' +
                             required_attr +
                             '"></label>';
-                    }
+                    };
 
                     // if not horizontal question format, place label beside ratio
                     if (!question.horizontal) {
                         html += question.options[j] + "</label>";
-                    }
+                    };
                     html += "</div>";
 
-                }
+                };
                 // add hint
                 if (question.hint) {
                     html += '<div class="jspsych-survey-multi-choice-hint" style="visibility:hidden;">' + question.hint + '</div>';
-                }
+                };
                 html += "</div>";
-            }
-            // add submit button
+            };
+
             html +=
                 '<input type="submit" id="' +
                 plugin_id_name +
@@ -256,7 +256,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                 (trial.button_label ? ' value="' + trial.button_label + '"' : "") +
                 "></input>";
             html += "</form>";
-            // render
+            
             display_element.innerHTML = html;
             document.querySelector("form").addEventListener("submit", (event) => {
                 event.preventDefault();
@@ -267,7 +267,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         if ($(this).hasClass('incomplete')) {
                             incompleteResponse = true;
                             return false; // Exit the loop early if a disabled slider is found
-                        }
+                        };
                     });
 
                     if (incompleteResponse) {
@@ -326,7 +326,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                                     };
                                     display_element.innerHTML = "";
                                     // next trial
-                                    this.jsPsych.finishTrial(trial_data);
+                                    that.jsPsych.finishTrial(trial_data);
                                 }
                             } else {
                                 var trial_data = {
@@ -336,7 +336,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                                 };
                                 display_element.innerHTML = "";
                                 // next trial
-                                this.jsPsych.finishTrial(trial_data);
+                                that.jsPsych.finishTrial(trial_data);
                             }
                         });
 
@@ -352,7 +352,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         var question_data = {};
                         if (question.correct) {
                             var correctCheck = [...Array(trial.questions.length).fill(false)];
-                        }
+                        };
                         for (let i = 0; i < trial.questions.length; i++) {
                             var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
                             let id = "Q" + i;
@@ -379,32 +379,31 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                                 } else {
                                     hintmatch.item(i).style.visibility = "hidden";
                                     correctCheck[i] = true;
-                                }
-                            }
-                        }
+                                };
+                            };
+                        };
                         if (question.hint) {
                             if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
                                 var trial_data = {
                                     rt: response_time,
                                     response: question_data,
-                                    question_order: question_order,
+                                    question_order: question_order
                                 };
                                 display_element.innerHTML = "";
                                 // next trial
                                 this.jsPsych.finishTrial(trial_data);
-                            }
+                            };
                         } else {
                             var trial_data = {
                                 rt: response_time,
                                 response: question_data,
-                                question_order: question_order,
+                                question_order: question_order
                             };
                             display_element.innerHTML = "";
                             // next trial
                             this.jsPsych.finishTrial(trial_data);
-                        }
+                        };
                     };
-
                 } else {
                     // measure response time
                     var endTime = performance.now();
@@ -413,22 +412,21 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                     var question_data = {};
                     if (question.correct) {
                         var correctCheck = [...Array(trial.questions.length).fill(false)];
-                    }
+                    };
                     for (let i = 0; i < trial.questions.length; i++) {
                         var match = display_element.querySelector("#jspsych-survey-multi-choice-" + i);
                         var id = "Q" + i;
                         var val;
                         if (match.querySelector("input[type=radio]:checked") !== null) {
                             val = match.querySelector("input[type=radio]:checked").value;
-                        }
-                        else {
+                        } else {
                             val = "";
-                        }
+                        };
                         var obje = {};
                         var name = id;
                         if (match.attributes["data-name"].value !== "") {
                             name = match.attributes["data-name"].value;
-                        }
+                        };
                         obje[name] = val;
                         Object.assign(question_data, obje);
 
@@ -440,9 +438,9 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                             } else {
                                 hintmatch.item(i).style.visibility = "hidden";
                                 correctCheck[i] = true;
-                            }
-                        }
-                    }
+                            };
+                        };
+                    };
                     if (question.hint) {
                         if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
                             var trial_data = {
@@ -463,9 +461,8 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         display_element.innerHTML = "";
                         // next trial
                         this.jsPsych.finishTrial(trial_data);
-                    }
+                    };
                 };
-
             });
             var startTime = performance.now();
         }

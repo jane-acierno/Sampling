@@ -301,116 +301,116 @@ const instructionsEpistemic = {
 // MORAL INSTRUCTIONS //
 const instructionsMoral = {
   type: jsPsychInstructions,
-  pages: [`
-        <h2><strong>Instructions (1/6)</strong></h2>
-        <p style="text-align: left;">
-          Welcome to this experiment! On the following pages, you will see a series of 
-          statements describing actions taken by prominent people, such as celebrities 
-          and historical figures. All of the people in these statements are real people.
-        </p>
-        <p style="text-align: left;">
-          Your task is to assess the percentage of individuals in the United States who 
-          consider it a morally good action. In order to accomplish this, we will present 
-          you with the viewpoints of a sample that represents the entire nation. 
-        </p>
-        <p style="text-align: left;">
-          <strong>
-            We are interested in both your perceptions of the beliefs held by the American public 
-            and your personal opinions.
-          </strong>
-        </p>`,
+  pages: [
+    `<h2><strong>Instructions (1/6)</strong></h2>
+    <p style="text-align: left;">
+      Welcome to this experiment! On the following pages, you will see a series of 
+      statements describing actions taken by prominent people, such as celebrities 
+      and historical figures. All of the people in these statements are real people.
+    </p>
+    <p style="text-align: left;">
+      Your task is to assess the percentage of individuals in the United States who 
+      consider it a morally good action. In order to accomplish this, we will present 
+      you with the viewpoints of a sample that represents the entire nation. 
+    </p>
+    <p style="text-align: left;">
+      <strong>
+        We are interested in both your perceptions of the beliefs held by the American public 
+        and your personal opinions.
+      </strong>
+    </p>`,
 
     `<h2><strong>Instructions (2/6)</strong></h2>
-        <p style="text-align: left;">
-          We found out what percentage of people in the U.S. believe that each action you will see is 
-          considered morally good in a previous study. For that study, we made sure to recruit a 
-          nationally representative sample so that the views of those participants should accurately 
-          represent the views of people in the <strong>U.S. more broadly</strong>.
-        </p>`,
+    <p style="text-align: left;">
+      We found out what percentage of people in the U.S. believe that each action you will see is 
+      considered morally good in a previous study. For that study, we made sure to recruit a 
+      nationally representative sample so that the views of those participants should accurately 
+      represent the views of people in the <strong>U.S. more broadly</strong>.
+    </p>`,
 
     `<h2><strong>Instructions (3/6)</strong></h2>
-        <p style="text-align: left;">
-          These statements are all structured the same way. They will make a claim about something 
-          a real person from history did (or did not) do, and then some of the outcomes of that 
-          supposed action. Your job is to tell us whether you think other people think the actions 
-          depicted in the statements you see are morally good or not. You should not evaluate how 
-          likely the statement about the person is true or false, just your opinion about what 
-          you think other people think about the morality of the actions depicted.
-        </p>`,
+    <p style="text-align: left;">
+      These statements are all structured the same way. They will make a claim about something 
+      a real person from history did (or did not) do, and then some of the outcomes of that 
+      supposed action. Your job is to tell us whether you think other people think the actions 
+      depicted in the statements you see are morally good or not. You should not evaluate how 
+      likely the statement about the person is true or false, just your opinion about what 
+      you think other people think about the morality of the actions depicted.
+    </p>`,
 
     `<h2><strong>Instructions (4/6)</strong></h2>
-        <p style="text-align: left;">
-          For example, if you saw the following statement:
-        </p>
-        <blockquote>
-          “Robert Oppenheimer developed the atomic bomb, which ended World War II 
-          but also enabled the devastation of Hiroshima and Nagasaki.”
-        </blockquote>
-        <p style="text-align: left;">
-          Your job would be to evaluate what percentage of people you think believe that
-          “Robert Oppenheimer developed the atomic bomb, which ended World War II 
-          but also enabled the devastation of Hiroshima and Nagasaki.” is a 
-          <strong>morally good (or bad) action.</strong>
-        </p>`,
+    <p style="text-align: left;">
+      For example, if you saw the following statement:
+    </p>
+    <blockquote>
+      “Robert Oppenheimer developed the atomic bomb, which ended World War II 
+      but also enabled the devastation of Hiroshima and Nagasaki.”
+    </blockquote>
+    <p style="text-align: left;">
+      Your job would be to evaluate what percentage of people you think believe that
+      “Robert Oppenheimer developed the atomic bomb, which ended World War II 
+      but also enabled the devastation of Hiroshima and Nagasaki.” is a 
+      <strong>morally good (or bad) action.</strong>
+    </p>`,
 
     `<h2><strong>Instructions (5/6)</strong></h2>
-        <div class="quote">
-          <h3>Example Claim</h3>
-          <blockquote>
-            “Robert Oppenheimer developed the atomic bomb, which ended World War II 
-            but also enabled the devastation of Hiroshima and Nagasaki.”
-          </blockquote>
-        </div><br>
-        <label for="practice-slider-moral-estimate-percent">
-          As practice, please estimate what percentage of people in the U.S. believe, 
-          based on these outcomes, that this action is morally good or morally bad:<br><br>
-          <strong>
-            <code style="font-size: 10pt;" id="practice-slider-moral-estimate-percent-label">
-              <i class="fa-solid fa-arrow-left" id="fa-arrow-left"></i>&nbsp;(slide to adjust)&nbsp;<i class="fa-solid fa-arrow-right" id="fa-arrow-right"></i>
-            </code>
-          </strong>
-        </label>
-        <div style="position: relative;">
-          <input 
-            name="practice-slider-moral-estimate-percent" 
-            type="range" 
-            class="jspsych-slider incomplete" 
-            value="50" min="0" max="100" step="1" 
-            id="practice-slider-moral-estimate-percent"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');
-              $('#practice-slider-moral-estimate-percent-label').addClass('fade-out');
+    <div class="quote">
+      <h3>Example Claim</h3>
+      <blockquote>
+        “Robert Oppenheimer developed the atomic bomb, which ended World War II 
+        but also enabled the devastation of Hiroshima and Nagasaki.”
+      </blockquote>
+    </div><br>
+    <label for="practice-slider-moral-estimate-percent">
+      As practice, please estimate what percentage of people in the U.S. believe, 
+      based on these outcomes, that this action is morally good or morally bad:<br><br>
+      <strong>
+        <code style="font-size: 10pt;" id="practice-slider-moral-estimate-percent-label">
+          <i class="fa-solid fa-arrow-left" id="fa-arrow-left"></i>&nbsp;(slide to adjust)&nbsp;<i class="fa-solid fa-arrow-right" id="fa-arrow-right"></i>
+        </code>
+      </strong>
+    </label>
+    <div style="position: relative;">
+      <input 
+        name="practice-slider-moral-estimate-percent" 
+        type="range" 
+        class="jspsych-slider incomplete" 
+        value="50" min="0" max="100" step="1" 
+        id="practice-slider-moral-estimate-percent"
+        oninput="
+          this.classList.remove('incomplete');
+          this.classList.add('clicked');
+          $('#practice-slider-moral-estimate-percent-label').addClass('fade-out');
 
-              let rawRating = parseFloat(this.value);
-              let downRating = (100 - rawRating) + '%';
-              let upRating = rawRating + '%';
-            
-              $('#slider-downRating').text(downRating);
-              $('#slider-upRating').text(upRating);
-            "
-          >
-          <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-          <output style="position: absolute; right: 0%; font-size: 14pt; "id="slider-upRating">50%</output><br>
-          <span class="jspsych-slider-left-anchor">
-            <strong>Definitely morally bad</strong>
-          </span>
-          <span class="jspsych-slider-right-anchor">
-            <strong>Definitely morally good</strong>
-          </span>
-        </div>`,
+          let rawRating = parseFloat(this.value);
+          let downRating = (100 - rawRating) + '%';
+          let upRating = rawRating + '%';
+        
+          $('#slider-downRating').text(downRating);
+          $('#slider-upRating').text(upRating);
+        "
+      >
+      <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
+      <output style="position: absolute; right: 0%; font-size: 14pt; "id="slider-upRating">50%</output><br>
+      <span class="jspsych-slider-left-anchor">
+        <strong>Definitely morally bad</strong>
+      </span>
+      <span class="jspsych-slider-right-anchor">
+        <strong>Definitely morally good</strong>
+      </span>
+    </div>`,
 
     `<h2><strong>Instructions (6/6)</strong></h2>
-        <p style="text-align: left;">
-          To help you share your opinion about the statements, you will have the opportunity 
-          to see what people in that previous study thought about the statements. You will see 
-          avatars representing people who participated in that study.
-        </p>
-        <p style="text-align: left;">
-          Every time you click on an avatar, you will see whether that 
-          <strong>one person thought that particular statement was morally good or bad.</strong> 
-          You can view the opinions of as many people as you'd like before making your estimate.
-        </p>`
+    <p style="text-align: left;">
+      To help you share your opinion about the statements, you will have the opportunity 
+      to see what people in that previous study thought about the statements. You will see 
+      avatars representing people who participated in that study.
+    </p>
+    <p style="text-align: left;">
+      Every time you click on an avatar, you will see whether that 
+      <strong>one person thought that particular statement was morally good or bad.</strong> 
+      You can view the opinions of as many people as you'd like before making your estimate.
+    </p>`
   ],
   show_clickable_nav: true
 };
@@ -420,11 +420,7 @@ const instructionsEpistemicComprehensionCheck = {
   questions: [
     {
       name: 'epistemic_comp_check_1',
-      prompt: `
-            <strong>
-              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
-              For each statement, your task is to:
-            </strong>`,
+      prompt: '<strong><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;For each statement, your task is to:</strong>',
       options: [
         "Estimate the percentage of people in the U.S. who believe the statement is true",
         "Estimate the percentage of people in the U.S. who believe the actions that the historical figures took were morally good",
@@ -442,36 +438,33 @@ const instructionsEpistemicComprehensionCheck = {
               <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
               You can view the opinions of as many people as you'd like before making your estimate.
             </strong>`,
-      options: [
-        "True",
-        "False"
-      ],
+      options: ["True", "False"],
       correct: 'True',
       hint: `That's not quite right. Remember, you will have the chance to view the opinions of <strong>as many people as you'd like</strong> before making your estimate.`,
       required: true,
     },
   ],
-  preamble: `
-        <h2 style="text-align: center;">Instructions Review</h2> 
-        <p style="text-align: left;"> 
-          The experiment will begin on the next page.
-          
-          As a reminder, you will see a series of statements and be asked to estimate 
-          how many people think the outcome of the action in the statement is true (vs. false).<br><br>
+  preamble: 
+    `<h2 style="text-align: center;">Instructions Review</h2> 
+    <p style="text-align: left;"> 
+      The experiment will begin on the next page.
+      
+      As a reminder, you will see a series of statements and be asked to estimate 
+      how many people think the outcome of the action in the statement is true (vs. false).<br><br>
 
-          We will first ask you a few questions about the statement you will see and what you think 
-          before you get to see any information about what others think. Then, you will see a page 
-          of many different avatars that each represent real participants' opinions 
-          about the outcomes of the action in the statement you read.<br><br>
+      We will first ask you a few questions about the statement you will see and what you think 
+      before you get to see any information about what others think. Then, you will see a page 
+      of many different avatars that each represent real participants' opinions 
+      about the outcomes of the action in the statement you read.<br><br>
 
-          <strong>
-            You are free to review as many opinions as you would like before providing us 
-            your final estimate of the percentage of people in the U.S. who consider 
-            the outcome of the action to be true (vs. false).
-          </strong>
+      <strong>
+        You are free to review as many opinions as you would like before providing us 
+        your final estimate of the percentage of people in the U.S. who consider 
+        the outcome of the action to be true (vs. false).
+      </strong>
 
-          To make sure you fully understand the instructions for this study, please answer the questions below: 
-        </p>`,
+      To make sure you fully understand the instructions for this study, please answer the questions below: 
+    </p>`,
 };
 
 const instructionsMoralComprehensionCheck = {
@@ -552,95 +545,95 @@ const statements = [
 function prePredictionsEpistemicSelf(trialIndex) {
   return {
     type: jsPsychSurveyHtmlForm,
-    preamble: `
-        <div class="quote">
-          <h3>Statement #` + (trialIndex + 1) + `</h3>
-          <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
-        </div>
-          <p class="jspsych-survey-multi-choice-preamble">
-            Before you see what other people think about the statement, we want to know what you think:
-          </p><br><br>`,
+    preamble: 
+      `<div class="quote">
+        <h3>Statement #` + (trialIndex + 1) + `</h3>
+        <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+      </div>
+      <p class="jspsych-survey-multi-choice-preamble">
+        Before you see what other people think about the statement, we want to know what you think:
+      </p><br><br>`,
     html: `
-          <!-- Pre-Sampling Epistemic Claim Rating -->
-          
-          <input type="hidden" name="pre-slider-epistemic-claim-clicked" value="false">
-          <label for="pre-slider-epistemic-claim" class="jspsych-survey-multi-choice-question">
-            To what extent do you think this claim is true or false?
-          </label>
-          <div style="position: relative;">
-            <input 
-              name="pre-slider-epistemic-claim" 
-              type="range" 
-              class="jspsych-slider incomplete" 
-              value="50" min="0" max="100" step="1" 
-              id="pre-slider-epistemic-claim"
-              oninput="
-                this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('pre-slider-epistemic-claim-clicked')[0].value = 'true';"
-            >
-            <span class="jspsych-slider-left-anchor">Definitely false</span>
-            <span class="jspsych-slider-right-anchor">Definitely true</span>
-          </div><br><br><br>
+      <!-- Pre-Sampling Epistemic Claim Rating -->
+      
+      <input type="hidden" name="pre-slider-epistemic-claim-clicked" value="false">
+      <label for="pre-slider-epistemic-claim" class="jspsych-survey-multi-choice-question">
+        To what extent do you think this claim is true or false?
+      </label>
+      <div style="position: relative;">
+        <input 
+          name="pre-slider-epistemic-claim" 
+          type="range" 
+          class="jspsych-slider incomplete" 
+          value="50" min="0" max="100" step="1" 
+          id="pre-slider-epistemic-claim"
+          oninput="
+            this.classList.remove('incomplete');
+            this.classList.add('clicked');"
+            document.getElementsByName('pre-slider-epistemic-claim-clicked')[0].value = 'true';"
+        >
+        <span class="jspsych-slider-left-anchor">Definitely false</span>
+        <span class="jspsych-slider-right-anchor">Definitely true</span>
+      </div><br><br><br>
 
 
-          <!-- Pre-Sampling Epistemic Plausible Rating -->
+      <!-- Pre-Sampling Epistemic Plausible Rating -->
 
-          <input type="hidden" name="pre-slider-epistemic-plausible-clicked" value="false">
-          <label for="pre-slider-epistemic-plausible" class="jspsych-survey-multi-choice-question">
-            To what extent do you think the content of this claim is plausible?
-          </label>
-          <div style="position: relative;">
-            <input 
-              name="pre-slider-epistemic-plausible" 
-              type="range" 
-              class="jspsych-slider incomplete" 
-              value="50" min="0" max="100" step="1" 
-              id="pre-slider-epistemic-plausible"
-              oninput="
-                this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('pre-slider-epistemic-plausible-clicked')[0].value = 'true';"
-            >
-            <span class="jspsych-slider-left-anchor">Definitely implausible</span>
-            <span class="jspsych-slider-right-anchor">Definitely plausible</span>
-          </div><br><br><br>
+      <input type="hidden" name="pre-slider-epistemic-plausible-clicked" value="false">
+      <label for="pre-slider-epistemic-plausible" class="jspsych-survey-multi-choice-question">
+        To what extent do you think the content of this claim is plausible?
+      </label>
+      <div style="position: relative;">
+        <input 
+          name="pre-slider-epistemic-plausible" 
+          type="range" 
+          class="jspsych-slider incomplete" 
+          value="50" min="0" max="100" step="1" 
+          id="pre-slider-epistemic-plausible"
+          oninput="
+            this.classList.remove('incomplete');
+            this.classList.add('clicked');"
+            document.getElementsByName('pre-slider-epistemic-plausible-clicked')[0].value = 'true';"
+        >
+        <span class="jspsych-slider-left-anchor">Definitely implausible</span>
+        <span class="jspsych-slider-right-anchor">Definitely plausible</span>
+      </div><br><br><br>
 
 
-          <!-- Pre-Sampling Epistemic Curiosity -->
+      <!-- Pre-Sampling Epistemic Curiosity -->
 
-          <input type="hidden" name="pre-slider-epistemic-curious-clicked" value="false">
-          <label for="pre-slider-epistemic-curious" class="jspsych-survey-multi-choice-question">
-            How curious are you to learn about what other people think about this statement?<br>
-            <em style="font-size: 10pt;">
-              Remember that when answering the following question about how curious you are, 
-              keep in mind that you should only say you are extremely curious for the 
-              statements you are <u>absolutely</u> most curious to learn about.
-            </em>
-          </label>
-          <div style="position: relative;">
-            <input
-              name="pre-slider-epistemic-curious" 
-              type="range" 
-              class="jspsych-slider incomplete" 
-              value="50" min="0" max="100" step="1" 
-              id="pre-slider-epistemic-curious"
-              oninput="
-                this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('pre-slider-epistemic-curious-clicked')[0].value = 'true';"
-            >
-            <span class="jspsych-slider-left-anchor">Not at all curious</span>
-            <span class="jspsych-slider-right-anchor">Extremely curious</span>
-          </div><br><br><br>`,
+      <input type="hidden" name="pre-slider-epistemic-curious-clicked" value="false">
+      <label for="pre-slider-epistemic-curious" class="jspsych-survey-multi-choice-question">
+        How curious are you to learn about what other people think about this statement?<br>
+        <em style="font-size: 10pt;">
+          Remember that when answering the following question about how curious you are, 
+          keep in mind that you should only say you are extremely curious for the 
+          statements you are <u>absolutely</u> most curious to learn about.
+        </em>
+      </label>
+      <div style="position: relative;">
+        <input
+          name="pre-slider-epistemic-curious" 
+          type="range" 
+          class="jspsych-slider incomplete" 
+          value="50" min="0" max="100" step="1" 
+          id="pre-slider-epistemic-curious"
+          oninput="
+            this.classList.remove('incomplete');
+            this.classList.add('clicked');"
+            document.getElementsByName('pre-slider-epistemic-curious-clicked')[0].value = 'true';"
+        >
+        <span class="jspsych-slider-left-anchor">Not at all curious</span>
+        <span class="jspsych-slider-right-anchor">Extremely curious</span>
+      </div><br><br><br>`,
     button_label: "Next",
     request_response: true,
     on_finish: function (data) {
       let preSamplingEpistemicSelfData = data.response;
 
-      let pre_slider_epistemic_claim_check = preSamplingEpistemicSelfData['pre-slider-epistemic-claim-clicked'] === 'true' ? responses['pre-slider-epistemic-claim'] : null;
-      let pre_slider_epistemic_plausible_check = preSamplingEpistemicSelfData['pre-slider-epistemic-plausible-clicked'] === 'true' ? responses['pre-slider-epistemic-plausible'] : null;
-      let pre_slider_epistemic_curious_check = preSamplingEpistemicSelfData['pre-slider-epistemic-curious-clicked'] === 'true' ? responses['pre-slider-epistemic-curious'] : null;
+      let pre_slider_epistemic_claim_check = preSamplingEpistemicSelfData['pre-slider-epistemic-claim-clicked'] === 'true' ? preSamplingEpistemicSelfData['pre-slider-epistemic-claim'] : null;
+      let pre_slider_epistemic_plausible_check = preSamplingEpistemicSelfData['pre-slider-epistemic-plausible-clicked'] === 'true' ? preSamplingEpistemicSelfData['pre-slider-epistemic-plausible'] : null;
+      let pre_slider_epistemic_curious_check = preSamplingEpistemicSelfData['pre-slider-epistemic-curious-clicked'] === 'true' ? preSamplingEpistemicSelfData['pre-slider-epistemic-curious'] : null;
 
       preSamplingEpistemicSelfData = {
         pre_slider_epistemic_claim: pre_slider_epistemic_claim_check,
@@ -648,11 +641,9 @@ function prePredictionsEpistemicSelf(trialIndex) {
         pre_slider_epistemic_curious: pre_slider_epistemic_curious_check
       };
 
-      console.log(preSamplingEpistemicSelfData)
-  
       jsPsych.data
-             .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-             .addToAll(preSamplingEpistemicSelfData);
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(preSamplingEpistemicSelfData);
     }
   };
 };
@@ -730,15 +721,15 @@ function prePredictionsEpistemicOther(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let preSamplingEpistemicOtherData = data.response;
-  
-      let pre_slider_epistemic_estimate_percent_check = preSamplingEpistemicOtherData['pre-slider-epistemic-estimate-percent-clicked'] === 'true' ? responses['pre-slider-epistemic-estimate-percent'] : null;
-      let pre_slider_epistemic_confidence_check = preSamplingEpistemicOtherData['pre-slider-epistemic-confidence-clicked'] === 'true' ? responses['pre-slider-epistemic-confidence'] : null;
+
+      let pre_slider_epistemic_estimate_percent_check = preSamplingEpistemicOtherData['pre-slider-epistemic-estimate-percent-clicked'] === 'true' ? preSamplingEpistemicOtherData['pre-slider-epistemic-estimate-percent'] : null;
+      let pre_slider_epistemic_confidence_check = preSamplingEpistemicOtherData['pre-slider-epistemic-confidence-clicked'] === 'true' ? preSamplingEpistemicOtherData['pre-slider-epistemic-confidence'] : null;
 
       preSamplingEpistemicOtherData = {
         pre_slider_epistemic_estimate_percent: pre_slider_epistemic_estimate_percent_check,
         pre_slider_epistemic_confidence: pre_slider_epistemic_confidence_check,
       };
-  
+
       jsPsych.data
         .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
         .addToAll(preSamplingEpistemicOtherData);
@@ -837,17 +828,15 @@ function prePredictionsMoralSelf(trialIndex) {
     on_finish: function (data) {
       let preSamplingMoralSelfData = data.response;
 
-      let pre_slider_moral_action_check = preSamplingMoralSelfData['pre-slider-moral-action-clicked'] === 'true' ? responses['pre-slider-moral-action'] : null;
-      let pre_slider_moral_person_check = preSamplingMoralSelfData['pre-slider-moral-person-clicked'] === 'true' ? responses['pre-slider-moral-person'] : null;
-      let pre_slider_moral_curious_check = preSamplingMoralSelfData['pre-slider-moral-curious-clicked'] === 'true' ? responses['pre-slider-moral-curious'] : null;
+      let pre_slider_moral_action_check = preSamplingMoralSelfData['pre-slider-moral-action-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-action'] : null;
+      let pre_slider_moral_person_check = preSamplingMoralSelfData['pre-slider-moral-person-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-person'] : null;
+      let pre_slider_moral_curious_check = preSamplingMoralSelfData['pre-slider-moral-curious-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-curious'] : null;
 
       preSamplingMoralSelfData = {
         pre_slider_moral_action: pre_slider_moral_action_check,
         pre_slider_moral_person: pre_slider_moral_person_check,
         pre_slider_moral_curious: pre_slider_moral_curious_check
       };
-  
-      console.log(preSamplingMoralSelfData);
 
       jsPsych.data
         .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
@@ -926,18 +915,18 @@ function prePredictionsMoralOther(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let preSamplingMoralOtherData = data.response;
-      
-      let pre_slider_moral_estimate_percent_check = preSamplingMoralOtherData['pre-slider-moral-estimate-percent-clicked'] === 'true' ? responses['pre-slider-moral-estimate-percent'] : null;
-      let pre_slider_moral_confidence_check = preSamplingMoralOtherData['pre-slider-moral-confidence-clicked'] === 'true' ? responses['pre-slider-moral-confidence'] : null;
+
+      let pre_slider_moral_estimate_percent_check = preSamplingMoralOtherData['pre-slider-moral-estimate-percent-clicked'] === 'true' ? preSamplingMoralOtherData['pre-slider-moral-estimate-percent'] : null;
+      let pre_slider_moral_confidence_check = preSamplingMoralOtherData['pre-slider-moral-confidence-clicked'] === 'true' ? preSamplingMoralOtherData['pre-slider-moral-confidence'] : null;
 
       preSamplingMoralOtherData = {
         pre_slider_moral_estimate_percent: pre_slider_moral_estimate_percent_check,
         pre_slider_moral_confidence: pre_slider_moral_confidence_check,
       };
-  
+
       jsPsych.data
-             .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-             .addToAll(preSamplingMoralOtherData);
+        .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+        .addToAll(preSamplingMoralOtherData);
     }
   };
 };
@@ -1035,9 +1024,9 @@ function postPredictionsEpistemicSelf(trialIndex) {
     on_finish: function (data) {
       let postSamplingEpistemicSelfData = data.response;
 
-      let post_slider_epistemic_claim_check = postSamplingEpistemicSelfData['post-slider-epistemic-claim-clicked'] === 'true' ? responses['post-slider-epistemic-claim'] : null;
-      let post_slider_epistemic_plausible_check = postSamplingEpistemicSelfData['post-slider-epistemic-plausible-clicked'] === 'true' ? responses['post-slider-epistemic-plausible'] : null;
-     
+      let post_slider_epistemic_claim_check = postSamplingEpistemicSelfData['post-slider-epistemic-claim-clicked'] === 'true' ? postSamplingEpistemicSelfData['post-slider-epistemic-claim'] : null;
+      let post_slider_epistemic_plausible_check = postSamplingEpistemicSelfData['post-slider-epistemic-plausible-clicked'] === 'true' ? postSamplingEpistemicSelfData['post-slider-epistemic-plausible'] : null;
+
       postSamplingEpistemicSelfData = {
         post_slider_epistemic_claim: post_slider_epistemic_claim_check,
         post_slider_epistemic_plausible: post_slider_epistemic_plausible_check
@@ -1124,10 +1113,10 @@ function postPredictionsEpistemicOther(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let postSamplingEpistemicOtherData = data.response;
-      
-      let post_slider_epistemic_estimate_percent_check = postSamplingEpistemicOtherData['post-slider-epistemic-estimate-percent-clicked'] === 'true' ? responses['post-slider-epistemic-estimate-percent'] : null;
-      let post_slider_epistemic_confidence_check = postSamplingEpistemicOtherData['post-slider-epistemic-confidence-clicked'] === 'true' ? responses['post-slider-epistemic-confidence'] : null;
-      
+
+      let post_slider_epistemic_estimate_percent_check = postSamplingEpistemicOtherData['post-slider-epistemic-estimate-percent-clicked'] === 'true' ? postSamplingEpistemicOtherData['post-slider-epistemic-estimate-percent'] : null;
+      let post_slider_epistemic_confidence_check = postSamplingEpistemicOtherData['post-slider-epistemic-confidence-clicked'] === 'true' ? postSamplingEpistemicOtherData['post-slider-epistemic-confidence'] : null;
+
       postSamplingEpistemicOtherData = {
         post_slider_epistemic_estimate_percent: post_slider_epistemic_estimate_percent_check,
         post_slider_epistemic_confidence: post_slider_epistemic_confidence_check
@@ -1204,8 +1193,8 @@ function postPredictionsMoralSelf(trialIndex) {
     on_finish: function (data) {
       let postSamplingMoralSelfData = data.response;
 
-      let post_slider_moral_action_check = postSamplingMoralSelfData['post-slider-moral-action-clicked'] === 'true' ? responses['post-slider-moral-action'] : null;
-      let post_slider_moral_person_check = postSamplingMoralSelfData['post-slider-moral-person-clicked'] === 'true' ? responses['post-slider-moral-person'] : null;
+      let post_slider_moral_action_check = postSamplingMoralSelfData['post-slider-moral-action-clicked'] === 'true' ? postSamplingMoralSelfData['post-slider-moral-action'] : null;
+      let post_slider_moral_person_check = postSamplingMoralSelfData['post-slider-moral-person-clicked'] === 'true' ? postSamplingMoralSelfData['post-slider-moral-person'] : null;
 
       postSamplingMoralSelfData = {
         post_slider_moral_action: post_slider_moral_action_check,
@@ -1292,16 +1281,16 @@ function postPredictionsMoralOther(trialIndex) {
     request_response: true,
     on_finish: function (data) {
       let postSamplingMoralOtherData = data.response;
-      
-      let post_slider_moral_estimate_percent_check = postSamplingMoralOtherData['post-slider-moral-estimate-percent-clicked'] === 'true' ? responses['post-slider-moral-estimate-percent'] : null;
-      let post_slider_moral_confidence_check = postSamplingMoralOtherData['post-slider-moral-confidence-clicked'] === 'true' ? responses['post-slider-moral-confidence'] : null;
-      
+
+      let post_slider_moral_estimate_percent_check = postSamplingMoralOtherData['post-slider-moral-estimate-percent-clicked'] === 'true' ? postSamplingMoralOtherData['post-slider-moral-estimate-percent'] : null;
+      let post_slider_moral_confidence_check = postSamplingMoralOtherData['post-slider-moral-confidence-clicked'] === 'true' ? postSamplingMoralOtherData['post-slider-moral-confidence'] : null;
+
 
       postSamplingMoralOtherData = {
         post_slider_moral_estimate_percent: post_slider_moral_estimate_percent_check,
         post_slider_moral_confidence: post_slider_moral_confidence_check
       };
-  
+
       jsPsych.data
         .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
         .addToAll(postSamplingMoralOtherData);
@@ -1324,17 +1313,17 @@ function newTrialPage(trialIndex) {
 };
 
 if (participantCondition === 'epistemic') {
-  // timeline.push(
-  //   instructionsEpistemic,
-  //   instructionsEpistemicComprehensionCheck
-  // );
+  timeline.push(
+    instructionsEpistemic,
+    instructionsEpistemicComprehensionCheck
+  );
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
     timeline.push(
-      // prePredictionsEpistemicSelf(trialIndex),
-      // prePredictionsEpistemicOther(trialIndex),
-      // selectionTask(trialIndex, participantCondition),
-      // postPredictionsEpistemicSelf(trialIndex),
-      // postPredictionsEpistemicOther(trialIndex),
+      prePredictionsEpistemicSelf(trialIndex),
+      prePredictionsEpistemicOther(trialIndex),
+      selectionTask(trialIndex, participantCondition),
+      postPredictionsEpistemicSelf(trialIndex),
+      postPredictionsEpistemicOther(trialIndex),
     );
     if (trialIndex != trials.length - 1) {
       timeline.push(
@@ -1343,17 +1332,17 @@ if (participantCondition === 'epistemic') {
     };
   };
 } else if (participantCondition === 'moral') {
-  // timeline.push(
-  //   instructionsMoral,
-  //   instructionsMoralComprehensionCheck
-  // );
+  timeline.push(
+    instructionsMoral,
+    instructionsMoralComprehensionCheck
+  );
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
     timeline.push(
-      // prePredictionsMoralSelf(trialIndex),
-      // prePredictionsMoralOther(trialIndex),
-      // selectionTask(trialIndex, participantCondition),
-      // postPredictionsMoralSelf(trialIndex),
-      // postPredictionsMoralOther(trialIndex),
+      prePredictionsMoralSelf(trialIndex),
+      prePredictionsMoralOther(trialIndex),
+      selectionTask(trialIndex, participantCondition),
+      postPredictionsMoralSelf(trialIndex),
+      postPredictionsMoralOther(trialIndex),
     );
     if (trialIndex != trials.length - 1) {
       timeline.push(
@@ -1372,42 +1361,62 @@ const nfcQuestions = {
   questions: [
     {
       name: 'nfc-1-simple-complex',
-      prompt: '<p class="jspsych-survey-multi-choice-question">I would prefer complex to simple problems.</p>',
+      prompt: 
+        `<p class="jspsych-survey-multi-choice-question">
+          I would prefer complex to simple problems.
+        </p>`,
       options: nfcResponses,
     },
     {
       name: 'nfc-2-responsibility',
-      prompt: `<p class="jspsych-survey-multi-choice-question">
-              I like to have the responsibility of handling a situation that requires a lot of thinking.</p>`,
+      prompt: 
+        `<p class="jspsych-survey-multi-choice-question">
+          I like to have the responsibility of handling a situation that requires a lot of thinking.
+        </p>`,
       options: nfcResponses,
     },
     {
       name: 'nfc-3-not-fun',
-      prompt: '<p class="jspsych-survey-multi-choice-question">Thinking is not my idea of fun.</p>',
+      prompt: 
+        `<p class="jspsych-survey-multi-choice-question">
+          Thinking is not my idea of fun.
+        </p>`,
       options: nfcResponses,
     },
     {
       name: 'nfc-4-little-thought',
-      prompt: `<p class="jspsych-survey-multi-choice-question">
-              I would rather do something that requires little thought than something that is sure to challenge my thinking abilities.</p>`,
+      prompt: 
+        `<p class="jspsych-survey-multi-choice-question">
+          I would rather do something that requires little thought than 
+          something that is sure to challenge my thinking abilities.
+        </p>`,
       options: nfcResponses,
     },
     {
       name: 'nfc-5-new-solutions',
-      prompt: `<p class="jspsych-survey-multi-choice-question">I really enjoy a task that involves coming up with new solutions to problems.</p>`,
+      prompt: 
+        `<p class="jspsych-survey-multi-choice-question">
+          I really enjoy a task that involves coming up with new solutions to problems.
+        </p>`,
       options: nfcResponses,
     },
     {
       name: 'nfc-6-intellectual',
-      prompt: `<p class="jspsych-survey-multi-choice-question">
-              I would prefer a task that is intellectual, difficult, and important to one that is somewhat important but does not require much thought.</p>`,
+      prompt: 
+        `<p class="jspsych-survey-multi-choice-question">
+          I would prefer a task that is intellectual, difficult, and important to one 
+          that is somewhat important but does not require much thought.
+        </p>`,
       options: nfcResponses,
     }
   ],
   randomize_question_order: true,
   request_response: true,
-  preamble: `<p class="jspsych-survey-multi-choice-preamble">
-          Please indicate how much you agree with each of the following statements, or how true it is about you using the scale provided:</p>`,
+  preamble: 
+    `<p class="jspsych-survey-multi-choice-preamble">
+      Please indicate how much you agree with each of the following statements,
+      or how true it is about you using the scale provided:
+    </p>`,
   scale_width: 500,
   on_finish: function (data) {
     let nfcData = data.response;
@@ -1421,11 +1430,9 @@ const nfcQuestions = {
       nfc_6_intellectual: nfcData['nfc-6-intellectual']
     };
 
-    console.log(nfcData)
-
     jsPsych.data
-           .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-           .addToAll(nfcData);
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(nfcData);
   }
 };
 
@@ -1433,10 +1440,10 @@ timeline.push(nfcQuestions);
 
 const demographicsQuestions = {
   type: jsPsychSurveyHtmlForm,
-  preamble: `
-        <p class="jspsych-survey-multi-choice-preamble">
-          Using the scales provided, please respond to each question about you as an individual:
-        </p>`,
+  preamble:
+    `<p class="jspsych-survey-multi-choice-preamble">
+      Using the scales provided, please respond to each question about you as an individual:
+    </p>`,
   html: `
         <!-- Age -->
 
@@ -1469,7 +1476,9 @@ const demographicsQuestions = {
               value="Indigenous American or Alaskan Native" 
               class="demographics-race-ethnicity incomplete"
               oninput="
-                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                let demographicsRaceEthnicity = document.querySelectorAll(
+                  '.demographics-race-ethnicity'
+                );
                 for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
@@ -1485,7 +1494,9 @@ const demographicsQuestions = {
               value="Asian or Asian-American" 
               class="demographics-race-ethnicity incomplete"
               oninput="
-                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                let demographicsRaceEthnicity = document.querySelectorAll(
+                  '.demographics-race-ethnicity'
+                );
                 for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
@@ -1501,7 +1512,9 @@ const demographicsQuestions = {
               value="African or African-American" 
               class="demographics-race-ethnicity incomplete"
               oninput="
-                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                let demographicsRaceEthnicity = document.querySelectorAll(
+                  '.demographics-race-ethnicity'
+                );
                 for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
@@ -1517,7 +1530,9 @@ const demographicsQuestions = {
               value="Native Hawaiian or Pacific Islander" 
               class="demographics-race-ethnicity incomplete"
               oninput="
-                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                let demographicsRaceEthnicity = document.querySelectorAll(
+                  '.demographics-race-ethnicity'
+                );
                 for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
@@ -1533,7 +1548,9 @@ const demographicsQuestions = {
               value="White" 
               class="demographics-race-ethnicity incomplete"
               oninput="
-                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                let demographicsRaceEthnicity = document.querySelectorAll(
+                  '.demographics-race-ethnicity'
+                );
                 for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
@@ -1549,7 +1566,9 @@ const demographicsQuestions = {
               value="Hispanic/Latino/a/e/x" 
               class="demographics-race-ethnicity incomplete"
               oninput="
-                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                let demographicsRaceEthnicity = document.querySelectorAll(
+                  '.demographics-race-ethnicity'
+                );
                 for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
@@ -1565,7 +1584,9 @@ const demographicsQuestions = {
               value="Other" 
               class="demographics-race-ethnicity incomplete"
               oninput="
-                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                let demographicsRaceEthnicity = document.querySelectorAll(
+                  '.demographics-race-ethnicity'
+                );
                 for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
@@ -1581,7 +1602,9 @@ const demographicsQuestions = {
               value="Prefer not to disclose" 
               class="demographics-race-ethnicity incomplete"
               oninput="
-                let demographicsRaceEthnicity = document.querySelectorAll('.demographics-race-ethnicity');
+                let demographicsRaceEthnicity = document.querySelectorAll(
+                  '.demographics-race-ethnicity'
+                );
                 for (let i = 0; i < demographicsRaceEthnicity.length; i++) {
                   demographicsRaceEthnicity[i].classList.remove('incomplete');
                 };
@@ -1604,7 +1627,9 @@ const demographicsQuestions = {
               value="Man" 
               class="demographics-gender incomplete"
               oninput="
-                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                let demographicsGender = document.querySelectorAll(
+                  '.demographics-gender'
+                );
                 for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
@@ -1620,7 +1645,9 @@ const demographicsQuestions = {
               value="Woman" 
               class="demographics-gender incomplete"
               oninput="
-                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                let demographicsGender = document.querySelectorAll(
+                  '.demographics-gender'
+                );
                 for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
@@ -1636,7 +1663,9 @@ const demographicsQuestions = {
               value="Non-binary" 
               class="demographics-gender incomplete"
               oninput="
-                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                let demographicsGender = document.querySelectorAll(
+                  '.demographics-gender'
+                );
                 for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
@@ -1652,7 +1681,9 @@ const demographicsQuestions = {
               value="Other" 
               class="demographics-gender incomplete"
               oninput="
-                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                let demographicsGender = document.querySelectorAll(
+                  '.demographics-gender'
+                );
                 for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
@@ -1668,7 +1699,9 @@ const demographicsQuestions = {
               value="Prefer not to disclose" 
               class="demographics-gender incomplete"
               oninput="
-                let demographicsGender = document.querySelectorAll('.demographics-gender');
+                let demographicsGender = document.querySelectorAll(
+                  '.demographics-gender'
+                );
                 for (let i = 0; i < demographicsGender.length; i++) {
                   demographicsGender[i].classList.remove('incomplete');
                 };
@@ -1686,7 +1719,8 @@ const demographicsQuestions = {
           } .jspsych-survey-multi-choice-option { 
             font-size: 10pt; 
             line-height: 2; 
-          } .jspsych-survey-multi-choice-horizontal .jspsych-survey-multi-choice-option { 
+          } .jspsych-survey-multi-choice-horizontal 
+            .jspsych-survey-multi-choice-option { 
             display: inline-block; 
             margin-left: 1em; 
             margin-right: 1em; 
@@ -1730,8 +1764,6 @@ const demographicsQuestions = {
       race_ethnicity_na: demographicsData['race-ethnicity-prefer-not'],
       gender: gender
     };
-
-    console.log(demographicsData);
 
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
@@ -1787,8 +1819,6 @@ const politicsQuestions = {
       political_ideology_overall: politicalData['political-ideology-overall']
     };
 
-    console.log(politicalData)
-
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
       .addToAll(politicalData);
@@ -1803,90 +1833,90 @@ const bigFiveQuestions = {
     {
       name: "extraversion-1",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question"> \
-              I see myself as <strong>extraverted, enthusiastic.</strong> \
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>extroverted, enthusiastic.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     },
     {
       name: "agreeableness-2-r",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question">
-              I see myself as <strong>critical, quarrelsome.</strong>
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>critical, quarrelsome.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     },
     {
       name: "conscientiousness-3",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question">
-              I see myself as <strong>dependable, self-disciplined.</strong>
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>dependable, self-disciplined.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     },
     {
       name: "emotional-stability-4-r",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question">
-              I see myself as <strong>anxious, easily upset.</strong>
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>anxious, easily upset.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     },
     {
       name: "openness-5",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question">
-              I see myself as <strong>open to new experiences, complex.</strong>
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>open to new experiences, complex.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     },
     {
       name: "extraversion-6-r",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question">
-              I see myself as <strong>reserved, quiet.</strong>
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>reserved, quiet.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     },
     {
       name: "agreeableness-7",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question">
-              I see myself as <strong>sympathetic, warm.</strong>
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>sympathetic, warm.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     },
     {
       name: "conscientiousness-8-r",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question">
-              I see myself as <strong>disorganized, careless.</strong>
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>disorganized, careless.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     },
     {
       name: "emotional-stability-9",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question">
-              I see myself as <strong>calm, emotionally stable.</strong>
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>calm, emotionally stable.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     },
     {
       name: "openness-10-r",
       prompt: `
-            <p class="jspsych-survey-multi-choice-question">
-              I see myself as <strong>conventional, uncreative.</strong>
-            </p>`,
+        <p class="jspsych-survey-multi-choice-question">
+          I see myself as <strong>conventional, uncreative.</strong>
+        </p>`,
       options: bigFiveResponses,
       horizontal: true
     }
@@ -1894,15 +1924,15 @@ const bigFiveQuestions = {
   randomize_question_order: true,
   request_response: true,
   preamble: `
-        <p class="jspsych-survey-multi-choice-preamble">
-          Here are a number of personality traits that may or may not apply to you.
-          Please choose the options next to each statement to indicate the extent 
-          to which you agree or disagree with that statement. You should rate the 
-          extent to which the <strong>pair</strong> of traits applies to you, even
-          if one characteristic applies more strongly than the other. Show how much
-          you agree with the items below. You can work quickly; your first feeling 
-          is generally best.
-        </p>`,
+    <p class="jspsych-survey-multi-choice-preamble">
+      Here are a number of personality traits that may or may not apply to you.
+      Please choose the options next to each statement to indicate the extent 
+      to which you agree or disagree with that statement. You should rate the 
+      extent to which the <strong>pair</strong> of traits applies to you, even
+      if one characteristic applies more strongly than the other. Show how much
+      you agree with the items below. You can work quickly; your first feeling 
+      is generally best.
+    </p>`,
   on_finish: function (data) {
     let bigFiveData = data.response;
 
@@ -1919,11 +1949,9 @@ const bigFiveQuestions = {
       openness_10_r: bigFiveData['openness-10-r']
     };
 
-    console.log(bigFiveData)
-
     jsPsych.data
-      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-      .addToAll(bigFiveData);
+           .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+           .addToAll(bigFiveData);
   }
 };
 
@@ -1937,8 +1965,8 @@ const demandEffectsQuestions = {
       name: 'pressure',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-              Did you feel pressure to respond in a particular way to any of the questions?
-            </p>`,
+            Did you feel pressure to respond in a particular way to any of the questions?
+          </p>`,
       options: demandEffectsResponses,
       horizontal: true
     },
@@ -1946,8 +1974,8 @@ const demandEffectsQuestions = {
       name: 'judgment',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-              Did you feel as though you might be judged for your responses to the questions you answered?
-            </p>`,
+            Did you feel as though you might be judged for your responses to the questions you answered?
+          </p>`,
       options: demandEffectsResponses,
       horizontal: true
     }
@@ -1967,8 +1995,6 @@ const demandEffectsQuestions = {
       pressure: demandEffectsData['pressure'],
       judgment: demandEffectsData['judgment']
     };
-
-    console.log(demandEffectsData);
 
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
@@ -2007,8 +2033,6 @@ var feedback = {
       guess_study_purpose: purposeFeedbackData['guess-study-purpose'],
       feedback: purposeFeedbackData['feedback']
     };
-
-    console.log(purposeFeedbackData);
 
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())

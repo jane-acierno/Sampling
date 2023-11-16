@@ -208,7 +208,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			// Avatar indices randomized from 1 to 100
 			const randomizedAvatarIndexArray = jsPsych.randomization.shuffle([...Array(100).keys()]);
-			console.log(randomizedAvatarIndexArray)
 
 			// Generate circles
 			const avatarCircleContainer = $('#avatar-grid');

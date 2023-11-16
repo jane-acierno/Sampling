@@ -406,6 +406,7 @@ const instructionsMoral = {
       to see what people in that previous study thought about the statements. You will see 
       avatars representing people who participated in that study.
     </p>
+    
     <p style="text-align: left;">
       Every time you click on an avatar, you will see whether that 
       <strong>one person thought that particular statement was morally good or bad.</strong> 
@@ -514,7 +515,7 @@ const instructionsMoralComprehensionCheck = {
       We will first ask you a few questions about the statement you will see and what you think 
       before you get to see any information about what others think. Then, you will see a page 
       of many different avatars that each represent real participants' opinions about 
-      the outcomes of the action in the statement you read. <br><br>
+      the outcomes of the action in the statement you read.<br><br>
 
       <strong>
         You are free to review as many opinions as you would like before providing us 

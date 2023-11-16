@@ -444,7 +444,7 @@ const instructionsEpistemicComprehensionCheck = {
       required: true,
     },
   ],
-  preamble: 
+  preamble:
     `<h2 style="text-align: center;">Instructions Review</h2> 
     <p style="text-align: left;"> 
       The experiment will begin on the next page.
@@ -545,7 +545,7 @@ const statements = [
 function prePredictionsEpistemicSelf(trialIndex) {
   return {
     type: jsPsychSurveyHtmlForm,
-    preamble: 
+    preamble:
       `<div class="quote">
         <h3>Statement #` + (trialIndex + 1) + `</h3>
         <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
@@ -569,8 +569,9 @@ function prePredictionsEpistemicSelf(trialIndex) {
           id="pre-slider-epistemic-claim"
           oninput="
             this.classList.remove('incomplete');
-            this.classList.add('clicked');"
-            document.getElementsByName('pre-slider-epistemic-claim-clicked')[0].value = 'true';"
+            this.classList.add('clicked');
+            document.getElementsByName('pre-slider-epistemic-claim-clicked')[0].value = 'true';
+          "
         >
         <span class="jspsych-slider-left-anchor">Definitely false</span>
         <span class="jspsych-slider-right-anchor">Definitely true</span>
@@ -592,8 +593,9 @@ function prePredictionsEpistemicSelf(trialIndex) {
           id="pre-slider-epistemic-plausible"
           oninput="
             this.classList.remove('incomplete');
-            this.classList.add('clicked');"
-            document.getElementsByName('pre-slider-epistemic-plausible-clicked')[0].value = 'true';"
+            this.classList.add('clicked');
+            document.getElementsByName('pre-slider-epistemic-plausible-clicked')[0].value = 'true';
+          "
         >
         <span class="jspsych-slider-left-anchor">Definitely implausible</span>
         <span class="jspsych-slider-right-anchor">Definitely plausible</span>
@@ -620,8 +622,9 @@ function prePredictionsEpistemicSelf(trialIndex) {
           id="pre-slider-epistemic-curious"
           oninput="
             this.classList.remove('incomplete');
-            this.classList.add('clicked');"
-            document.getElementsByName('pre-slider-epistemic-curious-clicked')[0].value = 'true';"
+            this.classList.add('clicked');
+            document.getElementsByName('pre-slider-epistemic-curious-clicked')[0].value = 'true';
+          "
         >
         <span class="jspsych-slider-left-anchor">Not at all curious</span>
         <span class="jspsych-slider-right-anchor">Extremely curious</span>
@@ -677,7 +680,7 @@ function prePredictionsEpistemicOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');
-                document.getElementsByName('pre-slider-epistemic-estimate-percent-clicked')[0].value = 'true';"
+                document.getElementsByName('pre-slider-epistemic-estimate-percent-clicked')[0].value = 'true';
                 
                 $('#pre-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
@@ -711,8 +714,9 @@ function prePredictionsEpistemicOther(trialIndex) {
               id="pre-slider-epistemic-confidence"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('pre-slider-epistemic-confidence-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('pre-slider-epistemic-confidence-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -766,8 +770,9 @@ function prePredictionsMoralSelf(trialIndex) {
               id="pre-slider-moral-action"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('pre-slider-moral-action-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('pre-slider-moral-action-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -789,8 +794,9 @@ function prePredictionsMoralSelf(trialIndex) {
               id="pre-slider-moral-person"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('pre-slider-moral-person-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('pre-slider-moral-person-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -817,8 +823,9 @@ function prePredictionsMoralSelf(trialIndex) {
               id="pre-slider-moral-curious"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('pre-slider-moral-curious-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('pre-slider-moral-curious-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Not at all curious</span>
             <span class="jspsych-slider-right-anchor">Extremely curious</span>
@@ -874,7 +881,7 @@ function prePredictionsMoralOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');
-                document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';"
+                document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';
 
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';
@@ -905,8 +912,9 @@ function prePredictionsMoralOther(trialIndex) {
               id="pre-slider-moral-confidence"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('pre-slider-moral-confidence-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('pre-slider-moral-confidence-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -990,8 +998,9 @@ function postPredictionsEpistemicSelf(trialIndex) {
               id="post-slider-epistemic-claim"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('post-slider-epistemic-claim-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('post-slider-epistemic-claim-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Definitely false</span>
             <span class="jspsych-slider-right-anchor">Definitely true</span>
@@ -1013,8 +1022,9 @@ function postPredictionsEpistemicSelf(trialIndex) {
               id="post-slider-epistemic-plausible"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('post-slider-epistemic-plausible-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('post-slider-epistemic-plausible-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Definitely implausible</span>
             <span class="jspsych-slider-right-anchor">Definitely plausible</span>
@@ -1070,7 +1080,7 @@ function postPredictionsEpistemicOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');
-                document.getElementsByName('post-slider-epistemic-estimate-percent-clicked')[0].value = 'true';"
+                document.getElementsByName('post-slider-epistemic-estimate-percent-clicked')[0].value = 'true';
                 $('#post-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
                 let rawRating = parseFloat(this.value);
@@ -1103,8 +1113,9 @@ function postPredictionsEpistemicOther(trialIndex) {
               id="post-slider-epistemic-confidence"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('post-slider-epistemic-confidence-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('post-slider-epistemic-confidence-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -1159,8 +1170,9 @@ function postPredictionsMoralSelf(trialIndex) {
               id="post-slider-moral-action"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('post-slider-moral-action-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('post-slider-moral-action-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -1182,8 +1194,9 @@ function postPredictionsMoralSelf(trialIndex) {
               id="post-slider-moral-person"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('post-slider-moral-person-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('post-slider-moral-person-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
@@ -1239,7 +1252,7 @@ function postPredictionsMoralOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');
-                document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';"
+                document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';
               
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';
@@ -1271,8 +1284,9 @@ function postPredictionsMoralOther(trialIndex) {
               id="post-slider-moral-confidence"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');"
-                document.getElementsByName('post-slider-moral-confidence-clicked')[0].value = 'true';"
+                this.classList.add('clicked');
+                document.getElementsByName('post-slider-moral-confidence-clicked')[0].value = 'true';
+              "
             >
             <span class="jspsych-slider-left-anchor">Not at all confident</span>
             <span class="jspsych-slider-right-anchor">Completely confident</span>
@@ -1361,7 +1375,7 @@ const nfcQuestions = {
   questions: [
     {
       name: 'nfc-1-simple-complex',
-      prompt: 
+      prompt:
         `<p class="jspsych-survey-multi-choice-question">
           I would prefer complex to simple problems.
         </p>`,
@@ -1369,7 +1383,7 @@ const nfcQuestions = {
     },
     {
       name: 'nfc-2-responsibility',
-      prompt: 
+      prompt:
         `<p class="jspsych-survey-multi-choice-question">
           I like to have the responsibility of handling a situation that requires a lot of thinking.
         </p>`,
@@ -1377,7 +1391,7 @@ const nfcQuestions = {
     },
     {
       name: 'nfc-3-not-fun',
-      prompt: 
+      prompt:
         `<p class="jspsych-survey-multi-choice-question">
           Thinking is not my idea of fun.
         </p>`,
@@ -1385,7 +1399,7 @@ const nfcQuestions = {
     },
     {
       name: 'nfc-4-little-thought',
-      prompt: 
+      prompt:
         `<p class="jspsych-survey-multi-choice-question">
           I would rather do something that requires little thought than 
           something that is sure to challenge my thinking abilities.
@@ -1394,7 +1408,7 @@ const nfcQuestions = {
     },
     {
       name: 'nfc-5-new-solutions',
-      prompt: 
+      prompt:
         `<p class="jspsych-survey-multi-choice-question">
           I really enjoy a task that involves coming up with new solutions to problems.
         </p>`,
@@ -1402,7 +1416,7 @@ const nfcQuestions = {
     },
     {
       name: 'nfc-6-intellectual',
-      prompt: 
+      prompt:
         `<p class="jspsych-survey-multi-choice-question">
           I would prefer a task that is intellectual, difficult, and important to one 
           that is somewhat important but does not require much thought.
@@ -1412,7 +1426,7 @@ const nfcQuestions = {
   ],
   randomize_question_order: true,
   request_response: true,
-  preamble: 
+  preamble:
     `<p class="jspsych-survey-multi-choice-preamble">
       Please indicate how much you agree with each of the following statements,
       or how true it is about you using the scale provided:
@@ -1950,8 +1964,8 @@ const bigFiveQuestions = {
     };
 
     jsPsych.data
-           .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-           .addToAll(bigFiveData);
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(bigFiveData);
   }
 };
 

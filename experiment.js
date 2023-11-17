@@ -2070,7 +2070,7 @@ var feedback = {
       </p>`
     );
     setTimeout(function () {
-      window.location.href = "https://app.prolific.co/submissions/complete?cc=3B5F8F2D";
+      window.location.href = "https://app.prolific.com/submissions/complete?cc=C39SMEHT";
     }, 5000)
   }
 }

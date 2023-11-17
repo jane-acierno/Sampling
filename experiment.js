@@ -8,7 +8,6 @@ const jsPsych = initJsPsych({
   show_progress_bar: false,
   default_iti: 0,
   on_finish: function (data) {
-    window.location.href = 'https://app.prolific.co/submissions/complete?cc=1D1E1F3D';
     jsPsych.data.displayData('csv');
   }
 });
@@ -17,8 +16,7 @@ const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
 const studyId = jsPsych.data.getURLVariable('STUDY_ID');
 const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
 
-// const filename = `${participantId}.csv`;
-const filename = `${Math.floor(Math.random() * 100)}.csv`;
+const filename = `${participantId + "_" + studyId + "_" + sessionId}.csv`;
 
 // Randomize assignment of condition: epistemic / moral
 let participantCondition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
@@ -170,11 +168,11 @@ const consentForm = {
   // If the participant does not consent, end the experiment
   on_finish: function (data) {
     if (jsPsych.data.get().last(1).values()[0].response.consent == "Consent not given") {
-      jsPsych.endExperiment(`
-            <p class="jspsych-center">
-              You did not consent to participate in this study.<br>
-              Please return this study in Prolific.
-            </p>`
+      jsPsych.endExperiment(
+        `<p class="jspsych-center">
+          You did not consent to participate in this study.<br>
+          Please return this study in Prolific.
+        </p>`
       );
     }
   }
@@ -1327,45 +1325,45 @@ function newTrialPage(trialIndex) {
   };
 };
 
-if (participantCondition === 'epistemic') {
-  timeline.push(
-    instructionsEpistemic,
-    instructionsEpistemicComprehensionCheck
-  );
-  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
-    timeline.push(
-      prePredictionsEpistemicSelf(trialIndex),
-      prePredictionsEpistemicOther(trialIndex),
-      selectionTask(trialIndex, participantCondition),
-      postPredictionsEpistemicSelf(trialIndex),
-      postPredictionsEpistemicOther(trialIndex),
-    );
-    if (trialIndex != trials.length - 1) {
-      timeline.push(
-        newTrialPage(trialIndex)
-      );
-    };
-  };
-} else if (participantCondition === 'moral') {
-  timeline.push(
-    instructionsMoral,
-    instructionsMoralComprehensionCheck
-  );
-  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
-    timeline.push(
-      prePredictionsMoralSelf(trialIndex),
-      prePredictionsMoralOther(trialIndex),
-      selectionTask(trialIndex, participantCondition),
-      postPredictionsMoralSelf(trialIndex),
-      postPredictionsMoralOther(trialIndex),
-    );
-    if (trialIndex != trials.length - 1) {
-      timeline.push(
-        newTrialPage(trialIndex)
-      );
-    };
-  };
-};
+// if (participantCondition === 'epistemic') {
+//   timeline.push(
+//     instructionsEpistemic,
+//     instructionsEpistemicComprehensionCheck
+//   );
+//   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+//     timeline.push(
+//       prePredictionsEpistemicSelf(trialIndex),
+//       prePredictionsEpistemicOther(trialIndex),
+//       selectionTask(trialIndex, participantCondition),
+//       postPredictionsEpistemicSelf(trialIndex),
+//       postPredictionsEpistemicOther(trialIndex),
+//     );
+//     if (trialIndex != trials.length - 1) {
+//       timeline.push(
+//         newTrialPage(trialIndex)
+//       );
+//     };
+//   };
+// } else if (participantCondition === 'moral') {
+//   timeline.push(
+//     instructionsMoral,
+//     instructionsMoralComprehensionCheck
+//   );
+//   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+//     timeline.push(
+//       prePredictionsMoralSelf(trialIndex),
+//       prePredictionsMoralOther(trialIndex),
+//       selectionTask(trialIndex, participantCondition),
+//       postPredictionsMoralSelf(trialIndex),
+//       postPredictionsMoralOther(trialIndex),
+//     );
+//     if (trialIndex != trials.length - 1) {
+//       timeline.push(
+//         newTrialPage(trialIndex)
+//       );
+//     };
+//   };
+// };
 
 
 // DEMOGRAPHICS //
@@ -2042,6 +2040,19 @@ var feedback = {
     }
   ],
   on_finish: function (data) {
+    function countdown(start, end) {
+      var timer = setInterval(function() {
+        if (start <= end) {
+          clearInterval(timer);
+        } else {
+          start--;
+          document.getElementById("countdown").innerHTML = start;
+        }
+      }, 1000);
+    }
+    
+    countdown(5, 0);
+
     let purposeFeedbackData = data.response;
 
     purposeFeedbackData = {
@@ -2052,11 +2063,28 @@ var feedback = {
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
       .addToAll(purposeFeedbackData);
+
+    jsPsych.endExperiment(
+      `<p class="jspsych-center">
+        Thanks for participating! You will be redirected in <span id="countdown">5</span> seconds.
+      </p>`
+    );
+    setTimeout(function () {
+      window.location.href = "https://app.prolific.co/submissions/complete?cc=3B5F8F2D";
+    }, 5000)
   }
 }
 
 timeline.push(feedback);
 
+// Exit fullscreen
+const exitFullscreen = {
+  type: jsPsychFullscreen,
+  fullscreen_mode: false,
+  delay_after: 0
+};
+
+timeline.push(exitFullscreen);
 
 // DataPipe conclude data collection
 const save_data = {
@@ -2068,30 +2096,6 @@ const save_data = {
 };
 
 timeline.push(save_data);
-
-const finalInstructions = {
-  type: jsPsychInstructions,
-  size: 400,
-  pages: [
-    `<div class="jspsych-center">
-      Thanks for participating! You will be redirected in <>.
-    </div>`
-  ],
-  show_clickable_nav: false
-};
-
-// Add instructions trial to experiment
-timeline.push(finalInstructions);
-
-// Exit fullscreen
-const exitFullscreen = {
-  type: jsPsychFullscreen,
-  fullscreen_mode: false,
-  delay_after: 0
-};
-
-timeline.push(exitFullscreen);
-
 
 // Preload all images
 const imageSet = avatarPhotos;

@@ -880,7 +880,7 @@ function prePredictionsMoralOther(trialIndex) {
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('clicked');
-                document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';
+                document.getElementsByName('pre-slider-moral-estimate-percent-clicked')[0].value = 'true';
 
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';

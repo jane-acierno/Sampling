@@ -12,14 +12,11 @@ const jsPsych = initJsPsych({
   }
 });
 
-const participantId = 1//jsPsych.data.getURLVariable('PROLIFIC_PID');
-const studyId = 1//jsPsych.data.getURLVariable('STUDY_ID');
-const sessionId = 1//jsPsych.data.getURLVariable('SESSION_ID');
+const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
+const studyId = jsPsych.data.getURLVariable('STUDY_ID');
+const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
 
-
-const filename = `${participantId} + "_" + ${studyId} + "_" + ${sessionId}.csv`;
-// const filename = `${participantId + "_" + studyId + "_" + sessionId}.csv`;
-
+const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
 
 // Randomize assignment of condition: epistemic / moral
 let participantCondition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
@@ -2022,7 +2019,7 @@ timeline.push(demandEffectsQuestions);
 
 
 // Guess Study Purpose / Questions + Comments
-var feedback = {
+const feedback = {
   type: jsPsychSurveyText,
   questions: [
     {
@@ -2043,19 +2040,6 @@ var feedback = {
     }
   ],
   on_finish: function (data) {
-    function countdown(start, end) {
-      var timer = setInterval(function() {
-        if (start <= end) {
-          clearInterval(timer);
-        } else {
-          start--;
-          document.getElementById("countdown").innerHTML = start;
-        }
-      }, 1000);
-    }
-    
-    countdown(5, 0);
-
     let purposeFeedbackData = data.response;
 
     purposeFeedbackData = {
@@ -2066,15 +2050,6 @@ var feedback = {
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
       .addToAll(purposeFeedbackData);
-
-    jsPsych.endExperiment(
-      `<p class="jspsych-center">
-        Thanks for participating! You will be redirected in <span id="countdown">5</span> seconds.
-      </p>`
-    );
-    setTimeout(function () {
-      window.location.href = "https://app.prolific.com/submissions/complete?cc=C39SMEHT";
-    }, 5000)
   }
 }
 
@@ -2095,7 +2070,30 @@ const save_data = {
   action: "save",
   experiment_id: "oA2BJCIcu8jQ",
   filename: filename,
-  data_string: () => jsPsych.data.get().csv()
+  data_string: () => jsPsych.data.get().csv(),
+  on_finish: function (data) {
+    function countdown(start, end) {
+      var timer = setInterval(function() {
+        if (start <= end) {
+          clearInterval(timer);
+        } else {
+          start--;
+          document.getElementById("countdown").innerHTML = start;
+        }
+      }, 1000);
+    }
+    
+    countdown(5, 0);
+
+    jsPsych.endExperiment(
+      `<p class="jspsych-center">
+        Thanks for participating! You will be redirected in <span id="countdown">5</span> seconds.
+      </p>`
+    );
+    setTimeout(function () {
+      window.location.href = "https://app.prolific.com/submissions/complete?cc=C39SMEHT";
+    }, 5000)
+  }
 };
 
 timeline.push(save_data);

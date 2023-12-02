@@ -34,13 +34,13 @@ jsPsych.data.addProperties({
 // Options
 const valueOpinionOptions = ['Yes', 'Somewhat', 'No'];
 
-// Need for (Cognitive) Closure (NFC)
-const nfcResponses = [
-  "Extremely uncharacteristic",
-  "Somewhat uncharacteristic",
-  "Uncertain",
-  "Somewhat characteristic",
-  "Extremely characteristic"
+// Perspective Taking Empathy (iri)
+const iriResponses = [
+  "1 = Does not describe me at all",
+  "2",
+  "3",
+  "4",
+  "5 = Describes me very well"
 ];
 
 // Political Ideology
@@ -63,14 +63,17 @@ const demandEffectsResponses = [
   "5 = Very much so"
 ];
 
-// Personality: The Big Five
-const bigFiveResponses = [
-  "Completely Disagree",
-  "Disagree",
-  "Slightly Disagree",
-  "Slightly Agree",
-  "Agree",
-  "Completely Agree"
+// Personality: Intellectual Humility
+const ihResponses = [
+  "1 = Not at all characteristic of me",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9 = Very characteristic of me"
 ];
 
 // ENTER FULLSCREEN //
@@ -1368,88 +1371,71 @@ if (participantCondition === 'epistemic') {
 
 // DEMOGRAPHICS //
 
-// Need for Cognitive Control //
-const nfcQuestions = {
+// IRI - Perspective Taking //
+const iriQuestions = {
   type: jsPsychSurveyMultiChoice,
   questions: [
     {
-      name: 'nfc-1-simple-complex',
+      name: 'iri-1',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-          I would prefer complex to simple problems.
+        I try to look at everybody's side of a disagreement before I make a decision.
         </p>`,
-      options: nfcResponses,
+      options: iriResponses,
     },
     {
-      name: 'nfc-2-responsibility',
+      name: 'iri-2',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-          I like to have the responsibility of handling a situation that requires a lot of thinking.
+        . I sometimes try to understand my friends better by imagining how things
+        look from their perspective.
         </p>`,
-      options: nfcResponses,
+      options: iriResponses,
     },
     {
-      name: 'nfc-3-not-fun',
+      name: 'iri-3',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-          Thinking is not my idea of fun.
+        When I'm upset at someone, I usually try to 'put myself in his shoes' for a
+        while.
         </p>`,
-      options: nfcResponses,
+      options: iriResponses,
     },
     {
-      name: 'nfc-4-little-thought',
+      name: 'iri-4',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-          I would rather do something that requires little thought than 
-          something that is sure to challenge my thinking abilities.
+        Before criticizing somebody, I try to imagine how I would feel if I were in
+        their place.
         </p>`,
-      options: nfcResponses,
-    },
-    {
-      name: 'nfc-5-new-solutions',
-      prompt:
-        `<p class="jspsych-survey-multi-choice-question">
-          I really enjoy a task that involves coming up with new solutions to problems.
-        </p>`,
-      options: nfcResponses,
-    },
-    {
-      name: 'nfc-6-intellectual',
-      prompt:
-        `<p class="jspsych-survey-multi-choice-question">
-          I would prefer a task that is intellectual, difficult, and important to one 
-          that is somewhat important but does not require much thought.
-        </p>`,
-      options: nfcResponses,
+      options: iriResponses,
     }
   ],
   randomize_question_order: true,
   request_response: true,
   preamble:
     `<p class="jspsych-survey-multi-choice-preamble">
-      Please indicate how much you agree with each of the following statements,
-      or how true it is about you using the scale provided:
+      Please indicate how well each of the following statements
+      describe you using the scale provided:
     </p>`,
   scale_width: 500,
   on_finish: function (data) {
-    let nfcData = data.response;
+    let iriData = data.response;
 
-    nfcData = {
-      nfc_1_simple_complex: nfcData['nfc-1-simple-complex'],
-      nfc_2_responsibility: nfcData['nfc-2-responsibility'],
-      nfc_3_not_fun: nfcData['nfc-3-not-fun'],
-      nfc_4_little_thought: nfcData['nfc-4-little-thought'],
-      nfc_5_new_solutions: nfcData['nfc-5-new-solutions'],
-      nfc_6_intellectual: nfcData['nfc-6-intellectual']
+    iriData = {
+      iri_1: iriData['iri-1'],
+      iri_2: iriData['iri-2'],
+      iri_3: iriData['iri-3'],
+      iri_4: iriData['iri-4']
     };
 
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-      .addToAll(nfcData);
+      .addToAll(iriData);
   }
 };
 
-timeline.push(nfcQuestions);
+timeline.push(iriQuestions);
 
 const demographicsQuestions = {
   type: jsPsychSurveyHtmlForm,
@@ -1840,97 +1826,79 @@ const politicsQuestions = {
 
 timeline.push(politicsQuestions);
 
-const bigFiveQuestions = {
+const ihQuestions = {
   type: jsPsychSurveyMultiChoice,
   questions: [
     {
-      name: "extraversion-1",
+      name: "ih-1-r",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>extroverted, enthusiastic.</strong>
+        My intellectual ideas are usually superior to others' ideas.</strong>
         </p>`,
-      options: bigFiveResponses,
+      options: ihResponses,
       horizontal: true
     },
     {
-      name: "agreeableness-2-r",
+      name: "ih-2-r",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>critical, quarrelsome.</strong>
+        I desire to be famous for an intellectual contribution.</strong>
         </p>`,
-      options: bigFiveResponses,
+      options: ihResponses,
       horizontal: true
     },
     {
-      name: "conscientiousness-3",
+      name: "ih-3-r",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>dependable, self-disciplined.</strong>
+        I know just about everything there is to know. </strong>
         </p>`,
-      options: bigFiveResponses,
+      options: ihResponses,
       horizontal: true
     },
     {
-      name: "emotional-stability-4-r",
+      name: "ih-4-r",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>anxious, easily upset.</strong>
+        Other people think that I am a know-it-all.</strong>
         </p>`,
-      options: bigFiveResponses,
+      options: ihResponses,
       horizontal: true
     },
     {
-      name: "openness-5",
+      name: "ih-5",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>open to new experiences, complex.</strong>
+        I am open to other's ideas about how to do things.</strong>
         </p>`,
-      options: bigFiveResponses,
+      options: ihResponses,
       horizontal: true
     },
     {
-      name: "extraversion-6-r",
+      name: "ih-6",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>reserved, quiet.</strong>
+        I can learn from other people.</strong>
         </p>`,
-      options: bigFiveResponses,
+      options: ihResponses,
       horizontal: true
     },
     {
-      name: "agreeableness-7",
+      name: "ih-7",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>sympathetic, warm.</strong>
+        I am open to others' criticisms of my intellectual ideas.</strong>
         </p>`,
-      options: bigFiveResponses,
+      options: ihResponses,
       horizontal: true
     },
     {
-      name: "conscientiousness-8-r",
+      name: "ih-8",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>disorganized, careless.</strong>
+        I am an intellectually humble person.</strong>
         </p>`,
-      options: bigFiveResponses,
-      horizontal: true
-    },
-    {
-      name: "emotional-stability-9",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>calm, emotionally stable.</strong>
-        </p>`,
-      options: bigFiveResponses,
-      horizontal: true
-    },
-    {
-      name: "openness-10-r",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-          I see myself as <strong>conventional, uncreative.</strong>
-        </p>`,
-      options: bigFiveResponses,
+      options: ihResponses,
       horizontal: true
     }
   ],
@@ -1938,37 +1906,30 @@ const bigFiveQuestions = {
   request_response: true,
   preamble: `
     <p class="jspsych-survey-multi-choice-preamble">
-      Here are a number of personality traits that may or may not apply to you.
-      Please choose the options next to each statement to indicate the extent 
-      to which you agree or disagree with that statement. You should rate the 
-      extent to which the <strong>pair</strong> of traits applies to you, even
-      if one characteristic applies more strongly than the other. Show how much
-      you agree with the items below. You can work quickly; your first feeling 
-      is generally best.
+      For each of the statements below, please indicate how much the statement
+      is generally characteristic of you.
     </p>`,
   on_finish: function (data) {
-    let bigFiveData = data.response;
+    let ihData = data.response;
 
-    bigFiveData = {
-      extraversion_1: bigFiveData['extraversion-1'],
-      agreeableness_2_r: bigFiveData['agreeableness-2-r'],
-      conscientiousness_3: bigFiveData['conscientiousness-3'],
-      emotional_stability_4_r: bigFiveData['emotional_stability-4-r'],
-      openness_5: bigFiveData['openness-5'],
-      extraversion_6_r: bigFiveData['extraversion-6-r'],
-      agreeableness_7: bigFiveData['agreeableness-7'],
-      conscientiousness_8_r: bigFiveData['conscientiousness-8-r'],
-      emotional_stability_9: bigFiveData['emotional_stability-9'],
-      openness_10_r: bigFiveData['openness-10-r']
+    ihData = {
+      ih_1_r: ihData['ih-1-r'],
+      ih_2_r: ihData['ih-2-r'],
+      ih_3_r: ihData['ih-3-r'],
+      ih_4_r: ihData['ih-4-r'],
+      ih_5: ihData['ih-5'],
+      ih_6: ihData['ih-6'],
+      ih_7: ihData['ih-7'],
+      ih_8: ihData['ih-8']
     };
 
     jsPsych.data
       .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-      .addToAll(bigFiveData);
+      .addToAll(ihData);
   }
 };
 
-timeline.push(bigFiveQuestions);
+timeline.push(ihQuestions);
 
 
 const demandEffectsQuestions = {

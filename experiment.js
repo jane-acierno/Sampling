@@ -65,7 +65,7 @@ const demandEffectsResponses = [
 
 // Personality: Intellectual Humility
 const ihResponses = [
-  "1 = Not at all characteristic of me",
+  "1 = Not at all\ncharacteristic of me",
   "2",
   "3",
   "4",
@@ -73,7 +73,7 @@ const ihResponses = [
   "6",
   "7",
   "8",
-  "9 = Very characteristic of me"
+  "9 = Very characteristic\nof me"
 ];
 
 // ENTER FULLSCREEN //
@@ -1382,15 +1382,17 @@ const iriQuestions = {
         I try to look at everybody's side of a disagreement before I make a decision.
         </p>`,
       options: iriResponses,
+      horizontal: true
     },
     {
       name: 'iri-2',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-        . I sometimes try to understand my friends better by imagining how things
+        I sometimes try to understand my friends better by imagining how things
         look from their perspective.
         </p>`,
       options: iriResponses,
+      horizontal: true
     },
     {
       name: 'iri-3',
@@ -1400,6 +1402,7 @@ const iriQuestions = {
         while.
         </p>`,
       options: iriResponses,
+      horizontal: true
     },
     {
       name: 'iri-4',
@@ -1409,6 +1412,7 @@ const iriQuestions = {
         their place.
         </p>`,
       options: iriResponses,
+      horizontal: true
     }
   ],
   randomize_question_order: true,
@@ -1436,6 +1440,111 @@ const iriQuestions = {
 };
 
 timeline.push(iriQuestions);
+
+const ihQuestions = {
+  type: jsPsychSurveyMultiChoice,
+  questions: [
+    {
+      name: "ih-1-r",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        My intellectual ideas are usually superior to others' ideas.</strong>
+        </p>`,
+      options: ihResponses,
+      horizontal: true
+    },
+    {
+      name: "ih-2-r",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I desire to be famous for an intellectual contribution.</strong>
+        </p>`,
+      options: ihResponses,
+      horizontal: true
+    },
+    {
+      name: "ih-3-r",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I know just about everything there is to know. </strong>
+        </p>`,
+      options: ihResponses,
+      horizontal: true
+    },
+    {
+      name: "ih-4-r",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        Other people think that I am a know-it-all.</strong>
+        </p>`,
+      options: ihResponses,
+      horizontal: true
+    },
+    {
+      name: "ih-5",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I am open to other's ideas about how to do things.</strong>
+        </p>`,
+      options: ihResponses,
+      horizontal: true
+    },
+    {
+      name: "ih-6",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I can learn from other people.</strong>
+        </p>`,
+      options: ihResponses,
+      horizontal: true
+    },
+    {
+      name: "ih-7",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I am open to others' criticisms of my intellectual ideas.</strong>
+        </p>`,
+      options: ihResponses,
+      horizontal: true
+    },
+    {
+      name: "ih-8",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I am an intellectually humble person.</strong>
+        </p>`,
+      options: ihResponses,
+      horizontal: true
+    }
+  ],
+  randomize_question_order: true,
+  request_response: true,
+  preamble: `
+    <p class="jspsych-survey-multi-choice-preamble">
+      For each of the statements below, please indicate how much the statement
+      is generally characteristic of you.
+    </p>`,
+  on_finish: function (data) {
+    let ihData = data.response;
+
+    ihData = {
+      ih_1_r: ihData['ih-1-r'],
+      ih_2_r: ihData['ih-2-r'],
+      ih_3_r: ihData['ih-3-r'],
+      ih_4_r: ihData['ih-4-r'],
+      ih_5: ihData['ih-5'],
+      ih_6: ihData['ih-6'],
+      ih_7: ihData['ih-7'],
+      ih_8: ihData['ih-8']
+    };
+
+    jsPsych.data
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(ihData);
+  }
+};
+
+timeline.push(ihQuestions);
 
 const demographicsQuestions = {
   type: jsPsychSurveyHtmlForm,
@@ -1825,111 +1934,6 @@ const politicsQuestions = {
 };
 
 timeline.push(politicsQuestions);
-
-const ihQuestions = {
-  type: jsPsychSurveyMultiChoice,
-  questions: [
-    {
-      name: "ih-1-r",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        My intellectual ideas are usually superior to others' ideas.</strong>
-        </p>`,
-      options: ihResponses,
-      horizontal: true
-    },
-    {
-      name: "ih-2-r",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I desire to be famous for an intellectual contribution.</strong>
-        </p>`,
-      options: ihResponses,
-      horizontal: true
-    },
-    {
-      name: "ih-3-r",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I know just about everything there is to know. </strong>
-        </p>`,
-      options: ihResponses,
-      horizontal: true
-    },
-    {
-      name: "ih-4-r",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        Other people think that I am a know-it-all.</strong>
-        </p>`,
-      options: ihResponses,
-      horizontal: true
-    },
-    {
-      name: "ih-5",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I am open to other's ideas about how to do things.</strong>
-        </p>`,
-      options: ihResponses,
-      horizontal: true
-    },
-    {
-      name: "ih-6",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I can learn from other people.</strong>
-        </p>`,
-      options: ihResponses,
-      horizontal: true
-    },
-    {
-      name: "ih-7",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I am open to others' criticisms of my intellectual ideas.</strong>
-        </p>`,
-      options: ihResponses,
-      horizontal: true
-    },
-    {
-      name: "ih-8",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I am an intellectually humble person.</strong>
-        </p>`,
-      options: ihResponses,
-      horizontal: true
-    }
-  ],
-  randomize_question_order: true,
-  request_response: true,
-  preamble: `
-    <p class="jspsych-survey-multi-choice-preamble">
-      For each of the statements below, please indicate how much the statement
-      is generally characteristic of you.
-    </p>`,
-  on_finish: function (data) {
-    let ihData = data.response;
-
-    ihData = {
-      ih_1_r: ihData['ih-1-r'],
-      ih_2_r: ihData['ih-2-r'],
-      ih_3_r: ihData['ih-3-r'],
-      ih_4_r: ihData['ih-4-r'],
-      ih_5: ihData['ih-5'],
-      ih_6: ihData['ih-6'],
-      ih_7: ihData['ih-7'],
-      ih_8: ihData['ih-8']
-    };
-
-    jsPsych.data
-      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-      .addToAll(ihData);
-  }
-};
-
-timeline.push(ihQuestions);
 
 
 const demandEffectsQuestions = {

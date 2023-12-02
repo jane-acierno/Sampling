@@ -12,11 +12,14 @@ const jsPsych = initJsPsych({
   }
 });
 
-const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
-const studyId = jsPsych.data.getURLVariable('STUDY_ID');
-const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
+const participantId = 1//jsPsych.data.getURLVariable('PROLIFIC_PID');
+const studyId = 1//jsPsych.data.getURLVariable('STUDY_ID');
+const sessionId = 1//jsPsych.data.getURLVariable('SESSION_ID');
 
-const filename = `${participantId + "_" + studyId + "_" + sessionId}.csv`;
+
+const filename = `${participantId} + "_" + ${studyId} + "_" + ${sessionId}.csv`;
+// const filename = `${participantId + "_" + studyId + "_" + sessionId}.csv`;
+
 
 // Randomize assignment of condition: epistemic / moral
 let participantCondition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];

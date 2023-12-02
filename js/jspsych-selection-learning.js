@@ -420,7 +420,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						endTrial();
 					});
 
-				}, 5000);
+				}, 3000); //changed this from 5000 to 3000 for the pilot because it feels very long
 			};
 
 			const clickHandlers = {};

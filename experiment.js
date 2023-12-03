@@ -263,8 +263,10 @@ const instructionsEpistemic = {
             value="50" min="0" max="100" step="1" 
             id="practice-slider-epistemic-estimate-percent"
             oninput="
-              this.classList.remove('incomplete')
-              $('#practice-slider-epistemic-estimate-percent-label').addClass('fade-out')
+              this.classList.remove('incomplete');
+              this.classList.add('bipolar-clicked');
+
+              $('#practice-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
               let rawRating = parseFloat(this.value);
               let downRating = (100 - rawRating) + '%';
@@ -380,7 +382,7 @@ const instructionsMoral = {
         id="practice-slider-moral-estimate-percent"
         oninput="
           this.classList.remove('incomplete');
-          this.classList.add('clicked');
+          this.classList.add('bipolar-clicked');
           $('#practice-slider-moral-estimate-percent-label').addClass('fade-out');
 
           let rawRating = parseFloat(this.value);
@@ -571,7 +573,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
           id="pre-slider-epistemic-claim"
           oninput="
             this.classList.remove('incomplete');
-            this.classList.add('clicked');
+            this.classList.add('bipolar-clicked');
             document.getElementsByName('pre-slider-epistemic-claim-clicked')[0].value = 'true';
           "
         >
@@ -595,7 +597,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
           id="pre-slider-epistemic-plausible"
           oninput="
             this.classList.remove('incomplete');
-            this.classList.add('clicked');
+            this.classList.add('bipolar-clicked');
             document.getElementsByName('pre-slider-epistemic-plausible-clicked')[0].value = 'true';
           "
         >
@@ -624,7 +626,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
           id="pre-slider-epistemic-curious"
           oninput="
             this.classList.remove('incomplete');
-            this.classList.add('clicked');
+            this.classList.add('unipolar-clicked');
             document.getElementsByName('pre-slider-epistemic-curious-clicked')[0].value = 'true';
           "
         >
@@ -681,7 +683,8 @@ function prePredictionsEpistemicOther(trialIndex) {
               id="pre-slider-epistemic-estimate-percent"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
+
                 document.getElementsByName('pre-slider-epistemic-estimate-percent-clicked')[0].value = 'true';
                 
                 $('#pre-slider-epistemic-estimate-percent-label').addClass('fade-out');
@@ -716,7 +719,8 @@ function prePredictionsEpistemicOther(trialIndex) {
               id="pre-slider-epistemic-confidence"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('unipolar-clicked');
+
                 document.getElementsByName('pre-slider-epistemic-confidence-clicked')[0].value = 'true';
               "
             >
@@ -772,7 +776,8 @@ function prePredictionsMoralSelf(trialIndex) {
               id="pre-slider-moral-action"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
+
                 document.getElementsByName('pre-slider-moral-action-clicked')[0].value = 'true';
               "
             >
@@ -796,7 +801,8 @@ function prePredictionsMoralSelf(trialIndex) {
               id="pre-slider-moral-person"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
+
                 document.getElementsByName('pre-slider-moral-person-clicked')[0].value = 'true';
               "
             >
@@ -825,7 +831,8 @@ function prePredictionsMoralSelf(trialIndex) {
               id="pre-slider-moral-curious"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('unipolar-clicked');
+
                 document.getElementsByName('pre-slider-moral-curious-clicked')[0].value = 'true';
               "
             >
@@ -882,7 +889,8 @@ function prePredictionsMoralOther(trialIndex) {
               id="pre-slider-moral-estimate-percent"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
+
                 document.getElementsByName('pre-slider-moral-estimate-percent-clicked')[0].value = 'true';
 
                 let rawRating = parseFloat(this.value);
@@ -914,7 +922,8 @@ function prePredictionsMoralOther(trialIndex) {
               id="pre-slider-moral-confidence"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('unipolar-clicked');
+
                 document.getElementsByName('pre-slider-moral-confidence-clicked')[0].value = 'true';
               "
             >
@@ -1000,7 +1009,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
               id="post-slider-epistemic-claim"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
                 document.getElementsByName('post-slider-epistemic-claim-clicked')[0].value = 'true';
               "
             >
@@ -1024,7 +1033,7 @@ function postPredictionsEpistemicSelf(trialIndex) {
               id="post-slider-epistemic-plausible"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
                 document.getElementsByName('post-slider-epistemic-plausible-clicked')[0].value = 'true';
               "
             >
@@ -1081,7 +1090,7 @@ function postPredictionsEpistemicOther(trialIndex) {
               id="post-slider-epistemic-estimate-percent"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
                 document.getElementsByName('post-slider-epistemic-estimate-percent-clicked')[0].value = 'true';
                 $('#post-slider-epistemic-estimate-percent-label').addClass('fade-out');
 
@@ -1115,7 +1124,7 @@ function postPredictionsEpistemicOther(trialIndex) {
               id="post-slider-epistemic-confidence"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('unipolar-clicked');
                 document.getElementsByName('post-slider-epistemic-confidence-clicked')[0].value = 'true';
               "
             >
@@ -1172,7 +1181,7 @@ function postPredictionsMoralSelf(trialIndex) {
               id="post-slider-moral-action"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
                 document.getElementsByName('post-slider-moral-action-clicked')[0].value = 'true';
               "
             >
@@ -1196,7 +1205,7 @@ function postPredictionsMoralSelf(trialIndex) {
               id="post-slider-moral-person"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
                 document.getElementsByName('post-slider-moral-person-clicked')[0].value = 'true';
               "
             >
@@ -1253,7 +1262,8 @@ function postPredictionsMoralOther(trialIndex) {
               id="post-slider-moral-estimate-percent"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('bipolar-clicked');
+
                 document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';
               
                 let rawRating = parseFloat(this.value);
@@ -1286,7 +1296,8 @@ function postPredictionsMoralOther(trialIndex) {
               id="post-slider-moral-confidence"
               oninput="
                 this.classList.remove('incomplete');
-                this.classList.add('clicked');
+                this.classList.add('unipolar-clicked');
+
                 document.getElementsByName('post-slider-moral-confidence-clicked')[0].value = 'true';
               "
             >
@@ -1451,7 +1462,9 @@ const ihQuestions = {
         My intellectual ideas are usually superior to others' ideas.</strong>
         </p>`,
       options: ihResponses,
-      horizontal: true
+      horizontal: true,
+      // anchor: true,
+      // labels: ['Strongly Disagree', 'Strongly Agree']
     },
     {
       name: "ih-2-r",
@@ -1564,10 +1577,7 @@ const demographicsQuestions = {
             min="18" max="100" 
             style="padding: 5px; width: 40px;" 
             class="incomplete"
-            oninput="
-              this.classList.remove('incomplete');
-              this.classList.add('clicked');
-            "
+            oninput="this.classList.remove('incomplete');"
           >
         </div>
         
@@ -2038,7 +2048,7 @@ const save_data = {
   data_string: () => jsPsych.data.get().csv(),
   on_finish: function (data) {
     function countdown(start, end) {
-      var timer = setInterval(function() {
+      const timer = setInterval(function() {
         if (start <= end) {
           clearInterval(timer);
         } else {

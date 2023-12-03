@@ -313,12 +313,12 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				const inputElement = $('<input>', {
 					name: 'rating-slider',
 					type: 'range',
-					class: 'jspsych-slider clicked',
+					class: 'jspsych-slider bipolar-clicked',
 					value: sliderRatings[avatarIndex],
 					min: 0, max: 100, step: 1,
 					id: 'rating-slider',
 					oninput: `
-						this.classList.remove('clicked');
+						this.classList.remove('bipolar-clicked');
 						$('#rating-slider').addClass('fade-out');
 					`,
 					disabled: true

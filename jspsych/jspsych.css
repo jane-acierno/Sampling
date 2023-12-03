@@ -430,9 +430,14 @@
   border: 1px solid #aaa;
 }
 
-.jspsych-slider.clicked::-webkit-slider-runnable-track {
+.jspsych-slider.unipolar-clicked::-webkit-slider-runnable-track {
+  background: linear-gradient(to right, #DDDDDD, #785ef0);
+}
+
+.jspsych-slider.bipolar-clicked::-webkit-slider-runnable-track {
   background: linear-gradient(to right, #fe6100, #DDDDDD 50%, #785ef0);
 }
+
 
 .jspsych-slider::-moz-range-track {
   appearance: none;
@@ -508,6 +513,23 @@
 .jspsych-slider-right-anchor {
   right: 0;
 }
+
+.jspsych-multi-choice-left-anchor,
+.jspsych-multi-choice-right-anchor {
+  position: relative;
+  font-size: 10pt;
+}
+
+.jspsych-multi-choice-left-anchor {
+  float: left;
+  left: 0;
+}
+
+.jspsych-multi-choice-right-anchor {
+  float: right;
+  right: 0;
+}
+
 
 .incomplete {
   opacity: 0.5;

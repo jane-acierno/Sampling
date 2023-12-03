@@ -35,6 +35,19 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         pretty_name: "Horizontal",
                         default: false,
                     },
+                    /** If true, then the question will have right and left anchors **/
+                    anchor: {
+                        type: jspsych.ParameterType.BOOL,
+                        pretty_name: "Anchored Question",
+                        default: false,
+                    },
+                    /** Array of anchors for this question. */
+                    labels: {
+                        type: jspsych.ParameterType.STRING,
+                        pretty_name: "Anchor Labels",
+                        array: true,
+                        default: ['Left anchor', 'Right anchor'],
+                    },
                     /** Name of the question in the trial data. If no name is given, the questions are named Q0, Q1, etc. */
                     name: {
                         type: jspsych.ParameterType.STRING,
@@ -242,8 +255,18 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                 };
                 // add hint
                 if (question.hint) {
-                    html += '<div class="jspsych-survey-multi-choice-hint" style="visibility:hidden;">' + question.hint + '</div>';
+                    html += '<div class="jspsych-survey-multi-choice-hint" style="visibility: hidden;">' + question.hint + '</div>';
                 };
+
+                if (question.anchor) {
+                    html += 
+                        '<br><span class="jspsych-multi-choice-left-anchor">' + 
+                            question.labels[0] + 
+                        '</span><span class="jspsych-multi-choice-right-anchor">' + 
+                            question.labels[1] + 
+                        '</span>';
+                }
+
                 html += "</div>";
             };
 

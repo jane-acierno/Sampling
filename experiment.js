@@ -218,7 +218,7 @@ const instructionsEpistemic = {
     `<h2><strong>Instructions (3/6)</strong></h2>
         <p style="text-align: left;">
           These statements are all structured the same way. They will make a claim about something a real 
-          person from history did do, and then some of the outcomes of that supposed action. Your job is 
+          person from history may have done, and then some of the outcomes of that supposed action. Your job is 
           to tell us whether you think other people think the statement about that person is or is not true.
         </p>`,
 
@@ -232,7 +232,7 @@ const instructionsEpistemic = {
         </blockquote>
         
         <p style="text-align: left;">
-          Your job would be to evaluate what percentage of people you think believe that
+          Your job would be to evaluate what percentage of people believe that
           “Robert Oppenheimer developed the atomic bomb, which ended World War II 
           but also enabled the devastation of Hiroshima and Nagasaki.” is a 
           <strong>true (or false) statement.</strong>
@@ -247,8 +247,8 @@ const instructionsEpistemic = {
           </blockquote>
         </div><br>
         <label for="practice-slider-epistemic-estimate-percent">
-          As practice, please estimate what percentage of people in the U.S. believe, 
-          based on these outcomes, that this claim is either true or false:<br><br>
+          As practice, please estimate what percentage of people in the U.S. believe 
+          that this claim is either true or false:<br><br>
           <strong>
             <code style='font-size: 10pt;' id="practice-slider-epistemic-estimate-percent-label">
               <i class="fa-solid fa-arrow-left" id="fa-arrow-left"></i>&nbsp;(slide to adjust)&nbsp;<i class="fa-solid fa-arrow-right" id="fa-arrow-right"></i>
@@ -279,22 +279,22 @@ const instructionsEpistemic = {
           <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
           <output style="position: absolute; right: 0%; font-size: 14pt;" id="slider-upRating">50%</output><br>
           <span class="jspsych-slider-left-anchor">
-            <strong>Definitely false</strong>
+            <strong>believe this is false</strong>
           </span>
           <span class="jspsych-slider-right-anchor">
-           <strong>Definitely true</strong>
+           <strong>believe this is true</strong>
           </span>
         </div>`,
 
     `<h2><strong>Instructions (6/6)</strong></h2>
         <p style="text-align: left;">
-          To help you share your opinion about the statements, you will have the opportunity 
+          To help you estimate what other Americans believe, you will have the opportunity 
           to see what people in that previous study thought about the statements. You will see 
           avatars representing people who participated in that study.
         </p>
         <p style="text-align: left;">
           Every time you click on an avatar, you will see whether that 
-          <strong>one person thought that particular statement was true or false.</strong> 
+          <strong>one person believes the claim is true or false.</strong> 
           You can view the opinions of as many people as you'd like before making your estimate.
         </p>`
   ],
@@ -334,7 +334,7 @@ const instructionsMoral = {
     `<h2><strong>Instructions (3/6)</strong></h2>
     <p style="text-align: left;">
       These statements are all structured the same way. They will make a claim about something 
-      a real person from history did (or did not) do, and then some of the outcomes of that 
+      a real person from history may have done, and then some of the outcomes of that 
       supposed action. Your job is to tell us whether you think other people think the actions 
       depicted in the statements you see are morally good or not. You should not evaluate how 
       likely the statement about the person is true or false, just your opinion about what 
@@ -365,8 +365,8 @@ const instructionsMoral = {
       </blockquote>
     </div><br>
     <label for="practice-slider-moral-estimate-percent">
-      As practice, please estimate what percentage of people in the U.S. believe, 
-      based on these outcomes, that this action is morally good or morally bad:<br><br>
+      As practice, please estimate what percentage of people in the U.S. believe 
+      that this action is morally good or morally bad:<br><br>
       <strong>
         <code style="font-size: 10pt;" id="practice-slider-moral-estimate-percent-label">
           <i class="fa-solid fa-arrow-left" id="fa-arrow-left"></i>&nbsp;(slide to adjust)&nbsp;<i class="fa-solid fa-arrow-right" id="fa-arrow-right"></i>
@@ -396,23 +396,23 @@ const instructionsMoral = {
       <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
       <output style="position: absolute; right: 0%; font-size: 14pt; "id="slider-upRating">50%</output><br>
       <span class="jspsych-slider-left-anchor">
-        <strong>Definitely morally bad</strong>
+        <strong>believe this is morally bad</strong>
       </span>
       <span class="jspsych-slider-right-anchor">
-        <strong>Definitely morally good</strong>
+        <strong>believe this is morally good</strong>
       </span>
     </div>`,
 
     `<h2><strong>Instructions (6/6)</strong></h2>
     <p style="text-align: left;">
-      To help you share your opinion about the statements, you will have the opportunity 
+      To help you estimate what other Americans believe, you will have the opportunity 
       to see what people in that previous study thought about the statements. You will see 
       avatars representing people who participated in that study.
     </p>
     
     <p style="text-align: left;">
       Every time you click on an avatar, you will see whether that 
-      <strong>one person thought that particular statement was morally good or bad.</strong> 
+      <strong>believes the claim is morally good or morally bad.</strong> 
       You can view the opinions of as many people as you'd like before making your estimate.
     </p>`
   ],
@@ -454,12 +454,12 @@ const instructionsEpistemicComprehensionCheck = {
       The experiment will begin on the next page.
       
       As a reminder, you will see a series of statements and be asked to estimate 
-      how many people think the outcome of the action in the statement is true (vs. false).<br><br>
+      how many people think the claim is true (vs. false).<br><br>
 
       We will first ask you a few questions about the statement you will see and what you think 
       before you get to see any information about what others think. Then, you will see a page 
       of many different avatars that each represent real participants' opinions 
-      about the outcomes of the action in the statement you read.<br><br>
+      about the claim you read.<br><br>
 
       <strong>
         You are free to review as many opinions as you would like before providing us 
@@ -513,12 +513,12 @@ const instructionsMoralComprehensionCheck = {
       The experiment will begin on the next page.
       
       As a reminder, you will see a series of statements and be asked to estimate 
-      how many people think the outcome of the action in the statement is morally good (vs. morally bad).<br><br>
+      how many people think the claim is morally good (vs. morally bad).<br><br>
 
       We will first ask you a few questions about the statement you will see and what you think 
       before you get to see any information about what others think. Then, you will see a page 
       of many different avatars that each represent real participants' opinions about 
-      the outcomes of the action in the statement you read.<br><br>
+      the claim you read.<br><br>
 
       <strong>
         You are free to review as many opinions as you would like before providing us 
@@ -903,8 +903,8 @@ function prePredictionsMoralOther(trialIndex) {
             >
             <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
             <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-            <span class="jspsych-slider-left-anchor">Believe this action is morally bad</span>
-            <span class="jspsych-slider-right-anchor">Believe this action is morally good</span>
+            <span class="jspsych-slider-left-anchor">believe this is morally bad</span>
+            <span class="jspsych-slider-right-anchor">believe this is morally good</span>
           </div><br><br><br>
 
 

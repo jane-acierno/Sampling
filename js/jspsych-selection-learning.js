@@ -49,9 +49,9 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				// Pt. 1: Box
 				`<div id="jspsych-instructions">
 					<div class="quote">
-						<h2>Sampling Task</h2>
+						<h2>Others' opinions</h2>
 						<p>
-							Now you can see what other people think.<br>
+							Now you can see what other people think. Avatar images have been randomly generated. <br>
 							Click on any of the people below to see that person's opinion on the following sentence:
 						</p>
 						<blockquote>

@@ -52,7 +52,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						<h2>Others' opinions</h2>
 						<p>
 							Now you can see what other people think. Avatar images have been randomly generated. <br>
-							Click on any of the people below to see that person's opinion on the following sentence:
+							Click on an avatar to see that person's opinion on the following sentence: </br>
 						</p>
 						<blockquote>
 							${trial.statement}

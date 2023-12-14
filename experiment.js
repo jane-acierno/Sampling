@@ -71,9 +71,7 @@ const ihResponses = [
   "4",
   "5",
   "6",
-  "7",
-  "8",
-  "9 = Very characteristic\nof me"
+  "7 = Very characteristic\nof me"
 ];
 
 // ENTER FULLSCREEN //
@@ -220,6 +218,12 @@ const instructionsEpistemic = {
           These statements are all structured the same way. They will make a claim about something a real 
           person from history may have done, and then some of the outcomes of that supposed action. Your job is 
           to tell us whether you think other people think the statement about that person is or is not true.
+        </p>
+
+        <p style="text-align: left;">
+          We will also ask you about how curious you are to learn more about the person you read about. 
+          Please keep in mind that when answering about how curious you are, you should only say you are 
+          extremely curious for the statements you are <u>absolutely</u> most curious to learn about.
         </p>`,
 
     `<h2><strong>Instructions (4/6)</strong></h2>
@@ -339,6 +343,12 @@ const instructionsMoral = {
       depicted in the statements you see are morally good or not. You should not evaluate how 
       likely the statement about the person is true or false, just your opinion about what 
       you think other people think about the morality of the actions depicted.
+    </p>
+
+    <p style="text-align: left;">
+      We will also ask you about how curious you are to learn more about the person you read about. 
+      Please keep in mind that when answering about how curious you are, you should only say you are 
+      extremely curious for the statements you are <u>absolutely</u> most curious to learn about.
     </p>`,
 
     `<h2><strong>Instructions (4/6)</strong></h2>
@@ -611,11 +621,7 @@ function prePredictionsEpistemicSelf(trialIndex) {
       <input type="hidden" name="pre-slider-epistemic-curious-clicked" value="false">
       <label for="pre-slider-epistemic-curious" class="jspsych-survey-multi-choice-question">
         How curious are you to learn about what other people think about this statement?<br>
-        <em style="font-size: 10pt;">
-          Remember that when answering the following question about how curious you are, 
-          keep in mind that you should only say you are extremely curious for the 
-          statements you are <u>absolutely</u> most curious to learn about.
-        </em>
+
       </label>
       <div style="position: relative;">
         <input
@@ -816,11 +822,6 @@ function prePredictionsMoralSelf(trialIndex) {
           <input type="hidden" name="pre-slider-moral-curious-clicked" value="false">
           <label for="pre-slider-moral-curious" class="jspsych-survey-multi-choice-question">
             How curious are you to learn about what other people think about this statement?<br>
-            <em style="font-size: 10pt;">
-              Remember that when answering the following question about how curious you are, 
-              keep in mind that you should only say you are extremely curious for the 
-              statements <u>you are absolutely</u> most curious to learn about.
-            </em>
           </label>
           <div style="position: relative;">
             <input 

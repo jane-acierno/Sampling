@@ -49,7 +49,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				// Pt. 1: Box
 				`<div id="jspsych-instructions">
 					<div class="quote">
-						<h2>Main Task</h2>
+						<h2>Search Task</h2>
 						<p>
 							Now you can see what other people think.
 							Click on an avatar to see that person's opinion on the following sentence:

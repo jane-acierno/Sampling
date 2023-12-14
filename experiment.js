@@ -221,9 +221,8 @@ const instructionsEpistemic = {
         </p>
 
         <p style="text-align: left;">
-          We will also ask you about how curious you are to learn more about the person you read about. 
-          Please keep in mind that when answering about how curious you are, you should only say you are 
-          extremely curious for the statements you are <u>absolutely</u> most curious to learn about.
+          We will also ask you rate your curiosity about each person you read about. You should only say you are 
+          extremely curious for the statements you are <strong>absolutely</strong> most curious to learn more about.
         </p>`,
 
     `<h2><strong>Instructions (4/6)</strong></h2>
@@ -346,9 +345,8 @@ const instructionsMoral = {
     </p>
 
     <p style="text-align: left;">
-      We will also ask you about how curious you are to learn more about the person you read about. 
-      Please keep in mind that when answering about how curious you are, you should only say you are 
-      extremely curious for the statements you are <u>absolutely</u> most curious to learn about.
+    We will also ask you rate your curiosity about each person you read about. You should only say you are 
+    extremely curious for the statements you are <strong>absolutely</strong> most curious to learn more about.
     </p>`,
 
     `<h2><strong>Instructions (4/6)</strong></h2>

@@ -291,7 +291,7 @@ const instructionsEpistemic = {
         <p style="text-align: left;">
           To help you estimate what other Americans believe, you will have the opportunity 
           to see what people in that previous study thought about the statements. You will see 
-          avatars representing people who participated in that study.
+          randomly generated avatars representing people who participated in that study.
         </p>
         <p style="text-align: left;">
           Every time you click on an avatar, you will see whether that 
@@ -411,7 +411,7 @@ const instructionsMoral = {
     <p style="text-align: left;">
       To help you estimate what other Americans believe, you will have the opportunity 
       to see what people in that previous study thought about the statements. You will see 
-      avatars representing people who participated in that study.
+      randomly generated avatars representing people who participated in that study.
     </p>
     
     <p style="text-align: left;">

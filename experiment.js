@@ -236,9 +236,7 @@ const instructionsEpistemic = {
         
         <p style="text-align: left;">
           Your job would be to evaluate what percentage of people believe that
-          “Robert Oppenheimer developed the atomic bomb, which ended World War II 
-          but also enabled the devastation of Hiroshima and Nagasaki.” is a 
-          <strong>true (or false) statement.</strong>
+           the statement above is a <strong>true (or false) statement.</strong>
         </p>`,
 
     `<h2><strong>Instructions (5/6)</strong></h2>
@@ -359,9 +357,7 @@ const instructionsMoral = {
     </blockquote>
     <p style="text-align: left;">
       Your job would be to evaluate what percentage of people you think believe that
-      “Robert Oppenheimer developed the atomic bomb, which ended World War II 
-      but also enabled the devastation of Hiroshima and Nagasaki.” is a 
-      <strong>morally good (or bad) action.</strong>
+      the actions depicted in the above statement are <strong>morally good (or bad).</strong>
     </p>`,
 
     `<h2><strong>Instructions (5/6)</strong></h2>

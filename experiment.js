@@ -1823,6 +1823,140 @@ const demographicsQuestions = {
             <label for="gender-prefer-not">Prefer not to disclose</label>
           </div>
         </div>
+
+        <!-- Education -->
+        
+        <div class="jspsych-survey-multi-choice-question">
+          <legend>
+            What is the highest level of education you have received? 
+            (If you are currently enrolled in school, please indicate the highest degree you have received)
+          </legend>
+          <div class="jspsych-survey-multi-choice-option">
+            <input 
+              type="radio" 
+              id="education-less-high-school" 
+              name="education-less-high-school" 
+              value="Less than a high school diploma" 
+              class="demographics-education incomplete"
+              oninput="
+                let demographicsEducation = document.querySelectorAll(
+                  '.demographics-education'
+                );
+                for (let i = 0; i < demographicsEducation.length; i++) {
+                  demographicsEducation[i].classList.remove('incomplete');
+                };
+              "
+            >
+            <label for="education-less-high-school">
+              Less than a high school diploma
+            </label>
+          </div>
+
+          <div class="jspsych-survey-multi-choice-option">
+            <input 
+              type="radio" 
+              id="education-high-school" 
+              name="education-high-school" 
+              value="High school degree or equivalent (e.g. GED)" 
+              class="demographics-education incomplete"
+              oninput="
+                let demographicsEducation = document.querySelectorAll(
+                  '.demographics-education'
+                );
+                for (let i = 0; i < demographicsEducation.length; i++) {
+                  demographicsEducation[i].classList.remove('incomplete');
+                };
+              "
+            >
+            <label for="education-high-school">
+              High school degree or equivalent (e.g. GED)
+            </label>
+          </div>
+
+          <div class="jspsych-survey-multi-choice-option">
+            <input 
+              type="radio" 
+              id="education-some-college" 
+              name="education-some-college" 
+              value="Some college, no degree" 
+              class="demographics-education incomplete"
+              oninput="
+                let demographicsEducation = document.querySelectorAll(
+                  '.demographics-education'
+                );
+                for (let i = 0; i < demographicsEducation.length; i++) {
+                  demographicsEducation[i].classList.remove('incomplete');
+                };
+              "
+            >
+            <label for="education-some-college">
+              Some college, no degree
+            </label>
+          </div>
+
+          <div class="jspsych-survey-multi-choice-option">
+            <input 
+              type="radio" 
+              id="education-associate" 
+              name="education-associate" 
+              value="Associate Degree (e.g. AA, AS)" 
+              class="demographics-education incomplete"
+              oninput="
+                let demographicsEducation = document.querySelectorAll(
+                  '.demographics-education'
+                );
+                for (let i = 0; i < demographicsEducation.length; i++) {
+                  demographicsEducation[i].classList.remove('incomplete');
+                };
+              "
+            >
+            <label for="education-associate">
+              Associate Degree (e.g. AA, AS)
+            </label>
+          </div>
+
+          <div class="jspsych-survey-multi-choice-option">
+            <input 
+              type="radio" 
+              id="education-bachelors" 
+              name="education-bachelors" 
+              value="Bachelor's Degree (e.g. BA, BS)" 
+              class="demographics-education incomplete"
+              oninput="
+                let demographicsEducation = document.querySelectorAll(
+                  '.demographics-education'
+                );
+                for (let i = 0; i < demographicsEducation.length; i++) {
+                  demographicsEducation[i].classList.remove('incomplete');
+                };
+              "
+            >
+            <label for="education-bachelors">
+              Bachelor's Degree (e.g. BA, BS)
+            </label>
+          </div>
+          
+          <div class="jspsych-survey-multi-choice-option">
+            <input 
+              type="radio" 
+              id="education-postgraduate" 
+              name="education-postgraduate" 
+              value="Postgraduate Degree (e.g. Master's Degree, Professional Degree, Doctorate Degree)" 
+              class="demographics-education incomplete"
+              oninput="
+                let demographicsEducation = document.querySelectorAll(
+                  '.demographics-education'
+                );
+                for (let i = 0; i < demographicsEducation.length; i++) {
+                  demographicsEducation[i].classList.remove('incomplete');
+                };
+              "
+            >
+            <label for="education-postgraduate">
+              Postgraduate Degree (e.g. Master's Degree, Professional Degree, Doctorate Degree)
+            </label>
+          </div>
+        </div>
         
         <style id="jspsych-survey-multi-choice-css">
           .jspsych-survey-multi-choice-question { 

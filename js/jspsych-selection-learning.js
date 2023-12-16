@@ -31,9 +31,9 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				default: undefined,
 				array: true,
 			},
-			participantCondition: {
+			epistemicMoralCondition: {
 				type: jspsych.ParameterType.STRING,
-				pretty_name: "Condition",
+				pretty_name: "Epistemic or Moral Condition",
 				default: undefined,
 			}
 		}
@@ -224,7 +224,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			};
 
 			// Pull ratings array depending on condition and trial statement
-			if (trial.participantCondition == 'epistemic') {
+			if (trial.epistemicMoralCondition == 'epistemic') {
 				var selectionRatings = {
 					0: selectionRatingsDict['epistemicRatingsQ12'],
 					1: selectionRatingsDict['epistemicRatingsQ26'],
@@ -232,7 +232,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					3: selectionRatingsDict['epistemicRatingsQ29'],
 					4: selectionRatingsDict['epistemicRatingsQ30']
 				}
-			} else if (trial.participantCondition == 'moral') {
+			} else if (trial.epistemicMoralCondition == 'moral') {
 				var selectionRatings = {
 					0: selectionRatingsDict['moralRatingsQ12'],
 					1: selectionRatingsDict['moralRatingsQ26'],
@@ -295,12 +295,12 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				let textDownRating = "NA";
 				let textUpRating = "NA";
 
-				if (trial.participantCondition == "epistemic") {
+				if (trial.epistemicMoralCondition == "epistemic") {
 					ratingPrompt = "How likely do you think it is that this claim is true or false?";
 					textDownRating = "Definitely false";
 					textUpRating = "Definitely true";
 
-				} else {
+				} else if (trial.epistemicMoralCondition == "moral") {
 					ratingPrompt = "How morally good or morally bad do you think this action is?"
 					textDownRating = "Extremely morally bad";
 					textUpRating = "Extremely morally good";

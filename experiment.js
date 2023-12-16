@@ -19,7 +19,8 @@ const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
 const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
 
 // Randomize assignment of condition: epistemic / moral
-let participantCondition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
+let epistemicMoralCondition = jsPsych.randomization.sampleWithoutReplacement(['epistemic', 'moral'], 1)[0];
+let individualDifferencesOrderCondition = jsPsych.randomization.sampleWithoutReplacement(['before', 'after'], 1)[0];
 
 // Random assignment of statements: pick 2 of 5 statements
 const trials = jsPsych.randomization.shuffle([0, 1, 2, 3, 4]).slice(0, 2);
@@ -28,7 +29,8 @@ jsPsych.data.addProperties({
   participantId: participantId,
   studyId: studyId,
   sessionId: sessionId,
-  participantCondition: participantCondition
+  epistemicMoralCondition: epistemicMoralCondition,
+  individualDifferencesOrderCondition: individualDifferencesOrderCondition
 });
 
 // Options
@@ -945,12 +947,12 @@ function prePredictionsMoralOther(trialIndex) {
   };
 };
 
-function selectionTask(trialIndex, participantCondition) {
+function selectionTask(trialIndex, epistemicMoralCondition) {
   return {
     type: jsPsychSelectionLearning,
     trialIndex: trialIndex,
     avatars: avatarDictionary,
-    participantCondition: participantCondition,
+    epistemicMoralCondition: epistemicMoralCondition,
     statement: statements[trials[trialIndex]],
     choices: [
       "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;Continue sampling",
@@ -1307,7 +1309,6 @@ function postPredictionsMoralOther(trialIndex) {
       let post_slider_moral_estimate_percent_check = postSamplingMoralOtherData['post-slider-moral-estimate-percent-clicked'] === 'true' ? postSamplingMoralOtherData['post-slider-moral-estimate-percent'] : null;
       let post_slider_moral_confidence_check = postSamplingMoralOtherData['post-slider-moral-confidence-clicked'] === 'true' ? postSamplingMoralOtherData['post-slider-moral-confidence'] : null;
 
-
       postSamplingMoralOtherData = {
         post_slider_moral_estimate_percent: post_slider_moral_estimate_percent_check,
         post_slider_moral_confidence: post_slider_moral_confidence_check
@@ -1320,6 +1321,7 @@ function postPredictionsMoralOther(trialIndex) {
   };
 };
 
+// Intertrial Break Page
 function newTrialPage(trialIndex) {
   return {
     type: jsPsychInstructions,
@@ -1334,48 +1336,7 @@ function newTrialPage(trialIndex) {
   };
 };
 
-if (participantCondition === 'epistemic') {
-  timeline.push(
-    instructionsEpistemic,
-    instructionsEpistemicComprehensionCheck
-  );
-  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
-    timeline.push(
-      prePredictionsEpistemicSelf(trialIndex),
-      prePredictionsEpistemicOther(trialIndex),
-      selectionTask(trialIndex, participantCondition),
-      postPredictionsEpistemicSelf(trialIndex),
-      postPredictionsEpistemicOther(trialIndex),
-    );
-    if (trialIndex != trials.length - 1) {
-      timeline.push(
-        newTrialPage(trialIndex)
-      );
-    };
-  };
-} else if (participantCondition === 'moral') {
-  timeline.push(
-    instructionsMoral,
-    instructionsMoralComprehensionCheck
-  );
-  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
-    timeline.push(
-      prePredictionsMoralSelf(trialIndex),
-      prePredictionsMoralOther(trialIndex),
-      selectionTask(trialIndex, participantCondition),
-      postPredictionsMoralSelf(trialIndex),
-      postPredictionsMoralOther(trialIndex),
-    );
-    if (trialIndex != trials.length - 1) {
-      timeline.push(
-        newTrialPage(trialIndex)
-      );
-    };
-  };
-};
-
-
-// DEMOGRAPHICS //
+// INDIVIDUAL DIFFERENCES //
 
 // IRI - Perspective Taking //
 const iriQuestions = {
@@ -1444,8 +1405,6 @@ const iriQuestions = {
       .addToAll(iriData);
   }
 };
-
-timeline.push(iriQuestions);
 
 const ihQuestions = {
   type: jsPsychSurveyMultiChoice,
@@ -1552,7 +1511,93 @@ const ihQuestions = {
   }
 };
 
-timeline.push(ihQuestions);
+// <!-- INSERT NEW INDIVIDUAL DIFFERENCES ITEMS HERE --> //
+
+// EPISTEMIC
+if (epistemicMoralCondition === 'epistemic') {
+
+  // Instructions
+  timeline.push(
+    instructionsEpistemic,
+    instructionsEpistemicComprehensionCheck
+  );
+
+  // Pre-Sampling Individual Differences
+  if (individualDifferencesOrderCondition == "before") {
+    timeline.push(
+      iriQuestions,
+      ihQuestions
+    );
+  }
+
+  // Sampling Task
+  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+    timeline.push(
+      prePredictionsEpistemicSelf(trialIndex),
+      prePredictionsEpistemicOther(trialIndex),
+      selectionTask(trialIndex, epistemicMoralCondition),
+      postPredictionsEpistemicSelf(trialIndex),
+      postPredictionsEpistemicOther(trialIndex),
+    );
+    if (trialIndex != trials.length - 1) {
+      timeline.push(
+        newTrialPage(trialIndex)
+      );
+    };
+  };
+
+  // Post-Sampling Individual Differences
+  if (individualDifferencesOrderCondition == "after") {
+    timeline.push(
+      iriQuestions,
+      ihQuestions
+    );
+  }
+  
+// MORAL
+} else if (epistemicMoralCondition === 'moral') {
+  
+  // Instructions
+  timeline.push(
+    instructionsMoral,
+    instructionsMoralComprehensionCheck
+  );
+
+  // Pre-Sampling Individual Differences
+  if (individualDifferencesOrderCondition == "before") {
+    timeline.push(
+      iriQuestions,
+      ihQuestions
+    );
+  }
+
+  // Sampling Task
+  for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+    timeline.push(
+      prePredictionsMoralSelf(trialIndex),
+      prePredictionsMoralOther(trialIndex),
+      selectionTask(trialIndex, epistemicMoralCondition),
+      postPredictionsMoralSelf(trialIndex),
+      postPredictionsMoralOther(trialIndex),
+    );
+    if (trialIndex != trials.length - 1) {
+      timeline.push(
+        newTrialPage(trialIndex)
+      );
+    };
+  };
+
+  // Post-Sampling Individual Differences
+  if (individualDifferencesOrderCondition == "after") {
+    timeline.push(
+      iriQuestions,
+      ihQuestions
+    );
+  }
+};
+
+
+// DEMOGRAPHICS //
 
 const demographicsQuestions = {
   type: jsPsychSurveyHtmlForm,
@@ -1823,6 +1868,7 @@ const demographicsQuestions = {
             <label for="gender-prefer-not">Prefer not to disclose</label>
           </div>
         </div>
+
 
         <!-- Education -->
         

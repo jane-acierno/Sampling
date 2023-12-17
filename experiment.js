@@ -76,6 +76,17 @@ const ihResponses = [
   "7 = Very characteristic\nof me"
 ];
 
+// Battery: need for closure, prosocial intentions, motivation
+const batResponses = [
+  "1 = Strongly disagree",
+  "2",
+  "3",
+  "4 = Neither agree nor disagree",
+  "5",
+  "6",
+  "7 = Strongly agree"
+];
+
 // ENTER FULLSCREEN //
 const enterFullscreen = {
   type: jsPsychFullscreen,
@@ -1511,7 +1522,100 @@ const ihQuestions = {
   }
 };
 
-// <!-- INSERT NEW INDIVIDUAL DIFFERENCES ITEMS HERE --> //
+// <!-- New individual diffs--> //
+
+const batQuestions = {
+  type: jsPsychSurveyMultiChoice,
+  questions: [
+    {
+      name: "bat-1",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        My decisions are usually based on my concern for other people.</strong>
+        </p>`,
+      options: batResponses,
+      horizontal: true,
+    },
+    {
+      name: "bat-2",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I choose a course of action that maximizes the help other people receive.</strong>
+        </p>`,
+      options: batResponses,
+      horizontal: true
+    },
+    {
+      name: "bat-3",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I am motivated by social approval.</strong>
+        </p>`,
+      options: batResponses,
+      horizontal: true
+    },
+    {
+      name: "bat-4",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I don't like situations that are uncertain.</strong>
+        </p>`,
+      options: batResponses,
+      horizontal: true
+    },
+    {
+      name: "bat-5",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I think that having clear rules and order at work is essential for success.</strong>
+        </p>`,
+      options: batResponses,
+      horizontal: true
+    },
+    {
+      name: "bat-6",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        When I am confused about an important issue, I feel very upset.</strong>
+        </p>`,
+      options: batResponses,
+      horizontal: true
+    },
+    {
+      name: "bat-7",
+      prompt: `
+        <p class="jspsych-survey-multi-choice-question">
+        I dislike unpredictable situations.</strong>
+        </p>`,
+      options: batResponses,
+      horizontal: true
+    }
+  ],
+  randomize_question_order: true,
+  request_response: true,
+  preamble: `
+    <p class="jspsych-survey-multi-choice-preamble">
+      For each of the statements below, please indicate how much you agree 
+      or disagree with the statement.
+    </p>`,
+  on_finish: function (data) {
+    let batData = data.response;
+
+    batData = {
+      bat_1: batData['bat-1'],
+      bat_2: batData['bat-2'],
+      bat_3: batData['bat-3'],
+      bat_4: batData['bat-4'],
+      bat_5: batData['bat-5'],
+      bat_6: batData['bat-6'],
+      bat_7: batData['bat-7']
+    };
+
+    jsPsych.data
+      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
+      .addToAll(batData);
+  }
+};
 
 // EPISTEMIC
 if (epistemicMoralCondition === 'epistemic') {
@@ -1526,7 +1630,8 @@ if (epistemicMoralCondition === 'epistemic') {
   if (individualDifferencesOrderCondition == "before") {
     timeline.push(
       iriQuestions,
-      ihQuestions
+      ihQuestions,
+      batQuestions
     );
   }
 
@@ -1550,7 +1655,8 @@ if (epistemicMoralCondition === 'epistemic') {
   if (individualDifferencesOrderCondition == "after") {
     timeline.push(
       iriQuestions,
-      ihQuestions
+      ihQuestions,
+      batQuestions
     );
   }
   
@@ -1567,7 +1673,8 @@ if (epistemicMoralCondition === 'epistemic') {
   if (individualDifferencesOrderCondition == "before") {
     timeline.push(
       iriQuestions,
-      ihQuestions
+      ihQuestions,
+      batQuestions
     );
   }
 
@@ -1591,7 +1698,8 @@ if (epistemicMoralCondition === 'epistemic') {
   if (individualDifferencesOrderCondition == "after") {
     timeline.push(
       iriQuestions,
-      ihQuestions
+      ihQuestions,
+      batQuestions
     );
   }
 };

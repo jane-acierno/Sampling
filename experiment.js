@@ -1348,6 +1348,16 @@ function newTrialPage(trialIndex) {
 };
 
 // INDIVIDUAL DIFFERENCES //
+const instructionsIndividualDifferences = {
+  type: jsPsychInstructions,
+  pages: [`
+    <p style="text-align: left;">
+      We will start by asking you some questions about yourself. 
+      Please answer honestly. After you complete these, you will begin the main task.
+    </p>
+    `],
+  show_clickable_nav: true
+}
 
 // IRI - Perspective Taking //
 const iriQuestions = {
@@ -1620,20 +1630,21 @@ const batQuestions = {
 // EPISTEMIC
 if (epistemicMoralCondition === 'epistemic') {
 
+  // Pre-Sampling Individual Differences
+  if (individualDifferencesOrderCondition == "before") {
+    timeline.push(
+      instructionsIndividualDifferences,
+      iriQuestions,
+      ihQuestions,
+      batQuestions
+    );
+  };
+
   // Instructions
   timeline.push(
     instructionsEpistemic,
     instructionsEpistemicComprehensionCheck
   );
-
-  // Pre-Sampling Individual Differences
-  if (individualDifferencesOrderCondition == "before") {
-    timeline.push(
-      iriQuestions,
-      ihQuestions,
-      batQuestions
-    );
-  }
 
   // Sampling Task
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
@@ -1658,7 +1669,7 @@ if (epistemicMoralCondition === 'epistemic') {
       ihQuestions,
       batQuestions
     );
-  }
+  };
   
 // MORAL
 } else if (epistemicMoralCondition === 'moral') {
@@ -1672,11 +1683,12 @@ if (epistemicMoralCondition === 'epistemic') {
   // Pre-Sampling Individual Differences
   if (individualDifferencesOrderCondition == "before") {
     timeline.push(
+      instructionsIndividualDifferences,
       iriQuestions,
       ihQuestions,
       batQuestions
     );
-  }
+  };
 
   // Sampling Task
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
@@ -1701,7 +1713,7 @@ if (epistemicMoralCondition === 'epistemic') {
       ihQuestions,
       batQuestions
     );
-  }
+  };
 };
 
 
@@ -2282,18 +2294,12 @@ const feedback = {
   questions: [
     {
       name: 'guess-study-purpose',
-      prompt:
-        `<p class="jspsych-survey-multi-choice-question" style='text-align: "center !important;"'>
-          What do you think this study was about?
-        </p>`,
+      prompt: 'What do you think this study was about?',
       rows: 10
     },
     {
       name: 'feedback',
-      prompt:
-        `<p class="jspsych-survey-multi-choice-question" style='text-align: "center !important;"'>
-          Do you have any additional comments? We appreciate any and all feedback!
-        </p>`,
+      prompt: 'Do you have any additional comments? We appreciate any and all feedback!',
       rows: 10
     }
   ],

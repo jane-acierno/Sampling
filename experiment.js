@@ -1674,12 +1674,6 @@ if (epistemicMoralCondition === 'epistemic') {
 // MORAL
 } else if (epistemicMoralCondition === 'moral') {
   
-  // Instructions
-  timeline.push(
-    instructionsMoral,
-    instructionsMoralComprehensionCheck
-  );
-
   // Pre-Sampling Individual Differences
   if (individualDifferencesOrderCondition == "before") {
     timeline.push(
@@ -1689,6 +1683,12 @@ if (epistemicMoralCondition === 'epistemic') {
       batQuestions
     );
   };
+
+  // Instructions
+  timeline.push(
+    instructionsMoral,
+    instructionsMoralComprehensionCheck
+  );
 
   // Sampling Task
   for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {

@@ -26,6 +26,7 @@ let individualDifferencesOrderCondition = jsPsych.randomization.sampleWithoutRep
 const trials = jsPsych.randomization.shuffle([0, 1, 2, 3, 4]).slice(0, 2);
 
 jsPsych.data.addProperties({
+  trials: trials,
   participantId: participantId,
   studyId: studyId,
   sessionId: sessionId,

@@ -31,11 +31,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				default: undefined,
 				array: true,
 			},
-			epistemicMoralCondition: {
-				type: jspsych.ParameterType.STRING,
-				pretty_name: "Epistemic or Moral Condition",
-				default: undefined,
-			}
 		}
 	};
 
@@ -224,31 +219,25 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			};
 
 			// Pull ratings array depending on condition and trial statement
-			if (trial.epistemicMoralCondition == 'epistemic') {
-				var selectionRatings = {
-					0: selectionRatingsDict['epistemicRatingsQ12'],
-					1: selectionRatingsDict['epistemicRatingsQ26'],
-					2: selectionRatingsDict['epistemicRatingsQ27'],
-					3: selectionRatingsDict['epistemicRatingsQ29'],
-					4: selectionRatingsDict['epistemicRatingsQ30']
-				}
-			} else if (trial.epistemicMoralCondition == 'moral') {
-				var selectionRatings = {
-					0: selectionRatingsDict['moralRatingsQ12'],
-					1: selectionRatingsDict['moralRatingsQ26'],
-					2: selectionRatingsDict['moralRatingsQ27'],
-					3: selectionRatingsDict['moralRatingsQ29'],
-					4: selectionRatingsDict['moralRatingsQ30']
-				}
-			};
+
+			
+			var selectionRatings = {
+				0: selectionRatingsDict['moralRatingsQ12'],
+				1: selectionRatingsDict['moralRatingsQ26'],
+				2: selectionRatingsDict['moralRatingsQ27'],
+				3: selectionRatingsDict['moralRatingsQ29'],
+				4: selectionRatingsDict['moralRatingsQ30']
+			}
 
 			// Pt. 3: Prompt
 			const samplingPromptContainer = $('#prompt-container');
 			samplingPromptContainer.html(`
-				<strong id="samplingPrompt">
-					CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO READ NEXT
-				</strong><br>
-				(SCROLL TO VIEW MORE)<br>`
+				<strong id="samplingPrompt" style="text-transform: uppercase;">
+					Click on the person whose opinion you would like to read next	
+				</strong>
+				<br>
+				(SCROLL TO VIEW MORE)
+				<br>`
 			);
 
 			trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
@@ -295,16 +284,9 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				let textDownRating = "NA";
 				let textUpRating = "NA";
 
-				if (trial.epistemicMoralCondition == "epistemic") {
-					ratingPrompt = "How likely do you think it is that this claim is true or false?";
-					textDownRating = "Definitely false";
-					textUpRating = "Definitely true";
-
-				} else if (trial.epistemicMoralCondition == "moral") {
-					ratingPrompt = "How morally good or morally bad do you think this action is?"
-					textDownRating = "Extremely morally bad";
-					textUpRating = "Extremely morally good";
-				};
+				ratingPrompt = "How morally good or morally bad do you think this action is?"
+				textDownRating = "Extremely morally bad";
+				textUpRating = "Extremely morally good";
 
 				const labelElement = $('<label>', {
 					for: "rating-slider",
@@ -340,7 +322,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					})
 				);
 
-				// $(sliderRating).appendTo(trialFormat).fadeIn();
 				trialFormat.append(avatarContainer, sliderRating);
 				trialPresentationSpace.html(`<div></div>`);
 				trialPresentationSpace.append(trialFormat);
@@ -413,14 +394,13 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						avatarCircleContainer.removeClass('fade-out-partial')
 							.addClass('fade-in');
 						reattachEventListeners();
-
 					});
 
 					$('#jspsych-selection-learning-button-1').on('click', function (e) {
 						endTrial();
 					});
 
-				}, 3000); //changed this from 5000 to 3000 for the pilot because it feels very long
+				}, 1000); //changed this from 5000 to 3000 for the pilot because it feels very long, now 1000
 			};
 
 			const clickHandlers = {};

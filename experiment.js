@@ -1,8 +1,8 @@
-// Do the task three times instead of twice TODO: DONE
-// Add progress bar? Look through comments
-// Jordan doesn't care about individual differences, keep them just at end (big order effect) TODO: DONE
-// keep task as intact as possible
-// do moral no epistemic condition anymore, make sure stimuli matched TODO: DONE
+// Add progress bar TODO: in progress
+// Add curiosity yes/no TODO: in progress -- wait to receive actual numbers, make in big font
+// Debug for nulls
+// Create study 1 pipe 
+// Wait for Jordan correct redirect number 
 
 // DEFINE GLOBAL VARIABLES
 let timeline = [];
@@ -67,7 +67,7 @@ const politicalResponses = [
   "4",
   "5",
   "6",
-  "7 = Extremely conservative)",
+  "7 = Extremely conservative",
 ];
 
 // Experimenter Demand Effects
@@ -88,17 +88,6 @@ const ihResponses = [
   "5",
   "6",
   "7 = Very characteristic\nof me"
-];
-
-// Battery: need for closure, prosocial intentions, motivation
-const batResponses = [
-  "1 = Strongly disagree",
-  "2",
-  "3",
-  "4 = Neither agree nor disagree",
-  "5",
-  "6",
-  "7 = Strongly agree"
 ];
 
 // ENTER FULLSCREEN //
@@ -247,6 +236,10 @@ const instructions = {
       depicted in the statements you see are morally good or not. You should not evaluate how 
       likely the statement about the person is true or false, just your opinion about what 
       you think other people think about the morality of the actions depicted.
+    </p>
+    <p style="text-align: left;">
+      We will also ask you rate your curiosity about each person you read about. You should only say you are 
+      extremely curious for the statements you are <strong>absolutely</strong> most curious to learn more about.
     </p>`,
 
     `<h2><strong>Instructions (4/6)</strong></h2>
@@ -459,6 +452,30 @@ function prePredictionsSelf(trialIndex) {
             >
             <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
             <span class="jspsych-slider-right-anchor">Definitely morally good</span>
+          </div><br><br><br>
+          
+          <!-- Pre-Sampling Moral Curiosity -->
+
+          <input type="hidden" name="pre-slider-moral-curious-clicked" value="false">
+          <label for="pre-slider-moral-curious" class="jspsych-survey-multi-choice-question">
+            How curious are you to learn about what other people think about this statement?<br>
+          </label>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-moral-curious" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-moral-curious"
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+
+                document.getElementsByName('pre-slider-moral-curious-clicked')[0].value = 'true';
+              "
+            >
+            <span class="jspsych-slider-left-anchor">Not at all curious</span>
+            <span class="jspsych-slider-right-anchor">Extremely curious</span>
           </div><br><br><br>`,
     button_label: 'Next',
     request_response: true,
@@ -467,10 +484,13 @@ function prePredictionsSelf(trialIndex) {
 
       let pre_slider_moral_action_check = preSamplingMoralSelfData['pre-slider-moral-action-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-action'] : null;
       let pre_slider_moral_person_check = preSamplingMoralSelfData['pre-slider-moral-person-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-person'] : null;
+      let pre_slider_moral_curious_check = preSamplingMoralSelfData['pre-slider-moral-curious-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-curious'] : null;
+
 
       preSamplingMoralSelfData = {
         pre_slider_moral_action: pre_slider_moral_action_check,
         pre_slider_moral_person: pre_slider_moral_person_check,
+        pre_slider_moral_curious: pre_slider_moral_curious_check
       };
 
       jsPsych.data
@@ -970,99 +990,6 @@ const ihQuestions = {
   }
 };
 
-const batQuestions = {
-  type: jsPsychSurveyMultiChoice,
-  questions: [
-    {
-      name: "bat-1",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        My decisions are usually based on my concern for other people.</strong>
-        </p>`,
-      options: batResponses,
-      horizontal: true,
-    },
-    {
-      name: "bat-2",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I choose a course of action that maximizes the help other people receive.</strong>
-        </p>`,
-      options: batResponses,
-      horizontal: true
-    },
-    {
-      name: "bat-3",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I am motivated by social approval.</strong>
-        </p>`,
-      options: batResponses,
-      horizontal: true
-    },
-    {
-      name: "bat-4",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I don't like situations that are uncertain.</strong>
-        </p>`,
-      options: batResponses,
-      horizontal: true
-    },
-    {
-      name: "bat-5",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I think that having clear rules and order at work is essential for success.</strong>
-        </p>`,
-      options: batResponses,
-      horizontal: true
-    },
-    {
-      name: "bat-6",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        When I am confused about an important issue, I feel very upset.</strong>
-        </p>`,
-      options: batResponses,
-      horizontal: true
-    },
-    {
-      name: "bat-7",
-      prompt: `
-        <p class="jspsych-survey-multi-choice-question">
-        I dislike unpredictable situations.</strong>
-        </p>`,
-      options: batResponses,
-      horizontal: true
-    }
-  ],
-  randomize_question_order: true,
-  request_response: true,
-  preamble: `
-    <p class="jspsych-survey-multi-choice-preamble">
-      For each of the statements below, please indicate how much you agree 
-      or disagree with the statement.
-    </p>`,
-  on_finish: function (data) {
-    let batData = data.response;
-
-    batData = {
-      bat_1: batData['bat-1'],
-      bat_2: batData['bat-2'],
-      bat_3: batData['bat-3'],
-      bat_4: batData['bat-4'],
-      bat_5: batData['bat-5'],
-      bat_6: batData['bat-6'],
-      bat_7: batData['bat-7']
-    };
-
-    jsPsych.data
-      .getDataByTimelineNode(jsPsych.getCurrentTimelineNodeID())
-      .addToAll(batData);
-  }
-};
-
 // Instructions
 timeline.push(
   instructions,
@@ -1085,11 +1012,15 @@ for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
   };
 };
 
+
+// Opportunity to learn the true percentage... (take from intro)
+// Instructional screen
+// Curiosity is regarding learning about information
+
 // Post-Sampling Individual Differences
 timeline.push(
   iriQuestions,
   ihQuestions,
-  batQuestions
 );
 
 // DEMOGRAPHICS //

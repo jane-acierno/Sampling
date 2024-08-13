@@ -30,7 +30,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				pretty_name: "Choices",
 				default: undefined,
 				array: true,
-			},
+			}
 		}
 	};
 
@@ -68,7 +68,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			// Ratings
 			const selectionRatingsDict = {
-				// <!-- Q12 -->
+				// <!-- Q12: Roentgen -->
 				epistemicRatingsQ12: [
 					34, 100, 59, 89, 84, 50, 68, 86, 83, 68,
 					30, 79, 3, 93, 84, 100, 92, 78, 65, 89,
@@ -201,39 +201,35 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			const trialPresentationSpace = $('#trial-presentation-space');
 
-			// Avatar indices randomized from 1 to 100
-			const randomizedAvatarIndexArray = jsPsych.randomization.shuffle([...Array(100).keys()]);
+			// randomizedAvatarNumberArray = [1, 2, 3, ..., 100]
+			const randomizedAvatarNumberArray = jsPsych.randomization.shuffle([...Array(100).keys()].map(x => x + 1));
 
 			// Generate circles
-			const avatarCircleContainer = $('#avatar-grid');
+			const avatarGrid = $('#avatar-grid');
+			for (let i = 0; i < randomizedAvatarNumberArray.length; i++) {
+				const avatarCircle = $(`<div class='avatar-circle clickable' id='circle${randomizedAvatarNumberArray[i]}'></div>`);
+				avatarGrid.append(avatarCircle);
 
-			for (let i = 0; i < 100; i++) {
-				// let avatarIndex = randomizedAvatarIndexArray[i - 1];
-				const avatarCircle = $(`<div class='avatar-circle' id='circle${randomizedAvatarIndexArray[i] + 1}'></div>`);
-				avatarCircleContainer.append(avatarCircle);
+				const circleId = $(`#circle${randomizedAvatarNumberArray[i]}`);
 
-				const circleId = $(`#circle${randomizedAvatarIndexArray[i] + 1}`);
-
-				const avatarPhoto = $(`<img class='avatar-photo' src='./avatars/avatar${randomizedAvatarIndexArray[i] + 1}.webp'>`);
+				const avatarPhoto = $(`<img class='avatar-photo' src='./avatars/avatar${randomizedAvatarNumberArray[i]}.webp'>`);
 				circleId.append(avatarPhoto);
 			};
 
 			// Pull ratings array depending on condition and trial statement
-
-			
 			var selectionRatings = {
-				0: selectionRatingsDict['moralRatingsQ12'],
-				1: selectionRatingsDict['moralRatingsQ26'],
-				2: selectionRatingsDict['moralRatingsQ27'],
-				3: selectionRatingsDict['moralRatingsQ29'],
-				4: selectionRatingsDict['moralRatingsQ30']
+				0: jsPsych.randomization.shuffle(selectionRatingsDict['moralRatingsQ12']),
+				1: jsPsych.randomization.shuffle(selectionRatingsDict['moralRatingsQ26']),
+				2: jsPsych.randomization.shuffle(selectionRatingsDict['moralRatingsQ27']),
+				3: jsPsych.randomization.shuffle(selectionRatingsDict['moralRatingsQ29']),
+				4: jsPsych.randomization.shuffle(selectionRatingsDict['moralRatingsQ30'])
 			}
 
 			// Pt. 3: Prompt
 			const samplingPromptContainer = $('#prompt-container');
 			samplingPromptContainer.html(`
 				<strong id="samplingPrompt" style="text-transform: uppercase;">
-					Click on the person whose opinion you would like to read next	
+					click on the person whose opinion you would like to read next
 				</strong>
 				<br>
 				(SCROLL TO VIEW MORE)
@@ -249,10 +245,9 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			let avatarPositionYIndices = [];
 			let rtArray = [];
 			let sliderRatings = [];
-
-			for (let i = 0; i < randomizedAvatarIndexArray.length; i++) {
-				var newIndex = randomizedAvatarIndexArray[i];
-				sliderRatings.push(selectionRatings[trial.trialIndex][newIndex]);
+			
+			for (let i = 0; i < randomizedAvatarNumberArray.length; i++) {
+				sliderRatings.push(selectionRatings[trials[trial.trialIndex]][i]);
 			};
 
 			let start_time = (new Date()).getTime();
@@ -327,7 +322,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				trialPresentationSpace.append(trialFormat);
 
 				samplingPromptContainer.empty();
-				avatarCircleContainer.addClass('fade-out-partial');
+				avatarGrid.addClass('fade-out-partial');
 
 				setTimeout(function () {
 					const learningStartTime = (new Date()).getTime();
@@ -345,6 +340,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					trialPresentationSpace.html(trialFormat);
 
 					trialFeedback.html(`
+						<hr></hr>
 						<p>Would you like to continue sampling?</p>
 						<div id="jspsych-selection-learning-btngroup" class="center-content block-center"></div>`
 					);
@@ -384,14 +380,14 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 						// Fade the prompt back in
 						samplingPromptContainer.html(
-							`<p id="samplingPrompt">
-								<strong>CLICK ON THE PERSON WHOSE OPINION YOU WOULD LIKE TO READ NEXT</strong><br>
-								(SCROLL TO VIEW MORE)
+							`<p id="samplingPrompt" style="text-transform: uppercase;">
+								<strong>click on the person whose opinion you would like to read next</strong><br>
+								(scroll to view more)
 							</p>`
 						);
 
 						// Fade the grid back in
-						avatarCircleContainer.removeClass('fade-out-partial')
+						avatarGrid.removeClass('fade-out-partial')
 							.addClass('fade-in');
 						reattachEventListeners();
 					});
@@ -454,6 +450,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 							};
 
 							$("#circle" + avatarIndex).css("background-color", "#bbb");  // Fades background color
+							$("#circle" + avatarIndex).css("border-color", "rgba(0, 0, 0, 0.25)");
 							$("#circle" + avatarIndex).find("img.avatar-photo").css("opacity", "0.5");  // Fades avatar photo
 							initLearning(avatarIndex);  // Start trial
 							isLearningInProgress = false;
@@ -478,6 +475,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			}
 
 			const endTrial = () => {
+				display_element.innerHTML = "";  // Clear the DOM
 				const final_time = (new Date()).getTime();
 				trialDuration = final_time - start_time;
 				const trial_data = {

@@ -1,4 +1,3 @@
-// Add progress bar TODO: in progress
 // Add curiosity yes/no TODO: in progress -- wait to receive actual numbers, make in big font
 // Debug for nulls
 // Create study 1 pipe 
@@ -11,7 +10,7 @@ let timeline = [];
 const jsPsych = initJsPsych({
   use_webaudio: false,
   display_element: 'jspsych-target',
-  show_progress_bar: false,
+  show_progress_bar: true,
   default_iti: 0,
   on_finish: function (data) {
     jsPsych.data.displayData('csv');
@@ -397,8 +396,8 @@ function prePredictionsSelf(trialIndex) {
     type: jsPsychSurveyHtmlForm,
     preamble: `
           <div class="quote">
-            <h3>Statement #` + (trialIndex + 1) + `</h3>
-            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+            <h3>Statement #${trialIndex + 1}</h3>
+            <blockquote>${statements[trials[trialIndex]]}</blockquote>
           </div>
           <p class="jspsych-survey-multi-choice-preamble">
             Before you see what other people think about 
@@ -506,8 +505,8 @@ function prePredictionsOther(trialIndex) {
     type: jsPsychSurveyHtmlForm,
     preamble: `
           <div class="quote">
-            <h3>Statement #` + (trialIndex + 1) + `</h3>
-            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+            <h3>Statement #${trialIndex + 1}</h3>
+            <blockquote>${statements[trials[trialIndex]]}</blockquote>
           </div>
           <p class="jspsych-survey-multi-choice-preamble">
             Before you see what other people think about the statement, we want to know what you think:
@@ -607,7 +606,7 @@ const avatarPhotos = Array.from({ length: 100 }, (_, i) => `./avatars/avatar${i 
 
 let avatarDictionary = {};
 
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < avatarNames.length; i++) {
   let avatarData = { avatar: avatarPhotos[i] };
   avatarDictionary[avatarNames[i + 1]] = avatarData;
 
@@ -623,8 +622,8 @@ function postPredictionsSelf(trialIndex) {
     type: jsPsychSurveyHtmlForm,
     preamble: `
           <div class="quote">
-            <h3>Statement #` + (trialIndex + 1) + `</h3>
-            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+            <h3>Statement #${trialIndex + 1}</h3>
+            <blockquote>${statements[trials[trialIndex]]}</blockquote>
           </div>
           <p class="jspsych-survey-multi-choice-preamble">
             Now that you've had the chance to see what other people 
@@ -704,8 +703,8 @@ function postPredictionsOther(trialIndex) {
     type: jsPsychSurveyHtmlForm,
     preamble: `
           <div class="quote">
-            <h3>Statement #` + (trialIndex + 1) + `</h3>
-            <blockquote>` + statements[trials[trialIndex]] + `</blockquote>
+            <h3>Statement #${trialIndex + 1}</h3>
+            <blockquote>${statements[trials[trialIndex]]}</blockquote>
           </div>
           <p class="jspsych-survey-multi-choice-preamble">
             Now that you've had the chance to see what other people 
@@ -795,7 +794,7 @@ function newTrialPage(trialIndex) {
   return {
     type: jsPsychInstructions,
     pages: [`
-          <h2><strong>Trial ` + (trialIndex + 1) + `/` + trials.length + ` Completed!</strong></h2>
+          <h2><strong>Trial (${trialIndex + 1}/${trials.length}) Completed!</strong></h2>
           <p style="text-align: left;">
             Great Job! You will now advance to the second trial. 
             Please click the button below to continue.
@@ -804,6 +803,18 @@ function newTrialPage(trialIndex) {
     show_clickable_nav: true
   };
 };
+
+// Curiosity Reveal Task
+function revealTask() {
+  return {
+    type: jsPsychCuriosityReveal,
+    choices: [
+      "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;View more",
+      "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
+    ]
+  };
+};
+
 
 // INDIVIDUAL DIFFERENCES //
 const instructionsIndividualDifferences = {
@@ -834,8 +845,7 @@ const iriQuestions = {
       name: 'iri-2',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-        I sometimes try to understand my friends better by imagining how things
-        look from their perspective.
+        I sometimes try to understand my friends better by imagining how things look from their perspective.
         </p>`,
       options: iriResponses,
       horizontal: true
@@ -844,8 +854,7 @@ const iriQuestions = {
       name: 'iri-3',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-        When I'm upset at someone, I usually try to 'put myself in his shoes' for a
-        while.
+        When I'm upset at someone, I usually try to 'put myself in his shoes' for a while.
         </p>`,
       options: iriResponses,
       horizontal: true
@@ -854,8 +863,7 @@ const iriQuestions = {
       name: 'iri-4',
       prompt:
         `<p class="jspsych-survey-multi-choice-question">
-        Before criticizing somebody, I try to imagine how I would feel if I were in
-        their place.
+        Before criticizing somebody, I try to imagine how I would feel if I were in their place.
         </p>`,
       options: iriResponses,
       horizontal: true
@@ -865,8 +873,7 @@ const iriQuestions = {
   request_response: true,
   preamble:
     `<p class="jspsych-survey-multi-choice-preamble">
-      Please indicate how well each of the following statements
-      describe you using the scale provided:
+      Please indicate how well each of the following statements describe you using the scale provided:
     </p>`,
   scale_width: 500,
   on_finish: function (data) {
@@ -892,7 +899,7 @@ const ihQuestions = {
       name: "ih-1-r",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-        My intellectual ideas are usually superior to others' ideas.</strong>
+        My intellectual ideas are usually superior to others' ideas.
         </p>`,
       options: ihResponses,
       horizontal: true,
@@ -903,7 +910,7 @@ const ihQuestions = {
       name: "ih-2-r",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-        I desire to be famous for an intellectual contribution.</strong>
+        I desire to be famous for an intellectual contribution.
         </p>`,
       options: ihResponses,
       horizontal: true
@@ -912,7 +919,7 @@ const ihQuestions = {
       name: "ih-3-r",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-        I know just about everything there is to know. </strong>
+        I know just about everything there is to know.
         </p>`,
       options: ihResponses,
       horizontal: true
@@ -921,7 +928,7 @@ const ihQuestions = {
       name: "ih-4-r",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-        Other people think that I am a know-it-all.</strong>
+        Other people think that I am a know-it-all.
         </p>`,
       options: ihResponses,
       horizontal: true
@@ -930,7 +937,7 @@ const ihQuestions = {
       name: "ih-5",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-        I am open to other's ideas about how to do things.</strong>
+        I am open to other's ideas about how to do things.
         </p>`,
       options: ihResponses,
       horizontal: true
@@ -939,7 +946,7 @@ const ihQuestions = {
       name: "ih-6",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-        I can learn from other people.</strong>
+        I can learn from other people.
         </p>`,
       options: ihResponses,
       horizontal: true
@@ -948,7 +955,7 @@ const ihQuestions = {
       name: "ih-7",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-        I am open to others' criticisms of my intellectual ideas.</strong>
+        I am open to others' criticisms of my intellectual ideas.
         </p>`,
       options: ihResponses,
       horizontal: true
@@ -957,7 +964,7 @@ const ihQuestions = {
       name: "ih-8",
       prompt: `
         <p class="jspsych-survey-multi-choice-question">
-        I am an intellectually humble person.</strong>
+        I am an intellectually humble person.
         </p>`,
       options: ihResponses,
       horizontal: true
@@ -967,8 +974,7 @@ const ihQuestions = {
   request_response: true,
   preamble: `
     <p class="jspsych-survey-multi-choice-preamble">
-      For each of the statements below, please indicate how much the statement
-      is generally characteristic of you.
+      For each of the statements below, please indicate how much the statement is generally characteristic of you.
     </p>`,
   on_finish: function (data) {
     let ihData = data.response;
@@ -978,10 +984,10 @@ const ihQuestions = {
       ih_2_r: ihData['ih-2-r'],
       ih_3_r: ihData['ih-3-r'],
       ih_4_r: ihData['ih-4-r'],
-      ih_5: ihData['ih-5'],
-      ih_6: ihData['ih-6'],
-      ih_7: ihData['ih-7'],
-      ih_8: ihData['ih-8']
+      ih_5:   ihData['ih-5'],
+      ih_6:   ihData['ih-6'],
+      ih_7:   ihData['ih-7'],
+      ih_8:   ihData['ih-8']
     };
 
     jsPsych.data
@@ -991,10 +997,7 @@ const ihQuestions = {
 };
 
 // Instructions
-timeline.push(
-  instructions,
-  instructionsComprehensionCheck
-);
+// timeline.push(instructions, instructionsComprehensionCheck);
 
 // Sampling Task
 for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
@@ -1006,11 +1009,10 @@ for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
     postPredictionsOther(trialIndex),
   );
   if (trialIndex != trials.length - 1) {
-    timeline.push(
-      newTrialPage(trialIndex)
-    );
+    timeline.push(newTrialPage(trialIndex));
   };
 };
+timeline.push(revealTask());
 
 
 // Opportunity to learn the true percentage... (take from intro)
@@ -1018,10 +1020,7 @@ for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
 // Curiosity is regarding learning about information
 
 // Post-Sampling Individual Differences
-timeline.push(
-  iriQuestions,
-  ihQuestions,
-);
+timeline.push(iriQuestions, ihQuestions);
 
 // DEMOGRAPHICS //
 const demographicsQuestions = {

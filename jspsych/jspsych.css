@@ -563,7 +563,7 @@
 }
 
 #jspsych-progressbar-inner {
-  background-color: #aaa;
+  background-color: #4caf50;
   width: 0%;
   height: 100%;
 }
@@ -607,7 +607,7 @@
 .quote {
   margin-top: 50px; 
   padding: 20px; 
-  background-color: #eee; 
+  background-color: rgba(238, 238, 238, 1); 
   border: black 2px solid; 
   border-radius: 5px;
 }
@@ -626,11 +626,26 @@
   gap: 50px;
 }
 
+.box-container-wrapper {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  margin: 0px 0 100px 0; 
+}
+
+.box-container {
+  display: grid; 
+  grid-template-rows: repeat(3, 1fr);
+  grid-auto-columns: minmax(50px, auto);
+  gap: 10px;
+}
+
 #trial-format {
   display: grid;
   grid-template-columns: 1fr 3fr;
-  grid-auto-rows: minmax(250px, auto);
-  gap: 50px;
+  grid-auto-rows: minmax(50px, auto);
+  gap: 25px;
+  padding-bottom: 25px;
   align-items: center;
   justify-content: center;
   align-content: center;
@@ -844,7 +859,7 @@ blockquote {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  padding: 20px;
+  padding: 30px 30px 20px;
   border: 1px solid #ccc;
   border-radius: 15px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
@@ -876,8 +891,47 @@ blockquote {
   display: none;
 }
 
-/* input[type=radio] {
+input[type=radio] {
+  cursor: pointer;
   border: 0px;
-  width: 5%;
-  height: 1.5em;
-} */
+  width: 20px;
+  height: 20px;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+
+
+
+
+.circle-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #e0e0e0;
+  stroke-width: 1.5;
+}
+
+.circle-progress {
+  fill: none;
+  stroke-width: 1.5;
+  stroke: #4caf50;
+  stroke-linecap: round;
+  stroke-dasharray: 0, 100;
+  transition: stroke-dasharray 1s ease; /* Animation */
+}
+
+.big-number {
+  position: absolute;
+  text-align: center;
+  font-size: 24px;
+}

@@ -1,6 +1,3 @@
-// Add curiosity yes/no TODO: in progress -- wait to receive actual numbers, make in big font
-// Debug for nulls
-// Create study 1 pipe 
 // Wait for Jordan correct redirect number 
 
 // DEFINE GLOBAL VARIABLES
@@ -21,10 +18,12 @@ const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
 const studyId = jsPsych.data.getURLVariable('STUDY_ID');
 const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
 
+// TODO: Declare file name
 // const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
-const filename = "debug.csv"
+const filename = "debug-file.csv"
 
-// Random assignment of statements: pick 2 of 5 statements
+// Random assignment of statements: 
+// pick 3 of 5 statements then randomize order of presentation
 const trials = jsPsych.randomization.shuffle([0, 1, 2, 3, 4]).slice(0, 3);
 
 // Mapping of indices to names
@@ -36,7 +35,8 @@ const indexToName = {
   4: 'Turing'
 };
 
-// Creating the trialTargets array
+// Map trial number to actual targets' names 
+// Example: "Roentgen"
 const trialTargets = trials.map(index => indexToName[index]);
 
 jsPsych.data.addProperties({
@@ -278,6 +278,18 @@ const instructions = {
         class="jspsych-slider incomplete" 
         value="50" min="0" max="100" step="1" 
         id="practice-slider-moral-estimate-percent"
+        onmousedown="
+          this.classList.remove('incomplete');
+          this.classList.add('bipolar-clicked');
+          $('#practice-slider-moral-estimate-percent-label').addClass('fade-out');
+
+          let rawRating = parseFloat(this.value);
+          let downRating = (100 - rawRating) + '%';
+          let upRating = rawRating + '%';
+        
+          $('#slider-downRating').text(downRating);
+          $('#slider-upRating').text(upRating);
+        "
         oninput="
           this.classList.remove('incomplete');
           this.classList.add('bipolar-clicked');
@@ -417,6 +429,12 @@ function prePredictionsSelf(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="pre-slider-moral-action"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('bipolar-clicked');
+
+                document.getElementsByName('pre-slider-moral-action-clicked')[0].value = 'true';
+              "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -442,6 +460,12 @@ function prePredictionsSelf(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="pre-slider-moral-person"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('bipolar-clicked');
+
+                document.getElementsByName('pre-slider-moral-person-clicked')[0].value = 'true';
+              "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -466,6 +490,12 @@ function prePredictionsSelf(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="pre-slider-moral-curious"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+
+                document.getElementsByName('pre-slider-moral-curious-clicked')[0].value = 'true';
+              "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
@@ -525,6 +555,19 @@ function prePredictionsOther(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="pre-slider-moral-estimate-percent"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('bipolar-clicked');
+
+                document.getElementsByName('pre-slider-moral-estimate-percent-clicked')[0].value = 'true';
+
+                let rawRating = parseFloat(this.value);
+                let downRating = (100 - rawRating) + '%';
+                let upRating = rawRating + '%';
+              
+                $('#slider-downRating').text(downRating);
+                $('#slider-upRating').text(upRating);
+              "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -558,6 +601,12 @@ function prePredictionsOther(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="pre-slider-moral-confidence"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+
+                document.getElementsByName('pre-slider-moral-confidence-clicked')[0].value = 'true';
+              "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
@@ -644,6 +693,11 @@ function postPredictionsSelf(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-moral-action"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('bipolar-clicked');
+                document.getElementsByName('post-slider-moral-action-clicked')[0].value = 'true';
+              "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -668,6 +722,11 @@ function postPredictionsSelf(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-moral-person"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('bipolar-clicked');
+                document.getElementsByName('post-slider-moral-person-clicked')[0].value = 'true';
+              "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -725,6 +784,19 @@ function postPredictionsOther(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-moral-estimate-percent"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('bipolar-clicked');
+
+                document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';
+              
+                let rawRating = parseFloat(this.value);
+                let downRating = (100 - rawRating) + '%';
+                let upRating = rawRating + '%';
+              
+                $('#slider-downRating').text(downRating);
+                $('#slider-upRating').text(upRating);
+              "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -759,6 +831,12 @@ function postPredictionsOther(trialIndex) {
               class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
               id="post-slider-moral-confidence"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+
+                document.getElementsByName('post-slider-moral-confidence-clicked')[0].value = 'true';
+              "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
@@ -1634,7 +1712,7 @@ timeline.push(exitFullscreen);
 
 // Choose from among these to relay via DataPipe
 const pilot1ExperimentId = "oA2BJCIcu8jQ";
-const debugExperimentId = "A6svaLMoS1gc";
+const debugExperimentId  = "A6svaLMoS1gc";
 
 // DataPipe conclude data collection
 const save_data = {

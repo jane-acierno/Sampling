@@ -91,7 +91,7 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 			let boxSelections = [];
 			let rtArray = [];
 			let sliderRatings = [];
-			
+
 			for (let i = 0; i < trials.length; i++) {
 				sliderRatings.push(trueRatingsDict[trials[i]]);
 			};
@@ -111,9 +111,9 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				let textDownRating = "NA";
 				let textUpRating = "NA";
 
-				ratingPrompt   = "How morally good or morally bad do you think this action is?"
+				ratingPrompt = "How morally good or morally bad do you think this action is?"
 				textDownRating = "Extremely morally bad";
-				textUpRating   = "Extremely morally good";
+				textUpRating = "Extremely morally good";
 
 				const labelElement = $('<label>', {
 					for: "rating-slider",
@@ -122,7 +122,7 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				const inputElement = $('<input>', {
 					name: 'rating-slider',
 					type: 'range',
-					class: 'jspsych-slider bipolar-clicked',
+					class: 'jspsych-slider bipolar-clicked unclickable',
 					value: trueRatingsDict[trials[boxIndex]],
 					min: 0, max: 100, step: 1,
 					id: 'rating-slider',
@@ -173,11 +173,11 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 
 				// Allow the DOM to update first, then animate
 				setTimeout(() => {
-				const circleProgress = bigNumber.find('.circle-progress');
-				const dashArrayValue = (percentage / 100) * 100; // Calculate the stroke-dasharray value
-				circleProgress.css('stroke-dasharray', `${dashArrayValue}, 100`);
+					const circleProgress = bigNumber.find('.circle-progress');
+					const dashArrayValue = (percentage / 100) * 100; // Calculate the stroke-dasharray value
+					circleProgress.css('stroke-dasharray', `${dashArrayValue}, 100`);
 				}, 0);
-				
+
 				trialPresentationSpace.html(`<div><h3>True Average Value</h3></div>`);
 				trialPresentationSpace.append(trialFormat);
 
@@ -242,7 +242,7 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 						// Fade the prompt back in
 						samplingPromptContainer.html(
 							`<strong id="samplingPrompt" style="text-transform: uppercase;">
-								you may click on a statement to reveal ratings of its true average value
+								you may click on a statement to reveal<br>ratings of its true average value
 							</strong>`
 						);
 
@@ -271,6 +271,7 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 						if (currentSelection !== boxIndex) {
 							// <!-- Find actual index of the avatar --> //
 							boxSelections.push(boxIndex); // Push box index to selections
+							console.log(boxSelections);
 							currentSelection = boxIndex; // Update current selection
 						}
 

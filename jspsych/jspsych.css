@@ -902,6 +902,10 @@ input[type=radio] {
   cursor: pointer;
 }
 
+input.unclickable {
+  cursor: default !important;
+}
+
 
 
 

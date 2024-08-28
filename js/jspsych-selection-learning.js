@@ -302,7 +302,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				});
 
 				const sliderRating = $('<div>', {
-					style: 'position: relative;'
+					style: 'position: relative;',
 				}).append(
 					labelElement,
 					inputElement,

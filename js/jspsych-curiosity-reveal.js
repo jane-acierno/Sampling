@@ -40,7 +40,7 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 					</p>
 				</section>` +
 
-				`<section id="trial-presentation-space" class="popup"></div><div id="overlay"></section>` +
+				`<section id="trial-presentation-space" class="popup"></section><div id="overlay"></div>` +
 
 				// Pt. 3: Prompt
 				`<section id="prompt-container"></section>` +
@@ -81,7 +81,7 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 			const samplingPromptContainer = $('#prompt-container');
 			samplingPromptContainer.html(`
 				<strong id="samplingPrompt" style="text-transform: uppercase;">
-					you may click on a statement to reveal ratings of its true average value
+					you may click on a statement to reveal<br>ratings of its true average value
 				</strong>`
 			);
 
@@ -181,7 +181,7 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				trialPresentationSpace.html(`<div><h3>True Average Value</h3></div>`);
 				trialPresentationSpace.append(trialFormat);
 
-				samplingPromptContainer.empty();
+				// samplingPromptContainer.empty();
 				boxContainer.addClass('fade-out-partial');
 
 				setTimeout(function () {
@@ -240,12 +240,51 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 						trialFeedback.html('<div id="selection-buttons"></div>');
 
 						// Fade the prompt back in
-						samplingPromptContainer.html(
-							`<strong id="samplingPrompt" style="text-transform: uppercase;">
-								you may click on a statement to reveal<br>ratings of its true average value
-							</strong>`
-						);
+						if (boxSelections.length >= trials.length) {
+							const samplingPromptContainer = $('#prompt-container');
 
+							samplingPromptContainer.html(
+								`<p>Would you like to review the true average value for a trial?</p>
+								<div id="jspsych-selection-learning-btngroup" class="center-content block-center"></div>`
+							)
+
+							for (let l = 0; l < trial.choicesOnFinish.length; l++) {
+								var button_id = buttons[l].replace(/%choice%/, trial.choicesOnFinish[l]);
+								$('#jspsych-selection-learning-btngroup').append(
+									$(button_id).attr('id', 'jspsych-selection-learning-button-' + l)
+										.data('choice', l)
+										.addClass('jspsych-selection-learning-button')
+										.on('click', function (e) {
+		
+											// disable all the buttons after a response
+											$('.jspsych-selection-learning-button').off('click')
+												.attr('disabled', 'disabled');
+		
+											// hide button
+											$('.jspsych-selection-learning-button').hide();
+											let onFinishChoice = $('#' + this.id).data('choice');
+		
+											const curTime = Date.now();
+											const learningStartRT = curTime - learningStartTime;
+										})
+								);
+							};
+
+							$('#jspsych-selection-learning-button-0').on('click', function (e) {
+								for (let boxIndex = 0; boxIndex <= 3; boxIndex++) {									
+									$("#box" + boxIndex + " > div").css("background-color", "rgba(238, 238, 238, 1)");  // Fades background color
+									$("#box" + boxIndex + " > div").css("color", "rgba(0, 0, 0, 1)");  // Fades background text
+									$("#box" + boxIndex + " > div").css("border-color", "rgba(0, 0, 0, 1)");  // Fades background text
+								};
+							});
+
+						} else if (boxSelections.length < trials.length) {
+							samplingPromptContainer.html(
+								`<strong id="samplingPrompt" style="text-transform: uppercase;">
+									you may click on a statement to reveal<br>ratings of its true average value
+								</strong>`
+							);
+						};
 						// Fade the grid back in
 						boxContainer.removeClass('fade-out-partial')
 							.addClass('fade-in');
@@ -257,7 +296,9 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 					});
 
 				}, 1000); //changed this from 5000 to 3000 for the pilot because it feels very long, now 1000
+
 			};
+
 
 			const clickHandlers = {};
 			let currentSelection = null; // Track the current selection

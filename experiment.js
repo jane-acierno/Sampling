@@ -644,7 +644,11 @@ function selectionTask(trialIndex) {
     avatars: avatarDictionary,
     statement: statements[trials[trialIndex]],
     choices: [
-      "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;Continue sampling",
+      "<i class='fa-solid fa-arrow-left'></i>&nbsp;&nbsp;Continue sampling",
+      "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
+    ],
+    choicesOnFinish: [
+      "<i class='fa-solid fa-arrow-left'></i>&nbsp;&nbsp;Review",
       "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
     ]
   };
@@ -887,7 +891,11 @@ function revealTask() {
   return {
     type: jsPsychCuriosityReveal,
     choices: [
-      "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;View more",
+      "<i class='fa-solid fa-arrow-left'></i>&nbsp;&nbsp;View more",
+      "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
+    ],
+    choicesOnFinish: [
+      "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;View again",
       "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
     ]
   };
@@ -1078,18 +1086,18 @@ const ihQuestions = {
 // timeline.push(instructions, instructionsComprehensionCheck);
 
 // Sampling Task
-for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
-  timeline.push(
-    prePredictionsSelf(trialIndex),
-    prePredictionsOther(trialIndex),
-    selectionTask(trialIndex),
-    postPredictionsSelf(trialIndex),
-    postPredictionsOther(trialIndex),
-  );
-  if (trialIndex != trials.length - 1) {
-    timeline.push(newTrialPage(trialIndex));
-  };
-};
+// for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+//   timeline.push(
+//     prePredictionsSelf(trialIndex),
+//     prePredictionsOther(trialIndex),
+//     selectionTask(trialIndex),
+//     postPredictionsSelf(trialIndex),
+//     postPredictionsOther(trialIndex),
+//   );
+//   if (trialIndex != trials.length - 1) {
+//     timeline.push(newTrialPage(trialIndex));
+//   };
+// };
 timeline.push(revealTask());
 
 

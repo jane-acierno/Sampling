@@ -56,7 +56,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				</div>` +
 
 				// Pt. 2: Box
-				`<div id="trial-presentation-space" class="popup"></div><div id="overlay"></div>` +
+				`<section id="trial-presentation-space" class="popup"></section><div id="overlay"></div>` +
 
 				// Pt. 3: Prompt
 				`<div id="prompt-container"></div>` +

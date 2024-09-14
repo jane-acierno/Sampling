@@ -278,6 +278,10 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 								};
 							});
 
+							$('#jspsych-selection-learning-button-1').on('click', function (e) {
+								endTrial();
+							});
+
 						} else if (boxSelections.length < trials.length) {
 							samplingPromptContainer.html(
 								`<strong id="samplingPrompt" style="text-transform: uppercase;">

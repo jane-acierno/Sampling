@@ -15,7 +15,7 @@ var jsPsychFullscreen = (function (jspsych) {
             message: {
                 type: jspsych.ParameterType.HTML_STRING,
                 pretty_name: "Message",
-                default: "<p id='jspsych-fullscreen-txt'>Your browser will enter full screen mode when you click the button below:</p>",
+                default: "<p id='jspsych-fullscreen-txt'>Your browser will enter full screen mode when you click the button below</p>",
                 array: false,
             },
             /** The text that appears on the button to enter fullscreen */

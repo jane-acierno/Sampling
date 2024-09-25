@@ -101,6 +101,34 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                 default: false
             }
         },
+        // data: {
+        //     /** An object containing the response for each question. The object will have a separate key (variable) for each question, with the first question in the trial being recorded in `Q0`, the second in `Q1`, and so on. The responses are recorded as integers, representing the position selected on the likert scale for that question. If the `name` parameter is defined for the question, then the response object will use the value of `name` as the key for each question. This will be encoded as a JSON string when data is saved using the `.json()` or `.csv()` functions. */
+        //     response: {
+        //       type: ParameterType.COMPLEX,
+        //       nested: {
+        //         identifier: {
+        //           type: ParameterType.STRING,
+        //         },
+        //         response: {
+        //           type:
+        //             ParameterType.STRING |
+        //             ParameterType.INT |
+        //             ParameterType.FLOAT |
+        //             ParameterType.BOOL |
+        //             ParameterType.OBJECT,
+        //         },
+        //       },
+        //     },
+        //     /** The response time in milliseconds for the participant to make a response. The time is measured from when the questions first appear on the screen until the participant's response(s) are submitted. */
+        //     rt: {
+        //       type: ParameterType.INT,
+        //     },
+        //     /** An array with the order of questions. For example `[2,0,1]` would indicate that the first question was `trial.questions[2]` (the third item in the `questions` parameter), the second question was `trial.questions[0]`, and the final question was `trial.questions[1]`. This will be encoded as a JSON string when data is saved using the `.json()` or `.csv()` functions. */
+        //     question_order: {
+        //       type: ParameterType.INT,
+        //       array: true,
+        //     },
+        //   },
     };
     /**
      * **survey-multi-choice**
@@ -117,7 +145,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
         trial(display_element, trial) {
             var plugin_id_name = "jspsych-survey-multi-choice";
             var html =
-                `<div id="confirm-popup" class="popup">
+                `<div id="confirm-popup" class="popup" style="width: 400px;">
                     <h2>Confirmation</h2>
                     <p>
                         There is at least one unanswered question.<br>
@@ -138,6 +166,9 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                     margin-bottom: 1em; 
                     text-align: left; 
                 }` +
+
+                ".jspsych-survey-multi-choice-text span.required {color: darkred;}" +
+
                 `.jspsych-survey-multi-choice-option { 
                     font-size: 10pt; 
                     line-height: 2; 
@@ -201,6 +232,10 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
 
                 // add question text
                 html += '<p class="jspsych-survey-multi-choice-text survey-multi-choice">' + question.prompt;
+                if (question.required) {
+                    html += "<span class='required'></span>";
+                }
+                html += "</p>";
 
                 // create option radio buttons
                 for (let j = 0; j < question.options.length; j++) {
@@ -208,7 +243,9 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                     var option_id_name = "jspsych-survey-multi-choice-option-" + question_id + "-" + j;
                     var input_name = "jspsych-survey-multi-choice-response-" + question_id;
                     var input_id = "jspsych-survey-multi-choice-response-" + question_id + "-" + j;
+                    
                     var required_attr = question.required ? "required" : "";
+
                     // add radio button container
                     html += '<div id="' + option_id_name + '" class="jspsych-survey-multi-choice-option">';
                     html += '<label class="jspsych-survey-multi-choice-text" for="' + input_id + '">';
@@ -232,7 +269,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                             for (var i = 0; i < inputElements.length; i++) { \
                                 inputElements[i].classList.remove(\'incomplete\'); \
                             };"' +
-                            '></label>';
+                            "></input>";
                     } else {
                         html +=
                             '<input type="radio" name="' +
@@ -243,7 +280,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                             question.options[j] +
                             '" ' +
                             required_attr +
-                            '"></label>';
+                            "></input>";
                     };
 
                     // if not horizontal question format, place label beside ratio
@@ -253,8 +290,9 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                     html += "</div>";
 
                 };
+
                 // add hint
-                if (question.hint) {
+                if (question.hint != "") {
                     html += '<div class="jspsych-survey-multi-choice-hint" style="visibility: hidden;">' + question.hint + '</div>';
                 };
 
@@ -281,6 +319,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
             html += "</form>";
             
             display_element.innerHTML = html;
+
             document.querySelector("form").addEventListener("submit", (event) => {
                 event.preventDefault();
 
@@ -329,7 +368,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                                 obje[name] = val;
                                 Object.assign(question_data, obje);
 
-                                if (question.hint) {
+                                if (question.hint != "") {
                                     let hintmatch = display_element.getElementsByClassName('jspsych-survey-multi-choice-hint');
                                     if (val != match.attributes['data-correct'].value) {
                                         hintmatch.item(i).style.visibility = "visible";
@@ -340,7 +379,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                                     }
                                 } 
                             }   
-                            if (question.hint) {
+                            if (question.hint != "") {
                                 if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
                                     var trial_data = {
                                         rt: response_time,
@@ -371,6 +410,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         // measure response time
                         var endTime = performance.now();
                         var response_time = Math.round(endTime - startTime);
+
                         // create object to hold responses
                         var question_data = {};
                         if (question.correct) {
@@ -394,7 +434,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                             obje[name] = val;
                             Object.assign(question_data, obje);
 
-                            if (question.hint) {
+                            if (question.hint != "") {
                                 let hintmatch = display_element.getElementsByClassName('jspsych-survey-multi-choice-hint');
                                 if (val != match.attributes['data-correct'].value) {
                                     hintmatch.item(i).style.visibility = "visible";
@@ -405,7 +445,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                                 };
                             };
                         };
-                        if (question.hint) {
+                        if (question.hint != "") {
                             if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
                                 var trial_data = {
                                     rt: response_time,
@@ -428,9 +468,11 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         };
                     };
                 } else {
+
                     // measure response time
                     var endTime = performance.now();
                     var response_time = Math.round(endTime - startTime);
+
                     // create object to hold responses
                     var question_data = {};
                     if (question.correct) {
@@ -453,7 +495,7 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         obje[name] = val;
                         Object.assign(question_data, obje);
 
-                        if (question.hint) {
+                        if (question.hint != "") {
                             let hintmatch = display_element.getElementsByClassName('jspsych-survey-multi-choice-hint');
                             if (val != match.attributes['data-correct'].value) {
                                 hintmatch.item(i).style.visibility = "visible";
@@ -464,23 +506,27 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                             };
                         };
                     };
-                    if (question.hint) {
+                    if (question.hint != "") {
                         if (JSON.stringify(correctCheck) === JSON.stringify([...Array(trial.questions.length).fill(true)])) {
                             var trial_data = {
                                 rt: response_time,
                                 response: question_data,
                                 question_order: question_order,
                             };
+                            // clear display
                             display_element.innerHTML = "";
                             // next trial
                             this.jsPsych.finishTrial(trial_data);
                         }
+
                     } else {
+
                         var trial_data = {
                             rt: response_time,
                             response: question_data,
                             question_order: question_order,
                         };
+
                         display_element.innerHTML = "";
                         // next trial
                         this.jsPsych.finishTrial(trial_data);

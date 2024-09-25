@@ -23,7 +23,7 @@ const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
 const filename = "debug-file.csv"
 
 // Random assignment of statements: 
-// pick 3 of 5 statements then randomize order of presentation
+// Pick 3 of 5 statements then randomize order of presentation
 const trials = jsPsych.randomization.shuffle([0, 1, 2, 3, 4]).slice(0, 3);
 
 // Mapping of indices to names
@@ -93,6 +93,7 @@ const ihResponses = [
 const enterFullscreen = {
   type: jsPsychFullscreen,
   name: 'enter_fullscreen',
+  button_label: "Begin Study",
   fullscreen_mode: true,
   delay_after: 0
 };
@@ -106,7 +107,7 @@ const consentForm = {
     {
       name: 'consent',
       prompt: `
-            <p style="text-align:left;">
+      <p style="text-align:left;">
               You are being asked to participate in a research study titled 
               "Social Judgment and Decision-Making." You were selected to participate in 
               this project because you are an adult over age 18. This study is sponsored by 
@@ -174,9 +175,9 @@ const consentForm = {
               If you agree to the statements above and agree to participate in this study,
               please select the “Consent given” button below to continue.
             </p>`,
-      options: ["Consent not given", "Consent given"],
-      horizontal: true,
-      required: true
+        options: ["Consent not given", "Consent given"],
+        horizontal: true,
+        required: true
     }
   ],
   preamble: '<h2 style="text-align: center"><strong>Consent Form</strong></h2>',
@@ -895,8 +896,7 @@ function revealTask() {
       "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
     ],
     choicesOnFinish: [
-      "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;View again",
-      "<i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done"
+      "<i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;View again"
     ]
   };
 };
@@ -1685,14 +1685,17 @@ const feedback = {
     {
       name: 'guess-study-purpose',
       prompt: 'What do you think this study was about?',
+      columns: 100,
       rows: 10
     },
     {
       name: 'feedback',
       prompt: 'Do you have any additional comments? We appreciate any and all feedback!',
+      columns: 100,
       rows: 10
     }
   ],
+  button_label: 'Complete Study',
   on_finish: function (data) {
     let purposeFeedbackData = data.response;
 

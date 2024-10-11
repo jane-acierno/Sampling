@@ -39,21 +39,23 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 						${trials.length} statements you saw.
 					</p>
 					<p style="font-size: 12pt;">
-						If you are finished with this task, please click the button below to advance
+						You can click on any of the statements below to reveal ratings of its true average value. 
+						You can select to view all of the averages, just one or two, or none. 
+						If you do not want to see the averages, please click the continue button 
+						at the bottom of the page to advance.
 					</p>
-					<div id="jspsych-curiosity-advance-btngroup" class="center-content block-center"></div>
 				</section>` +
 
 				`<section id="trial-presentation-space" class="popup"></section><div id="overlay"></div>` +
 
-				// Pt. 3: Prompt
-				`<section id="prompt-container"></section>` +
-
-				// Pt. 4: Avatar Grid
+				// Pt. 4: Curiosity Boxes
 				`<section class="box-container-wrapper">
-					<div class="box-container" id="true-value-boxes-grid"></div>
-				</section>`;
+				<div class="box-container" id="true-value-boxes-grid"></div>
+				</section>` +
 
+				// Pt. 3: Prompt
+				`<div id="jspsych-curiosity-advance-btngroup" class="center-content block-center"></div>`;
+				
 			// Ratings
 			const trueRatingsDict = {
 				0: 70.72, // Roentgen
@@ -108,12 +110,6 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 			};
 			
 			const samplingPromptContainer = $('#prompt-container');
-
-			samplingPromptContainer.html(`
-				<strong id="sampling-prompt" style="text-transform: uppercase;">
-					you may click on a statement below to reveal<br>ratings of its true average value
-				</strong>`
-			);
 
 			window.onload = function() {
 				window.scrollTo(0, 0);
@@ -271,14 +267,12 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 						let rt = toc - tic;
 						rtArray.push(rt);
 						$('#overlay').fadeOut();
-						trialPresentationSpace.html(`<div id="trial-format"></div><div id="selection-format"></div>`);
-						trialPresentationSpace.empty().hide();
+						trialPresentationSpace.html(`<div id="trial-format"></div><div id="selection-format"></div>`).empty().hide();
 						trialFormat.html('<div id="trial-format"></div>');
 						trialFeedback.html('<div id="selection-buttons"></div>');
 						
 						// Fade the prompt back in
 						if (boxSelectionCount >= trials.length) {
-							const samplingPromptContainer = $('#prompt-container');
 
 							const reviewButton  = `<button class="jspsych-btn"><i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;View again</button>`
 							$('#jspsych-curiosity-advance-btngroup').append(
@@ -300,13 +294,6 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 								endTrial();
 							});
 
-						} else if (boxSelectionCount < trials.length) {
-							samplingPromptContainer.html(
-								`<strong id="samplingPrompt" style="text-transform: uppercase;">
-									you may click on a statement below to reveal<br>ratings of its true average value
-								</strong>
-								<div id="jspsych-selection-learning-btngroup" class="center-content block-center"></div>`
-							);
 						};
 
 						// Fade the selection options back in

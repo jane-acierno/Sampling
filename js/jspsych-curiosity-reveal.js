@@ -19,6 +19,12 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				default: undefined,
 				array: true,
 			},
+			choicesOnFinish: {
+				type: jspsych.ParameterType.STRING,
+				pretty_name: "Choices on Finish",
+				default: undefined,
+				array: true,
+			}
 		}
 	};
 
@@ -46,14 +52,15 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 					</p>
 				</section>` +
 
+				// Pt. 2: Popup On Clicking Any Box
 				`<section id="trial-presentation-space" class="popup"></section><div id="overlay"></div>` +
 
-				// Pt. 4: Curiosity Boxes
+				// Pt. 3: Clickable Boxes
 				`<section class="box-container-wrapper">
 				<div class="box-container" id="true-value-boxes-grid"></div>
 				</section>` +
 
-				// Pt. 3: Prompt
+				// Pt. 4: Navigation Buttons
 				`<div id="jspsych-curiosity-advance-btngroup" class="center-content block-center"></div>`;
 				
 			// Ratings
@@ -67,16 +74,16 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 
 			const trialPresentationSpace = $('#trial-presentation-space');
 
-			// Generate boxes
+			// Generate parent container grid for clickable boxes
 			const boxesGrid = $('#true-value-boxes-grid');
+
+			// Populate parent container with boxes
 			for (let i = 0; i < trials.length; i++) {
 				const statementBox = $(`
 					<div id="box${i}">
 						<div class="quote clickable">
 							<h2>Trial ${i + 1}</h2>
-							<blockquote>
-								${statements[trials[i]]}
-							</blockquote>
+							<blockquote>${statements[trials[i]]}</blockquote>
 						</div>
 					</div>
 				`);
@@ -86,17 +93,27 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 			
 			trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
 			
-			let trialDuration = "NA";
+
+
+
+			// RECORD DATA
 			let boxSelections = [];
-			let boxSelectionCount = 0;
-			let rtArray = [];
+
+			// Track number of clicks
+			let boxSelectionFlag = [false, false, false];
+			
+			// Reaction times for clicking on boxes
+			let clickRtArray = [];
+
+			// Reaction times for viewing each box
+			let viewRtArray = [];
+
+			// True average ratings to display as static sliders for each trial
 			let sliderRatings = [];
 			
 			for (let i = 0; i < trials.length; i++) {
 				sliderRatings.push(trueRatingsDict[trials[i]]);
 			};
-
-			// Pt. 3: Prompt
 
 			let buttons = [];
 			if (Array.isArray(trial.button_html)) {
@@ -109,11 +126,12 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				};
 			};
 			
-			const samplingPromptContainer = $('#prompt-container');
-
+			// Scroll to top on load
 			window.onload = function() {
 				window.scrollTo(0, 0);
 			};
+
+
 
 			var advanceButton = `<button class="jspsych-btn"><i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done</button>`
 			$('#jspsych-curiosity-advance-btngroup').append(
@@ -125,10 +143,13 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 					})
 			);
 
-			let start_time = (new Date()).getTime();
-
+			let startTime = (new Date()).getTime();
+			
 			const initReveal = (boxIndex) => {
-				let tic = (new Date()).getTime();
+
+				// RT: START STOPWATCH (VIEW)
+				let viewTic = (new Date()).getTime();
+
 				$('#overlay').fadeIn();
 				trialPresentationSpace.empty();
 				trialPresentationSpace.fadeIn();
@@ -137,9 +158,9 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				const trialFeedback = $(`<div id="selection-buttons"></div>`);
 				const boxContainer = $('<div id="box-container"></div>');
 
-				let ratingPrompt = "NA";
-				let textDownRating = "NA";
-				let textUpRating = "NA";
+				let ratingPrompt = null;
+				let textDownRating = null;
+				let textUpRating = null;
 
 				ratingPrompt = "How morally good or morally bad do you think this action is?"
 				textDownRating = "Extremely morally bad";
@@ -184,22 +205,22 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				const percentage = value; // Assuming this is already a percentage
 
 				const bigNumber = $(`
-				<div class="circle-container">
-					<svg class="circle-svg" width="150" height="150" viewBox="0 0 36 36">
-						<path class="circle-bg"
-								d="M18 2.0845
-								a 15.9155 15.9155 0 0 1 0 31.831
-								a 15.9155 15.9155 0 0 1 0 -31.831"/>
-						<path class="circle-progress"
-								d="M18 2.0845
-								a 15.9155 15.9155 0 0 1 0 31.831
-								a 15.9155 15.9155 0 0 1 0 -31.831"/>
-					</svg>					
-					<h1 class="big-number">
-						<i class="fa-solid fa-people-group"></i><br>
-						${value.toFixed(2)}
-					</h1>
-				</div>`);
+					<div class="circle-container">
+						<svg class="circle-svg" width="150" height="150" viewBox="0 0 36 36">
+							<path class="circle-bg"
+									d="M18 2.0845
+									a 15.9155 15.9155 0 0 1 0 31.831
+									a 15.9155 15.9155 0 0 1 0 -31.831"/>
+							<path class="circle-progress"
+									d="M18 2.0845
+									a 15.9155 15.9155 0 0 1 0 31.831
+									a 15.9155 15.9155 0 0 1 0 -31.831"/>
+						</svg>					
+						<h1 class="big-number">
+							<i class="fa-solid fa-people-group"></i><br>
+							${value.toFixed(2)}
+						</h1>
+					</div>`);
 
 				// Append the bigNumber to the trialFormat first
 				trialFormat.append(bigNumber, sliderRating);
@@ -214,11 +235,9 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				trialPresentationSpace.html(`<div><h3>True Average Value</h3></div>`);
 				trialPresentationSpace.append(trialFormat);
 
-				// samplingPromptContainer.empty();
 				boxContainer.addClass('fade-out-partial');
 
 				setTimeout(function () {
-					const learningStartTime = (new Date()).getTime();
 
 					let buttons = [];
 					if (Array.isArray(trial.button_html)) {
@@ -256,37 +275,48 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 									// hide button
 									$('.jspsych-selection-learning-button').hide();
 									let choice = $('#' + this.id).data('choice');
-
-									const curTime = Date.now();
-									const learningStartRT = curTime - learningStartTime;
 								})
 						);
 					};
+
+					// Click view others
 					$('#jspsych-selection-learning-button-0').on('click', function (e) {
-						let toc = (new Date()).getTime();
-						let rt = toc - tic;
-						rtArray.push(rt);
+						let viewToc = (new Date()).getTime();
+						let viewRt = viewToc - viewTic;
+						viewRtArray.push(viewRt);
+
+						// RT: STOP STOPWATCH (CLICK)
+						let clickToc = (new Date()).getTime();
+						let clickRt = clickToc - (startTime + clickRtArray.reduce((acc, curr) => acc + curr, 0) + viewRtArray.reduce((acc, curr) => acc + curr, 0));
+						clickRtArray.push(clickRt);
+						console.log(clickRtArray);
+
 						$('#overlay').fadeOut();
 						trialPresentationSpace.html(`<div id="trial-format"></div><div id="selection-format"></div>`).empty().hide();
 						trialFormat.html('<div id="trial-format"></div>');
 						trialFeedback.html('<div id="selection-buttons"></div>');
 						
 						// Fade the prompt back in
-						if (boxSelectionCount >= trials.length) {
+						if (boxSelectionFlag.every((val, index) => val === [true, true, true][index])) {
 
-							const reviewButton  = `<button class="jspsych-btn"><i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;View again</button>`
+							const reviewButton = `<button class="jspsych-btn"><i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;View again</button>`
+							
 							$('#jspsych-curiosity-advance-btngroup').append(
 								$(reviewButton).attr('id', 'jspsych-curiosity-review-btn')
 									.data('choice', 1)
 									.addClass('jspsych-curiosity-review-btn')
 									.on('click', function (e) {
 										for (let boxIndex = 0; boxIndex <= 3; boxIndex++) {									
-											$("#box" + boxIndex + " > div").css("background-color", "rgba(238, 238, 238, 1)");  // Fades background color
-											$("#box" + boxIndex + " > div").css("color", "rgba(0, 0, 0, 1)");  // Fades background text
-											$("#box" + boxIndex + " > div").css("border-color", "rgba(0, 0, 0, 1)");  // Fades background text
+											$("#box" + boxIndex + " > div").css("background-color", "rgba(238, 238, 238, 1)");  // Fades background color back in
+											$("#box" + boxIndex + " > div").css("color", "rgba(0, 0, 0, 1)");  // Fades background text back in 
+											$("#box" + boxIndex + " > div").css("border-color", "rgba(0, 0, 0, 1)");  // Fades background text back in
 										};
 										$("#jspsych-curiosity-review-btn").remove();
-										boxSelectionCount = 0;
+										boxSelectionFlag = [false, false, false];
+
+										for (let j = 0; j < trials.length; j++) {
+											$("#box" + j).removeClass('disabled');
+										};
 									})
 							);
 
@@ -294,19 +324,23 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 								endTrial();
 							});
 
-						};
-
-						// Fade the selection options back in
-						boxContainer.removeClass('fade-out-partial')
-							.addClass('fade-in');
-						reattachEventListeners();
+						} else {
+							// Fade the selection options back in
+							boxContainer.removeClass('fade-out-partial')
+								.addClass('fade-in');
+							reattachEventListeners();
+						}
 					});
 
+					// Click advance
 					$('#jspsych-selection-learning-button-1').on('click', function (e) {
+						let viewToc = (new Date()).getTime();
+						let viewRt = viewToc - viewTic;
+						viewRtArray.push(viewRt);
 						endTrial();
 					});
 
-				}, 1000); //changed this from 5000 to 3000 for the pilot because it feels very long, now 1000
+				}, 1000); // changed this from 5000 to 3000 for the pilot because it feels very long, now 1000
 
 			};
 
@@ -314,36 +348,35 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 			const clickHandlers = {};
 			let currentSelection = null; // Track the current selection
 
-			for (let i = 0; i <= trials.length; i++) {
+			for (let i = 0; i < trials.length; i++) {
 				(function (i) {
+					
 					let boxIndex = i
 					let isRevealInProgress = false; // Flag variable
 					const clickHandler = function () {
 
 						if (currentSelection !== boxIndex) {
-							// <!-- Find actual index of the avatar --> //
-							boxSelectionCount++;
-							console.log(boxSelectionCount);
 							boxSelections.push(boxIndex); // Push box index to selections
-							console.log(boxSelections);
+							boxSelectionFlag[boxIndex] = true; // Set flag to true
 							currentSelection = boxIndex; // Update current selection
 						}
 
 						if (!isRevealInProgress && !this.classList.contains('disabled')) {
 
+
 							isRevealInProgress = true; // Set flag to indicate learning is in progress
 
 							// Disable other boxes
-							for (let j = 1; j <= 100; j++) {
-								if (j !== i) {
-									$("#box" + j).addClass('disabled');
-								};
+							for (let j = 0; j < trials.length; j++) {
+								$("#box" + j).addClass('disabled');
 							};
 
 							$("#box" + boxIndex + " > div").css("background-color", "rgba(238, 238, 238, 0.5)");  // Fades background color
 							$("#box" + boxIndex + " > div").css("color", "rgba(0, 0, 0, 0.25)");  // Fades background text
 							$("#box" + boxIndex + " > div").css("border-color", "rgba(0, 0, 0, 0.25)");  // Fades background text
-							initReveal(boxIndex);  // Start trial
+							
+							// Start trial
+							initReveal(boxIndex);
 							isRevealInProgress = false;
 						}
 					};
@@ -351,13 +384,12 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 					$("#box" + boxIndex).on('click', clickHandler);
 					clickHandlers[i] = clickHandler;
 
-					start_time = (new Date()).getTime(); // Store the start time
 				})(i);
 			}
 
 			// Function to reattach event listeners
 			function reattachEventListeners() {
-				for (let i = 1; i <= trials.length; i++) {
+				for (let i = 0; i < trials.length; i++) {
 					$("#box" + i)
 						.removeClass('disabled')
 						.on('click', clickHandlers[i]);
@@ -366,13 +398,17 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 			}
 
 			const endTrial = () => {
-				display_element.innerHTML = "";  // Clear the DOM
-				const final_time = (new Date()).getTime();
-				trialDuration = final_time - start_time;
+				// Clear the DOM
+				display_element.innerHTML = "";
+
+				// Record the final time
+				const finalTime = (new Date()).getTime();
+				const taskDuration = finalTime - startTime;
 				const trial_data = {
 					"box_selections": boxSelections.join(','),
-					"rt_array": rtArray.join(','),
-					"trial_duration": trialDuration
+					"click_rt_array": clickRtArray.join(','),
+					"view_rt_array": viewRtArray.join(','),
+					"task_duration": taskDuration
 				};
 				jsPsych.finishTrial(trial_data);
 			};

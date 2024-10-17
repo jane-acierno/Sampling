@@ -325,8 +325,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				avatarGrid.addClass('fade-out-partial');
 
 				setTimeout(function () {
-					const learningStartTime = (new Date()).getTime();
-
 					let buttons = [];
 					if (Array.isArray(trial.button_html)) {
 						if (trial.button_html.length == trial.choices.length) {
@@ -363,8 +361,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 									$('.jspsych-selection-learning-button').hide();
 									let choice = $('#' + this.id).data('choice');
 
-									const curTime = Date.now();
-									const learningStartRT = curTime - learningStartTime;
 								})
 						);
 					};
@@ -372,6 +368,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						let toc = (new Date()).getTime();
 						let rt = toc - tic;
 						rtArray.push(rt);
+
 						$('#overlay').fadeOut();
 						trialPresentationSpace.html(`<div id="trial-format"></div><div id="selection-format"></div>`);
 						trialPresentationSpace.empty().hide();

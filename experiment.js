@@ -1083,27 +1083,22 @@ const ihQuestions = {
 };
 
 // Instructions
-// timeline.push(instructions, instructionsComprehensionCheck);
+timeline.push(instructions, instructionsComprehensionCheck);
 
 // Sampling Task
-// for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
-//   timeline.push(
-//     prePredictionsSelf(trialIndex),
-//     prePredictionsOther(trialIndex),
-//     selectionTask(trialIndex),
-//     postPredictionsSelf(trialIndex),
-//     postPredictionsOther(trialIndex),
-//   );
-//   if (trialIndex != trials.length - 1) {
-//     timeline.push(newTrialPage(trialIndex));
-//   };
-// };
+for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
+  timeline.push(
+    prePredictionsSelf(trialIndex),
+    prePredictionsOther(trialIndex),
+    selectionTask(trialIndex),
+    postPredictionsSelf(trialIndex),
+    postPredictionsOther(trialIndex),
+  );
+  if (trialIndex != trials.length - 1) {
+    timeline.push(newTrialPage(trialIndex));
+  };
+};
 timeline.push(revealTask());
-
-
-// Opportunity to learn the true percentage... (take from intro)
-// Instructional screen
-// Curiosity is regarding learning about information
 
 // Post-Sampling Individual Differences
 timeline.push(iriQuestions, ihQuestions);

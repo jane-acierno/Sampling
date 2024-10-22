@@ -284,6 +284,7 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 						let viewToc = (new Date()).getTime();
 						let viewRt = viewToc - viewTic;
 						viewRtArray.push(viewRt);
+						console.log(viewRtArray);
 
 						// RT: STOP STOPWATCH (CLICK)
 						let clickToc = (new Date()).getTime();

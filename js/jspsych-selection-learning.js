@@ -243,16 +243,25 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			let avatarPositionIndices = [];
 			let avatarPositionXIndices = [];
 			let avatarPositionYIndices = [];
-			let rtArray = [];
+
+			// Reaction times for clicking on boxes
+			let clickRtArray = [];
+
+			// Reaction times for viewing each box
+			let viewRtArray = [];
+
 			let sliderRatings = [];
 			
 			for (let i = 0; i < randomizedAvatarNumberArray.length; i++) {
 				sliderRatings.push(selectionRatings[trials[trial.trialIndex]][i]);
 			};
 
-			let start_time = (new Date()).getTime();
+			let startTime = (new Date()).getTime();
+
 			const initLearning = (avatarIndex) => {
-				let tic = (new Date()).getTime();
+				// RT: START STOPWATCH (VIEW)
+				let viewTic = (new Date()).getTime();
+
 				$('#overlay').fadeIn();
 				trialPresentationSpace.empty();
 				trialPresentationSpace.fadeIn();
@@ -365,9 +374,16 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						);
 					};
 					$('#jspsych-selection-learning-button-0').on('click', function (e) {
-						let toc = (new Date()).getTime();
-						let rt = toc - tic;
-						rtArray.push(rt);
+						let viewToc = (new Date()).getTime();
+						let viewRt = viewToc - viewTic;
+						viewRtArray.push(viewRt);
+						console.log(viewRtArray);
+
+						// RT: STOP STOPWATCH (CLICK)
+						let clickToc = (new Date()).getTime();
+						let clickRt = clickToc - (startTime + clickRtArray.reduce((acc, curr) => acc + curr, 0) + viewRtArray.reduce((acc, curr) => acc + curr, 0));
+						clickRtArray.push(clickRt);
+						console.log(clickRtArray);
 
 						$('#overlay').fadeOut();
 						trialPresentationSpace.html(`<div id="trial-format"></div><div id="selection-format"></div>`);
@@ -390,6 +406,9 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					});
 
 					$('#jspsych-selection-learning-button-1').on('click', function (e) {
+						let viewToc = (new Date()).getTime();
+						let viewRt = viewToc - viewTic;
+						viewRtArray.push(viewRt);
 						endTrial();
 					});
 
@@ -473,16 +492,21 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			const endTrial = () => {
 				display_element.innerHTML = "";  // Clear the DOM
-				const final_time = (new Date()).getTime();
-				trialDuration = final_time - start_time;
+
+
+				// Record the final time
+				const finalTime = (new Date()).getTime();
+				const taskDuration = finalTime - startTime;
 				const trial_data = {
 					"avatar_selections": avatarSelections.join(','),
 					"avatar_position_indices": avatarPositionIndices.join(','),
 					"avatar_position_x_indices": avatarPositionXIndices.join(','),
 					"avatar_position_y_indices": avatarPositionYIndices.join(','),
-					"rt_array": rtArray.join(','),
-					"trial_duration": trialDuration
+					"click_rt_array": clickRtArray.join(','),
+					"view_rt_array": viewRtArray.join(','),
+					"task_duration": taskDuration
 				};
+
 				jsPsych.finishTrial(trial_data);
 			};
 		};

@@ -64,7 +64,10 @@ var jsPsychSelectionLearning = (function (jspsych) {
 				// Pt. 4: Avatar Grid
 				`<div class="grid-container-wrapper">
 					<div class="grid-container" id="avatar-grid"></div>
-				</div>`;
+				</div>` +
+
+				// Pt. 5: Navigation Button
+				`<div id="jspsych-selection-advance-btngroup" class="center-content block-center"></div>`;
 
 			// Ratings
 			const selectionRatingsDict = {
@@ -238,7 +241,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 
 			trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
 
-			let trialDuration = "NA";
 			let avatarSelections = [];
 			let avatarPositionIndices = [];
 			let avatarPositionXIndices = [];
@@ -255,6 +257,16 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			for (let i = 0; i < randomizedAvatarNumberArray.length; i++) {
 				sliderRatings.push(selectionRatings[trials[trial.trialIndex]][i]);
 			};
+
+			var advanceButton = `<button class="jspsych-btn"><i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done</button>`
+			$('#jspsych-selection-advance-btngroup').append(
+				$(advanceButton).attr('id', 'jspsych-selection-advance-btn')
+					.data('choice', 1)
+					.addClass('jspsych-selection-advance-btn')
+					.on('click', function (e) {
+						endTrial();
+					})
+			);
 
 			let startTime = (new Date()).getTime();
 

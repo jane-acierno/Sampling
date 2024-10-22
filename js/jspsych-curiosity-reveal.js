@@ -100,7 +100,7 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 			let boxSelections = [];
 
 			// Track number of clicks
-			let boxSelectionFlag = [false, false, false];
+			let boxSelectionFlag = Array(3).fill(false);
 			
 			// Reaction times for clicking on boxes
 			let clickRtArray = [];
@@ -322,6 +322,9 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 							);
 
 							$('#jspsych-selection-learning-button-1').on('click', function (e) {
+								let viewToc = (new Date()).getTime();
+								let viewRt = viewToc - viewTic;
+								viewRtArray.push(viewRt);
 								endTrial();
 							});
 

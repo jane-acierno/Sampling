@@ -476,7 +476,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					$("#circle" + avatarIndex).on('click', clickHandler);
 					clickHandlers[i] = clickHandler;
 
-					start_time = (new Date()).getTime(); // Store the start time
 				})(i);
 			}
 

@@ -281,16 +281,15 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 
 					// Click view others
 					$('#jspsych-selection-learning-button-0').on('click', function (e) {
+						// RT: STOP STOPWATCH (VIEW)
 						let viewToc = (new Date()).getTime();
 						let viewRt = viewToc - viewTic;
 						viewRtArray.push(viewRt);
-						console.log(viewRtArray);
 
 						// RT: STOP STOPWATCH (CLICK)
 						let clickToc = (new Date()).getTime();
 						let clickRt = clickToc - (startTime + clickRtArray.reduce((acc, curr) => acc + curr, 0) + viewRtArray.reduce((acc, curr) => acc + curr, 0));
 						clickRtArray.push(clickRt);
-						console.log(clickRtArray);
 
 						$('#overlay').fadeOut();
 						trialPresentationSpace.html(`<div id="trial-format"></div><div id="selection-format"></div>`).empty().hide();
@@ -338,9 +337,22 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 
 					// Click advance
 					$('#jspsych-selection-learning-button-1').on('click', function (e) {
+						// RT: STOP STOPWATCH (VIEW)
 						let viewToc = (new Date()).getTime();
 						let viewRt = viewToc - viewTic;
 						viewRtArray.push(viewRt);
+
+						// RT: STOP STOPWATCH (CLICK)
+						let clickToc = (new Date()).getTime();
+						if (clickRtArray.length === 0) {
+							let clickRt = clickToc - (startTime + (clickToc - startTime) + viewRtArray.reduce((acc, curr) => acc + curr, 0));
+						}
+						else { 
+							let clickRt = clickToc - (startTime +  clickRtArray.reduce((acc, curr) => acc + curr, 0) + viewRtArray.reduce((acc, curr) => acc + curr, 0));
+						}
+
+						clickRtArray.push(clickRt);
+
 						endTrial();
 					});
 

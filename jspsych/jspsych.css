@@ -501,8 +501,18 @@
 
 .jspsych-slider-left-anchor,
 .jspsych-slider-right-anchor {
-  position: absolute;
   font-size: 10pt;
+}
+
+.slider-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#slider {
+  width: 100%;
+  margin: 0 10px;
 }
 
 .jspsych-slider-left-anchor {
@@ -511,6 +521,12 @@
 
 .jspsych-slider-right-anchor {
   right: 0;
+}
+
+.slider-anchors {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10pt;
 }
 
 .jspsych-multi-choice-left-anchor,

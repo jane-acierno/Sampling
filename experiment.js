@@ -1,5 +1,3 @@
-// Wait for Jordan correct redirect number 
-
 // DEFINE GLOBAL VARIABLES
 let timeline = [];
 
@@ -14,13 +12,32 @@ const jsPsych = initJsPsych({
   }
 });
 
+// ############################################
+// #             EDIT THIS SECTION            #
+// ############################################
+// TODO: Declare experiment ID
+// Choose from among these to relay via DataPipe
+// const pilotExperimentId = "oA2BJCIcu8jQ";
+const debugExperimentId = "A6svaLMoS1gc";
+// const preregisteredExperimentId = "RahEcv24SVWm";
+const experimentId = debugExperimentId;
+// ############################################
+
+
+// ############################################
+// #             EDIT THIS SECTION            #
+// ############################################
+// TODO: Declare file name
+// For the actual experiment, we will generate a file name based on participant ID, study ID, and session ID
 const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
 const studyId = jsPsych.data.getURLVariable('STUDY_ID');
 const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
-
-// TODO: Declare file name
 // const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
-const filename = "debug-file.csv"
+
+// For debugging purposes, we will use a random subject ID (randomID(n) generates a random string of n characters)
+const filename = `${jsPsych.randomization.randomID(10)}.csv`;
+// ############################################
+
 
 // Random assignment of statements: 
 // Pick 3 of 5 statements then randomize order of presentation
@@ -304,14 +321,18 @@ const instructions = {
           $('#slider-upRating').text(upRating);
         "
       >
-      <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-      <output style="position: absolute; right: 0%; font-size: 14pt; "id="slider-upRating">50%</output><br>
-      <span class="jspsych-slider-left-anchor">
-        <strong>believe this is morally bad</strong>
-      </span>
-      <span class="jspsych-slider-right-anchor">
-        <strong>believe this is morally good</strong>
-      </span>
+      <div class="slider-container">
+        <output id="slider-downRating">50%</output>
+        <output id="slider-upRating">50%</output>
+      </div>
+      <div class="slider-anchors">
+        <span class="jspsych-slider-left-anchor">
+          Believe this is morally bad
+        </span>
+        <span class="jspsych-slider-right-anchor">
+          Believe this is morally good
+        </span>
+      </div>
     </div>`,
 
     `<h2><strong>Instructions (6/6)</strong></h2>
@@ -443,8 +464,14 @@ function prePredictionsSelf(trialIndex) {
                 document.getElementsByName('pre-slider-moral-action-clicked')[0].value = 'true';
               "
             >
-            <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
-            <span class="jspsych-slider-right-anchor">Definitely morally good</span>
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Definitely morally bad
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Definitely morally good
+              </span>
+            </div>
           </div><br><br><br>
 
 
@@ -474,8 +501,14 @@ function prePredictionsSelf(trialIndex) {
                 document.getElementsByName('pre-slider-moral-person-clicked')[0].value = 'true';
               "
             >
-            <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
-            <span class="jspsych-slider-right-anchor">Definitely morally good</span>
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Definitely morally bad
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Definitely morally good
+              </span>
+            </div>
           </div><br><br><br>
           
           <!-- Pre-Sampling Moral Curiosity -->
@@ -504,8 +537,14 @@ function prePredictionsSelf(trialIndex) {
                 document.getElementsByName('pre-slider-moral-curious-clicked')[0].value = 'true';
               "
             >
-            <span class="jspsych-slider-left-anchor">Not at all curious</span>
-            <span class="jspsych-slider-right-anchor">Extremely curious</span>
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Not at all curious
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Extremely curious
+              </span>
+            </div>
           </div><br><br><br>`,
     button_label: 'Next',
     request_response: true,
@@ -583,10 +622,20 @@ function prePredictionsOther(trialIndex) {
                 $('#slider-upRating').text(upRating);
               "
             >
-            <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-            <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-            <span class="jspsych-slider-left-anchor">believe this is morally bad</span>
-            <span class="jspsych-slider-right-anchor">believe this is morally good</span>
+            <div class="slider-container">
+              <output id="slider-downRating">50%</output>
+              <output id="slider-upRating">50%</output>
+            </div>
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Believe this is morally bad
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Believe this is morally good
+              </span>
+            </div>
+
+
           </div><br><br><br>
 
 
@@ -615,8 +664,14 @@ function prePredictionsOther(trialIndex) {
                 document.getElementsByName('pre-slider-moral-confidence-clicked')[0].value = 'true';
               "
             >
-            <span class="jspsych-slider-left-anchor">Not at all confident</span>
-            <span class="jspsych-slider-right-anchor">Completely confident</span>
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Not at all confident
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Completely confident
+              </span>
+            </div>
           </div><br><br><br>`,
     button_label: 'Next',
     request_response: true,
@@ -709,8 +764,14 @@ function postPredictionsSelf(trialIndex) {
                 document.getElementsByName('post-slider-moral-action-clicked')[0].value = 'true';
               "
             >
-            <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
-            <span class="jspsych-slider-right-anchor">Definitely morally good</span>
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Definitely morally bad
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Definitely morally good
+              </span>
+            </div>
           </div><br><br><br>
           
 
@@ -738,8 +799,14 @@ function postPredictionsSelf(trialIndex) {
                 document.getElementsByName('post-slider-moral-person-clicked')[0].value = 'true';
               "
             >
-            <span class="jspsych-slider-left-anchor">Definitely morally bad</span>
-            <span class="jspsych-slider-right-anchor">Definitely morally good</span>
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Definitely morally bad
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Definitely morally good
+              </span>
+            </div>
           </div><br><br><br>`,
     button_label: 'Next',
     request_response: true,
@@ -816,10 +883,18 @@ function postPredictionsOther(trialIndex) {
                 $('#slider-upRating').text(upRating);
               "
             >
-            <output style="position: absolute; left: 0%; font-size: 14pt;" id="slider-downRating">50%</output>
-            <output style="position: absolute; right: 0%; font-size: 14pt;"id="slider-upRating">50%</output><br>
-            <span class="jspsych-slider-left-anchor">Believe this action is morally bad</span>
-            <span class="jspsych-slider-right-anchor">Believe this action is morally good</span>
+            <div class="slider-container">
+              <output id="slider-downRating">50%</output>
+              <output id="slider-upRating">50%</output>
+            </div>
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Believe this is morally bad
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Believe this action is morally good
+              </span>
+            </div>
           </div><br><br><br>
 
           
@@ -849,8 +924,14 @@ function postPredictionsOther(trialIndex) {
                 document.getElementsByName('post-slider-moral-confidence-clicked')[0].value = 'true';
               "
             >
-            <span class="jspsych-slider-left-anchor">Not at all confident</span>
-            <span class="jspsych-slider-right-anchor">Completely confident</span>
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Not at all confident
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Completely confident
+              </span>
+            </div>
           </div><br><br><br>`,
     button_label: 'Next',
     request_response: true,
@@ -1716,15 +1797,10 @@ const exitFullscreen = {
 
 timeline.push(exitFullscreen);
 
-// Choose from among these to relay via DataPipe
-const pilot1ExperimentId = "oA2BJCIcu8jQ";
-const debugExperimentId  = "A6svaLMoS1gc";
-
-// DataPipe conclude data collection
 const save_data = {
   type: jsPsychPipe,
   action: "save",
-  experiment_id: debugExperimentId,
+  experiment_id: experimentId,
   filename: filename,
   data_string: () => jsPsych.data.get().csv(),
   on_finish: function (data) {

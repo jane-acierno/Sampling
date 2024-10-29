@@ -345,13 +345,14 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 						// RT: STOP STOPWATCH (CLICK)
 						let clickToc = (new Date()).getTime();
 						if (clickRtArray.length === 0) {
-							let clickRt = clickToc - (startTime + (clickToc - startTime) + viewRtArray.reduce((acc, curr) => acc + curr, 0));
+							var clickRt = clickToc - (startTime + viewRtArray.reduce((acc, curr) => acc + curr, 0));
 						}
 						else { 
-							let clickRt = clickToc - (startTime +  clickRtArray.reduce((acc, curr) => acc + curr, 0) + viewRtArray.reduce((acc, curr) => acc + curr, 0));
+							var clickRt = clickToc - (startTime + clickRtArray.reduce((acc, curr) => acc + curr, 0) + viewRtArray.reduce((acc, curr) => acc + curr, 0));
 						}
 
 						clickRtArray.push(clickRt);
+						console.log(clickRtArray);
 
 						endTrial();
 					});

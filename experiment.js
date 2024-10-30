@@ -18,9 +18,9 @@ const jsPsych = initJsPsych({
 // TODO: Declare experiment ID
 // Choose from among these to relay via DataPipe
 // const pilotExperimentId = "oA2BJCIcu8jQ";
-const debugExperimentId = "A6svaLMoS1gc";
-// const preregisteredExperimentId = "RahEcv24SVWm";
-const experimentId = debugExperimentId;
+// const debugExperimentId = "A6svaLMoS1gc";
+const preregisteredExperimentId = "RahEcv24SVWm";
+const experimentId = preregisteredExperimentId;
 // ############################################
 
 
@@ -32,10 +32,10 @@ const experimentId = debugExperimentId;
 const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
 const studyId = jsPsych.data.getURLVariable('STUDY_ID');
 const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
-// const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
+const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
 
 // For debugging purposes, we will use a random subject ID (randomID(n) generates a random string of n characters)
-const filename = `${jsPsych.randomization.randomID(10)}.csv`;
+// const filename = `${jsPsych.randomization.randomID(10)}.csv`;
 // ############################################
 
 
@@ -1823,7 +1823,7 @@ const save_data = {
       </p>`
     );
     setTimeout(function () {
-      window.location.href = "https://app.prolific.com/submissions/complete?cc=CNN3F4P4";
+      window.location.href = "https://app.prolific.com/submissions/complete?cc=C6B9DWBD";
     }, 5000)
   }
 };

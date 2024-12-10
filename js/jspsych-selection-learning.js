@@ -527,6 +527,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					"avatar_position_y_indices": avatarPositionYIndices.join(','),
 					"click_rt_array": clickRtArray.join(','),
 					"view_rt_array": viewRtArray.join(','),
+					"slider_ratings": sliderRatings.join(','),
 					"task_duration": taskDuration
 				};
 

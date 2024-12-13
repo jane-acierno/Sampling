@@ -18,9 +18,10 @@ const jsPsych = initJsPsych({
 // TODO: Declare experiment ID
 // Choose from among these to relay via DataPipe
 // const pilotExperimentId = "oA2BJCIcu8jQ";
-// const debugExperimentId = "A6svaLMoS1gc";
-const preregisteredExperimentId = "RahEcv24SVWm";
-const experimentId = preregisteredExperimentId;
+const debugExperimentId = "A6svaLMoS1gc";
+// const preregisteredExperimentv1Id = "RahEcv24SVWm";
+// const preregisteredExperimentv2Id = "7S8N8Sx4B08Z";
+const experimentId = debugExperimentId;
 // ############################################
 
 
@@ -32,10 +33,10 @@ const experimentId = preregisteredExperimentId;
 const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
 const studyId = jsPsych.data.getURLVariable('STUDY_ID');
 const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
-const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
+// const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
 
 // For debugging purposes, we will use a random subject ID (randomID(n) generates a random string of n characters)
-// const filename = `${jsPsych.randomization.randomID(10)}.csv`;
+const filename = `${jsPsych.randomization.randomID(10)}.csv`;
 // ############################################
 
 
@@ -124,77 +125,77 @@ const consentForm = {
     {
       name: 'consent',
       prompt: `
-      <p style="text-align:left;">
-              You are being asked to participate in a research study titled 
-              "Social Judgment and Decision-Making." You were selected to participate in 
-              this project because you are an adult over age 18. This study is sponsored by 
-              Boston College and the John Templeton Foundation.
-            </p>
-            <p style="text-align: left;">
-              The purpose of this study is to understand how we weigh information about 
-              others. This study will be conducted through this online survey. The survey 
-              should take you between 15–45 minutes to complete. There are no direct 
-              benefits to you, but you may feel gratified knowing that you helped further 
-              the scholarly work in this research area, and we will compensate you for your 
-              participation at a rate of $9.00/hour. In some cases, we will ask you about 
-              your opinions; in other cases, we will ask you to try to answer questions and 
-              prompts accurately. When we ask for the latter, we will also provide 
-              additional compensation for each correct response. That rate will be $0.05 
-              per correct response. There are no costs to you associated with your 
-              participation.
-            </p>
-            <p style="text-align: left;">
-              The researchers do not believe participation would entail any risks or 
-              discomforts beyond those ordinarily encountered in everyday life.
-            </p>
-            <p style="text-align: left;">
-              This Principal Investigator, Dr. Liane Young, will exert all reasonable efforts 
-              to keep your responses and your identity confidential. We will not maintain 
-              within our research data any information that uniquely identifies you, such as 
-              your name, location, or Internet Protocol (IP) address. In any report we 
-              publish, we will not include any information that will make it possible to 
-              identify a participant. Data that includes user-ID information will be collected 
-              and stored via third-party servers like Qualtrics or Pavlovia. Data collected 
-              from the experiment will be coded to remove your name or any other 
-              personal identifiers. All records will be secured in a locked cabinet in our lab. 
-              The Institutional Review Board at Boston College and internal Boston College 
-              auditors may review the research records. State or federal laws or court 
-              orders may also require that information from research study records be 
-              released. Otherwise, the researchers will not release to others any 
-              information that could indicate your identity unless you give your permission, 
-              or unless the researchers become legally required to do so.
-            </p>
-            <p style="text-align: left;">
-              Although the survey will not prompt you directly to identify yourself by 
-              name, email address or the like, the survey will include several demographic 
-              items that would prompt you to provide certain demographic information, 
-              such as your age, gender, ethnicity, education level and the like. In 
-              combination, responses to such questions could suggest your identity. 
-              Regardless, please know that the researchers will make no purposeful effort 
-              to discern your identity based on such information. Additionally, please note 
-              that you may opt to leave any such questions blank.
-            </p>
-            <p style="text-align: left;">
-              Your participation is voluntary. If you choose not to participate it will not 
-              affect your relations with Boston College. Some questions on the survey, 
-              such as comprehension questions, may be required in order to complete the 
-              survey and receive compensation. However, you may still choose to end 
-              your participation in the study at any time. If you have questions or concerns 
-              concerning this research you may contact the Principal Investigator at 
-              <a href="tel:16175520240">+1 (617) 552-0240</a>
-              or <a href="mailto:liane.young@bc.edu">liane.young@bc.edu</a>. If you have 
-              questions about your rights as a research participant, you may contact the
-              Office for Research Protections, Boston College, at 
-              <a href="tel:16175524778">+1 (617) 552-4778</a> or
-              <a href="mailto:irb@bc.edu">irb@bc.edu</a>.
-            </p>
-            <p style="text-align: left;">
-              If you agree to the statements above and agree to participate in this study,
-              please select the “Consent given” button below to continue.
-            </p>`,
-        options: ["Consent not given", "Consent given"],
-        horizontal: true,
-        required: true
+        <p style="text-align:left;">
+          You are being asked to participate in a research study titled 
+          "Social Judgment and Decision-Making." You were selected to participate in 
+          this project because you are an adult over age 18. This study is sponsored by 
+          Boston College and the John Templeton Foundation.
+        </p>
+        <p style="text-align: left;">
+          The purpose of this study is to understand how we weigh information about 
+          others. This study will be conducted through this online survey. The survey 
+          should take you between 15–45 minutes to complete. There are no direct 
+          benefits to you, but you may feel gratified knowing that you helped further 
+          the scholarly work in this research area, and we will compensate you for your 
+          participation at a rate of $9.00/hour. In some cases, we will ask you about 
+          your opinions; in other cases, we will ask you to try to answer questions and 
+          prompts accurately. When we ask for the latter, we will also provide 
+          additional compensation for each correct response. That rate will be $0.05 
+          per correct response. There are no costs to you associated with your 
+          participation.
+        </p>
+        <p style="text-align: left;">
+          The researchers do not believe participation would entail any risks or 
+          discomforts beyond those ordinarily encountered in everyday life.
+        </p>
+        <p style="text-align: left;">
+          This Principal Investigator, Dr. Liane Young, will exert all reasonable efforts 
+          to keep your responses and your identity confidential. We will not maintain 
+          within our research data any information that uniquely identifies you, such as 
+          your name, location, or Internet Protocol (IP) address. In any report we 
+          publish, we will not include any information that will make it possible to 
+          identify a participant. Data that includes user-ID information will be collected 
+          and stored via third-party servers like Qualtrics or Pavlovia. Data collected 
+          from the experiment will be coded to remove your name or any other 
+          personal identifiers. All records will be secured in a locked cabinet in our lab. 
+          The Institutional Review Board at Boston College and internal Boston College 
+          auditors may review the research records. State or federal laws or court 
+          orders may also require that information from research study records be 
+          released. Otherwise, the researchers will not release to others any 
+          information that could indicate your identity unless you give your permission, 
+          or unless the researchers become legally required to do so.
+        </p>
+        <p style="text-align: left;">
+          Although the survey will not prompt you directly to identify yourself by 
+          name, email address or the like, the survey will include several demographic 
+          items that would prompt you to provide certain demographic information, 
+          such as your age, gender, ethnicity, education level and the like. In 
+          combination, responses to such questions could suggest your identity. 
+          Regardless, please know that the researchers will make no purposeful effort 
+          to discern your identity based on such information. Additionally, please note 
+          that you may opt to leave any such questions blank.
+        </p>
+        <p style="text-align: left;">
+          Your participation is voluntary. If you choose not to participate it will not 
+          affect your relations with Boston College. Some questions on the survey, 
+          such as comprehension questions, may be required in order to complete the 
+          survey and receive compensation. However, you may still choose to end 
+          your participation in the study at any time. If you have questions or concerns 
+          concerning this research you may contact the Principal Investigator at 
+          <a href="tel:16175520240">+1 (617) 552-0240</a>
+          or <a href="mailto:liane.young@bc.edu">liane.young@bc.edu</a>. If you have 
+          questions about your rights as a research participant, you may contact the
+          Office for Research Protections, Boston College, at 
+          <a href="tel:16175524778">+1 (617) 552-4778</a> or
+          <a href="mailto:irb@bc.edu">irb@bc.edu</a>.
+        </p>
+        <p style="text-align: left;">
+          If you agree to the statements above and agree to participate in this study,
+          please select the “Consent given” button below to continue.
+        </p>`,
+      options: ["Consent not given", "Consent given"],
+      horizontal: true,
+      required: true
     }
   ],
   preamble: '<h2 style="text-align: center"><strong>Consent Form</strong></h2>',
@@ -438,12 +439,13 @@ function prePredictionsSelf(trialIndex) {
             the statement, we want to know what you think:
           </p><br><br>`,
     html: `
-          <!-- Pre-Sampling Moral Action Rating -->
-          
+          <!-- #################################### -->
+          <!-- # PRE-SAMPLING MORAL ACTION RATING # -->
+          <!-- #################################### -->
           <input type="hidden" name="pre-slider-moral-action-clicked" value="false">
           <label for="pre-slider-moral-action" class="jspsych-survey-multi-choice-question">
             To what extent do you think this <em>action</em> is morally good or morally bad?
-          </label>
+          </label><br>
           <div style="position: relative;">
             <input 
               name="pre-slider-moral-action" 
@@ -454,13 +456,11 @@ function prePredictionsSelf(trialIndex) {
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-action-clicked')[0].value = 'true';
               "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-action-clicked')[0].value = 'true';
               "
             >
@@ -474,13 +474,13 @@ function prePredictionsSelf(trialIndex) {
             </div>
           </div><br><br><br>
 
-
-          <!-- Pre-Sampling Moral Person Rating -->
-
+          <!-- #################################### -->
+          <!-- # PRE-SAMPLING MORAL PERSON RATING # -->
+          <!-- #################################### -->
           <input type="hidden" name="pre-slider-moral-person-clicked" value="false">
           <label for="pre-slider-moral-person" class="jspsych-survey-multi-choice-question">
             To what extent do you think this <em>person</em> is morally good or morally bad?
-          </label>
+          </label><br>
           <div style="position: relative;">
             <input 
               name="pre-slider-moral-person"
@@ -491,13 +491,11 @@ function prePredictionsSelf(trialIndex) {
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-person-clicked')[0].value = 'true';
               "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-person-clicked')[0].value = 'true';
               "
             >
@@ -511,12 +509,13 @@ function prePredictionsSelf(trialIndex) {
             </div>
           </div><br><br><br>
           
-          <!-- Pre-Sampling Moral Curiosity -->
-
+          <!-- #################################### -->
+          <!-- # PRE-SAMPLING MORAL ACTION RATING # -->
+          <!-- #################################### -->
           <input type="hidden" name="pre-slider-moral-curious-clicked" value="false">
           <label for="pre-slider-moral-curious" class="jspsych-survey-multi-choice-question">
-            How curious are you to learn about what other people think about this statement?<br>
-          </label>
+            How curious are you to learn about what other people think about this statement?
+          </label><br>
           <div style="position: relative;">
             <input 
               name="pre-slider-moral-curious" 
@@ -527,13 +526,11 @@ function prePredictionsSelf(trialIndex) {
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-curious-clicked')[0].value = 'true';
               "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-curious-clicked')[0].value = 'true';
               "
             >
@@ -545,21 +542,95 @@ function prePredictionsSelf(trialIndex) {
                 Extremely curious
               </span>
             </div>
+          </div><br><br><br>
+
+          <!-- ############################## -->
+          <!-- # PRE-SAMPLING JUSTIFICATION # -->
+          <!-- ############################## -->
+          <input type="hidden" name="pre-slider-moral-justified-clicked" value="false">
+          <label for="pre-slider-moral-justified" class="jspsych-survey-multi-choice-question">
+            To what extent are the actions in this scenario justified?
+          </label><br>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-moral-justified" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-moral-justified"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+                document.getElementsByName('pre-slider-moral-justified-clicked')[0].value = 'true';
+              "
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+                document.getElementsByName('pre-slider-moral-justified-clicked')[0].value = 'true';
+              "
+            >
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Not at all
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Completely
+              </span>
+            </div>
+          </div><br><br><br>
+
+          <!-- ##################################### -->
+          <!-- # PRE-SAMPLING WILLINGNESS TO SHARE # -->
+          <!-- ##################################### -->
+          <input type="hidden" name="pre-slider-moral-share-clicked" value="false">
+          <label for="pre-slider-moral-share" class="jspsych-survey-multi-choice-question">
+            How willing would you be to share your opinion about this person's morality with others?
+          </label><br>
+          <div style="position: relative;">
+            <input 
+              name="pre-slider-moral-share" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="pre-slider-moral-share"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+                document.getElementsByName('pre-slider-moral-share-clicked')[0].value = 'true';
+              "
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+                document.getElementsByName('pre-slider-moral-share-clicked')[0].value = 'true';
+              "
+            >
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">
+                Not at all
+              </span>
+              <span class="jspsych-slider-right-anchor">
+                Completely
+              </span>
+            </div>
           </div><br><br><br>`,
     button_label: 'Next',
     request_response: true,
     on_finish: function (data) {
       let preSamplingMoralSelfData = data.response;
 
-      let pre_slider_moral_action_check = preSamplingMoralSelfData['pre-slider-moral-action-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-action'] : null;
-      let pre_slider_moral_person_check = preSamplingMoralSelfData['pre-slider-moral-person-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-person'] : null;
-      let pre_slider_moral_curious_check = preSamplingMoralSelfData['pre-slider-moral-curious-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-curious'] : null;
+      let preSliderMoralActionCheck = preSamplingMoralSelfData['pre-slider-moral-action-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-action'] : null;
+      let preSliderMoralPersonCheck = preSamplingMoralSelfData['pre-slider-moral-person-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-person'] : null;
+      let preSliderMoralCuriousCheck = preSamplingMoralSelfData['pre-slider-moral-curious-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-curious'] : null;
+      let preSliderMoralJustifiedCheck = preSamplingMoralSelfData['pre-slider-moral-justified-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-justified'] : null;
+      let preSliderMoralShareCheck = preSamplingMoralSelfData['pre-slider-moral-share-clicked'] === 'true' ? preSamplingMoralSelfData['pre-slider-moral-share'] : null;
 
 
       preSamplingMoralSelfData = {
-        pre_slider_moral_action: pre_slider_moral_action_check,
-        pre_slider_moral_person: pre_slider_moral_person_check,
-        pre_slider_moral_curious: pre_slider_moral_curious_check
+        pre_slider_moral_action: preSliderMoralActionCheck,
+        pre_slider_moral_person: preSliderMoralPersonCheck,
+        pre_slider_moral_curious: preSliderMoralCuriousCheck,
+        pre_slider_moral_justified: preSliderMoralJustifiedCheck,
+        pre_slider_moral_share: preSliderMoralShareCheck
       };
 
       jsPsych.data
@@ -582,12 +653,13 @@ function prePredictionsOther(trialIndex) {
             Before you see what other people think about the statement, we want to know what you think:
           </p><br><br>`,
     html: `
-          <!-- Pre-Sampling Moral Estimate Rating -->
-
+          <!-- ###################################### --> 
+          <!-- # PRE-SAMPLING MORAL ESTIMATE RATING # -->
+          <!-- ###################################### --> 
           <input type="hidden" name="pre-slider-moral-estimate-percent-clicked" value="false">
           <label for="pre-slider-moral-estimate-percent" class="jspsych-survey-multi-choice-question">
             What percentage of people in the U.S. do you think consider this action to be morally good vs. think this is morally bad?
-          </label>
+          </label><br>
           <div style="position: relative;">
             <input 
               name="pre-slider-moral-estimate-percent" 
@@ -598,26 +670,20 @@ function prePredictionsOther(trialIndex) {
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-estimate-percent-clicked')[0].value = 'true';
-
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';
                 let upRating = rawRating + '%';
-              
                 $('#slider-downRating').text(downRating);
                 $('#slider-upRating').text(upRating);
               "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-estimate-percent-clicked')[0].value = 'true';
-
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';
                 let upRating = rawRating + '%';
-              
                 $('#slider-downRating').text(downRating);
                 $('#slider-upRating').text(upRating);
               "
@@ -634,16 +700,15 @@ function prePredictionsOther(trialIndex) {
                 Believe this is morally good
               </span>
             </div>
-
-
           </div><br><br><br>
 
-
-          <!-- Pre-Sampling Moral Estimate Confidence -->
-
+          <!-- ########################################## --> 
+          <!-- # PRE-SAMPLING MORAL ESTIMATE CONFIDENCE # -->
+          <!-- ########################################## --> 
           <input type="hidden" name="pre-slider-moral-confidence-clicked" value="false">
           <label for="pre-slider-moral-confidence" class="jspsych-survey-multi-choice-question">
             How confident are you in your answer?
+          </label><br>
           <div style="position: relative;">
             <input 
               name="pre-slider-moral-confidence" 
@@ -654,13 +719,11 @@ function prePredictionsOther(trialIndex) {
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-confidence-clicked')[0].value = 'true';
               "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
-
                 document.getElementsByName('pre-slider-moral-confidence-clicked')[0].value = 'true';
               "
             >
@@ -678,12 +741,12 @@ function prePredictionsOther(trialIndex) {
     on_finish: function (data) {
       let preSamplingMoralOtherData = data.response;
 
-      let pre_slider_moral_estimate_percent_check = preSamplingMoralOtherData['pre-slider-moral-estimate-percent-clicked'] === 'true' ? preSamplingMoralOtherData['pre-slider-moral-estimate-percent'] : null;
-      let pre_slider_moral_confidence_check = preSamplingMoralOtherData['pre-slider-moral-confidence-clicked'] === 'true' ? preSamplingMoralOtherData['pre-slider-moral-confidence'] : null;
+      let preSliderMoralEstimatePercentCheck = preSamplingMoralOtherData['pre-slider-moral-estimate-percent-clicked'] === 'true' ? preSamplingMoralOtherData['pre-slider-moral-estimate-percent'] : null;
+      let preSliderMoralConfidenceCheck = preSamplingMoralOtherData['pre-slider-moral-confidence-clicked'] === 'true' ? preSamplingMoralOtherData['pre-slider-moral-confidence'] : null;
 
       preSamplingMoralOtherData = {
-        pre_slider_moral_estimate_percent: pre_slider_moral_estimate_percent_check,
-        pre_slider_moral_confidence: pre_slider_moral_confidence_check,
+        pre_slider_moral_estimate_percent: preSliderMoralEstimatePercentCheck,
+        pre_slider_moral_confidence: preSliderMoralConfidenceCheck,
       };
 
       jsPsych.data
@@ -740,12 +803,13 @@ function postPredictionsSelf(trialIndex) {
             Please answer the following questions:
           </p><br><br>`,
     html: `
-          <!-- Post-Sampling Moral Action Rating -->
-
+          <!-- ##################################### --> 
+          <!-- # POST-SAMPLING MORAL ACTION RATING # -->
+          <!-- ##################################### --> 
           <input type="hidden" name="post-slider-moral-action-clicked" value="false">
           <label for="post-slider-moral-action" class="jspsych-survey-multi-choice-question">
             To what extent do you think this <em>action</em> is morally good or morally bad? 
-          </label>
+          </label><br>
           <div style="position: relative;">
             <input 
               name="post-slider-moral-action" 
@@ -774,13 +838,13 @@ function postPredictionsSelf(trialIndex) {
             </div>
           </div><br><br><br>
           
-
-          <!-- Post-Sampling Moral Person Rating -->
-
+          <!-- ##################################### --> 
+          <!-- # POST-SAMPLING MORAL PERSON RATING # -->
+          <!-- ##################################### --> 
           <input type="hidden" name="post-slider-moral-person-clicked" value="false">
           <label for="post-slider-moral-person" class="jspsych-survey-multi-choice-question">
             To what extent do you think this <em>person</em> is morally good or morally bad? 
-          </label>
+          </label><br>
           <div style="position: relative;">
             <input 
               name="post-slider-moral-person"
@@ -807,18 +871,51 @@ function postPredictionsSelf(trialIndex) {
                 Definitely morally good
               </span>
             </div>
+          </div><br><br><br>
+          
+          <!-- ###################################### -->
+          <!-- # POST-SAMPLING WILLINGNESS TO SHARE # -->
+          <!-- ###################################### -->
+          <input type="hidden" name="post-slider-moral-share-clicked" value="false">
+          <label for="post-slider-moral-share" class="jspsych-survey-multi-choice-question">
+            How willing would you be to share your opinion about this person's morality with others?
+          </label><br>
+          <div style="position: relative;">
+            <input 
+              name="post-slider-moral-share" 
+              type="range" 
+              class="jspsych-slider incomplete" 
+              value="50" min="0" max="100" step="1" 
+              id="post-slider-moral-share"
+              onmousedown="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+                document.getElementsByName('post-slider-moral-share-clicked')[0].value = 'true';
+              "
+              oninput="
+                this.classList.remove('incomplete');
+                this.classList.add('unipolar-clicked');
+                document.getElementsByName('post-slider-moral-share-clicked')[0].value = 'true';
+              "
+            >
+            <div class="slider-anchors">
+              <span class="jspsych-slider-left-anchor">Not at all</span>
+              <span class="jspsych-slider-right-anchor">Completely</span>
+            </div>
           </div><br><br><br>`,
     button_label: 'Next',
     request_response: true,
     on_finish: function (data) {
       let postSamplingMoralSelfData = data.response;
 
-      let post_slider_moral_action_check = postSamplingMoralSelfData['post-slider-moral-action-clicked'] === 'true' ? postSamplingMoralSelfData['post-slider-moral-action'] : null;
-      let post_slider_moral_person_check = postSamplingMoralSelfData['post-slider-moral-person-clicked'] === 'true' ? postSamplingMoralSelfData['post-slider-moral-person'] : null;
+      let postSliderMoralActionCheck = postSamplingMoralSelfData['post-slider-moral-action-clicked'] === 'true' ? postSamplingMoralSelfData['post-slider-moral-action'] : null;
+      let postSliderMoralPersonCheck = postSamplingMoralSelfData['post-slider-moral-person-clicked'] === 'true' ? postSamplingMoralSelfData['post-slider-moral-person'] : null;
+      let postSliderMoralShareCheck = postSamplingMoralSelfData['post-slider-moral-share-clicked'] === 'true' ? postSamplingMoralSelfData['post-slider-moral-share'] : null;
 
       postSamplingMoralSelfData = {
-        post_slider_moral_action: post_slider_moral_action_check,
-        post_slider_moral_person: post_slider_moral_person_check
+        post_slider_moral_action: postSliderMoralActionCheck,
+        post_slider_moral_person: postSliderMoralPersonCheck,
+        post_slider_moral_share: postSliderMoralShareCheck
       };
 
       jsPsych.data
@@ -843,12 +940,13 @@ function postPredictionsOther(trialIndex) {
             Please answer the following questions:
           </p><br><br>`,
     html: `
-          <!-- Post-Sampling Moral Estimate Rating -->
-
+          <!-- ####################################### --> 
+          <!-- # POST-SAMPLING MORAL ESTIMATE RATING # -->
+          <!-- ####################################### --> 
           <input type="hidden" name="post-slider-moral-estimate-percent-clicked" value="false">
           <label for="post-slider-moral-estimate-percent" class="jspsych-survey-multi-choice-question">
             What percentage of people in the U.S. do you think consider this action to be morally good vs. think this is morally bad?
-          </label>
+          </label><br>
           <div style="position: relative;">
             <input 
               name="post-slider-moral-estimate-percent" 
@@ -859,26 +957,20 @@ function postPredictionsOther(trialIndex) {
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
-
                 document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';
-              
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';
                 let upRating = rawRating + '%';
-              
                 $('#slider-downRating').text(downRating);
                 $('#slider-upRating').text(upRating);
               "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
-
                 document.getElementsByName('post-slider-moral-estimate-percent-clicked')[0].value = 'true';
-              
                 let rawRating = parseFloat(this.value);
                 let downRating = (100 - rawRating) + '%';
                 let upRating = rawRating + '%';
-              
                 $('#slider-downRating').text(downRating);
                 $('#slider-upRating').text(upRating);
               "
@@ -898,12 +990,13 @@ function postPredictionsOther(trialIndex) {
           </div><br><br><br>
 
           
-          <!-- Post-Sampling Moral Estimate Confidence -->
-          
+          <!-- ########################################### --> 
+          <!-- # POST-SAMPLING MORAL ESTIMATE CONFIDENCE # -->
+          <!-- ########################################### --> 
           <input type="hidden" name="post-slider-moral-confidence-clicked" value="false">
           <label for="post-slider-moral-confidence" class="jspsych-survey-multi-choice-question">
             How confident are you in your answer?
-          </label>
+          </label><br>
           <div style="position: relative;">
             <input 
               name="post-slider-moral-confidence" 
@@ -914,13 +1007,11 @@ function postPredictionsOther(trialIndex) {
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
-
                 document.getElementsByName('post-slider-moral-confidence-clicked')[0].value = 'true';
               "
               oninput="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
-
                 document.getElementsByName('post-slider-moral-confidence-clicked')[0].value = 'true';
               "
             >
@@ -991,7 +1082,7 @@ const instructionsIndividualDifferences = {
       We will start by asking you some questions about yourself. 
       Please answer honestly. After you complete these, you will begin the main task.
     </p>
-    `],
+  `],
   show_clickable_nav: true
 }
 
@@ -1192,8 +1283,9 @@ const demographicsQuestions = {
       Using the scales provided, please respond to each question about you as an individual:
     </p>`,
   html: `
-        <!-- Age -->
-
+        <!-- ####### -->
+        <!-- # AGE # -->
+        <!-- ####### -->
         <div class="jspsych-survey-multi-choice-question">
           <label for="age">How old are you?</label><br>
           <input 
@@ -1207,9 +1299,9 @@ const demographicsQuestions = {
           >
         </div>
         
-
-        <!-- Race/Ethnicity -->
-
+        <!-- #################### -->
+        <!-- # RACE / ETHNICITY # -->
+        <!-- #################### -->
         <div class="jspsych-survey-multi-choice-question">
           <legend>Please indicate how you identify yourself:</legend>
           <div class="jspsych-survey-multi-choice-option">
@@ -1359,8 +1451,9 @@ const demographicsQuestions = {
         </div>
 
 
-        <!-- Gender -->
-        
+        <!-- ########## -->
+        <!-- # GENDER # -->
+        <!-- ########## -->
         <div class="jspsych-survey-multi-choice-question">
           <legend>With which gender do you most closely identify?</legend>
           <div class="jspsych-survey-multi-choice-option">
@@ -1455,9 +1548,9 @@ const demographicsQuestions = {
           </div>
         </div>
 
-
-        <!-- Education -->
-        
+        <!-- ############# -->
+        <!-- # EDUCATION # -->
+        <!-- ############# -->
         <div class="jspsych-survey-multi-choice-question">
           <legend>
             What is the highest level of education you have received? 

@@ -252,7 +252,11 @@ var jsPsychSelectionLearning = (function (jspsych) {
 			// Reaction times for viewing each box
 			let viewRtArray = [];
 
+			// All possible data
 			let sliderRatings = [];
+
+			// Actual revealed values
+			let selectedSliderRatings = [];
 			
 			for (let i = 0; i < randomizedAvatarNumberArray.length; i++) {
 				sliderRatings.push(selectionRatings[trials[trial.trialIndex]][i]);
@@ -451,6 +455,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						if (currentSelection !== avatarIndex) {
 							// <!-- Find actual index of the avatar --> //
 							avatarSelections.push(avatarIndex); // Push circle index to selections
+							selectedSliderRatings.push(sliderRatings[avatarIndex]); // Push selected slider rating to selections
 							currentSelection = avatarIndex; // Update current selection
 
 							// <!-- Find positional index of the avatar --> //
@@ -528,6 +533,7 @@ var jsPsychSelectionLearning = (function (jspsych) {
 					"click_rt_array": clickRtArray.join(','),
 					"view_rt_array": viewRtArray.join(','),
 					"slider_ratings": sliderRatings.join(','),
+					"selected_slider_ratings": selectedSliderRatings.join(','),
 					"task_duration": taskDuration
 				};
 

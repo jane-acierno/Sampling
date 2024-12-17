@@ -545,7 +545,7 @@ function prePredictionsSelf(trialIndex) {
           <!-- ############################## -->
           <input type="hidden" name="pre-slider-moral-justified-clicked" value="false">
           <label for="pre-slider-moral-justified" class="jspsych-survey-multi-choice-question">
-            To what extent are the actions in this scenario justified?
+            To what extent is the action in this statement justified?
           </label><br>
           <div style="position: relative;">
             <input 
@@ -580,7 +580,7 @@ function prePredictionsSelf(trialIndex) {
           <!-- ##################################### -->
           <input type="hidden" name="pre-slider-moral-share-clicked" value="false">
           <label for="pre-slider-moral-share" class="jspsych-survey-multi-choice-question">
-            How willing would you be to share your opinion about this person's morality with others?
+            How willing are you to share your moral evaluation of this person's action with others?
           </label><br>
           <div style="position: relative;">
             <input 
@@ -874,7 +874,7 @@ function postPredictionsSelf(trialIndex) {
           <!-- ###################################### -->
           <input type="hidden" name="post-slider-moral-share-clicked" value="false">
           <label for="post-slider-moral-share" class="jspsych-survey-multi-choice-question">
-            How willing would you be to share your opinion about this person's morality with others?
+            How willing are you to share your moral evaluation of this person's action with others?
           </label><br>
           <div style="position: relative;">
             <input 

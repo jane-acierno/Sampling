@@ -152,8 +152,8 @@ var jsPsychSurveyMultiChoice = (function (jspsych) {
                         Are you sure you would like to advance?
                     </p>
                     <div id="jspsych-selection-learning-btngroup" class="center-content block-center">
+                    <button class="jspsych-btn jspsych-selection-learning-button" style="background-color:rgb(150, 228, 153);" id="confirm-no">No</button>
                         <button class="jspsych-btn jspsych-selection-learning-button" id="confirm-yes">Yes</button>
-                        <button class="jspsych-btn jspsych-selection-learning-button" id="confirm-no">No</button>
                     </div>
                 </div>
                 <div id="overlay"></div>`;

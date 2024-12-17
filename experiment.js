@@ -292,20 +292,18 @@ const instructions = {
     </label>
     <div style="position: relative;">
       <input 
+        id="practice-slider-moral-estimate-percent"
+        class="jspsych-slider incomplete" 
         name="practice-slider-moral-estimate-percent" 
         type="range" 
-        class="jspsych-slider incomplete" 
         value="50" min="0" max="100" step="1" 
-        id="practice-slider-moral-estimate-percent"
         onmousedown="
           this.classList.remove('incomplete');
           this.classList.add('bipolar-clicked');
           $('#practice-slider-moral-estimate-percent-label').addClass('fade-out');
-
           let rawRating = parseFloat(this.value);
           let downRating = (100 - rawRating) + '%';
           let upRating = rawRating + '%';
-        
           $('#slider-downRating').text(downRating);
           $('#slider-upRating').text(upRating);
         "
@@ -313,11 +311,9 @@ const instructions = {
           this.classList.remove('incomplete');
           this.classList.add('bipolar-clicked');
           $('#practice-slider-moral-estimate-percent-label').addClass('fade-out');
-
           let rawRating = parseFloat(this.value);
           let downRating = (100 - rawRating) + '%';
           let upRating = rawRating + '%';
-        
           $('#slider-downRating').text(downRating);
           $('#slider-upRating').text(upRating);
         "
@@ -358,10 +354,10 @@ const instructionsComprehensionCheck = {
     {
       name: 'comp_check_1',
       prompt: `
-            <strong>
-              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
-              For each statement, your task is to:
-            </strong>`,
+        <strong>
+          <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
+          For each statement, your task is to:
+        </strong>`,
       options: [
         "Estimate the percentage of people in the U.S. who believe the statement is true",
         "Estimate the percentage of people in the U.S. who believe the actions that the historical figures took were morally good",
@@ -375,10 +371,10 @@ const instructionsComprehensionCheck = {
     {
       name: 'comp_check_2',
       prompt: `
-            <strong>
-              <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
-              You can view the opinions of as many people as you'd like before making your estimate:
-            </strong>`,
+        <strong>
+          <i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;
+          You can view the opinions of as many people as you'd like before making your estimate:
+        </strong>`,
       options: [
         "True",
         "False"
@@ -391,7 +387,7 @@ const instructionsComprehensionCheck = {
   preamble: `
     <h2 style="text-align: center;">Instructions</h2> 
     <p style="text-align: left;"> 
-      The experiment will begin on the next page.
+      The experiment will begin on the next page.<br><br>
       
       As a reminder, you will see a series of statements and be asked to estimate 
       how many people think the claim is morally good (vs. morally bad).<br><br>
@@ -448,11 +444,11 @@ function prePredictionsSelf(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="pre-slider-moral-action"
+              class="jspsych-slider incomplete" 
               name="pre-slider-moral-action" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="pre-slider-moral-action"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -483,11 +479,11 @@ function prePredictionsSelf(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="pre-slider-moral-person"
+              class="jspsych-slider incomplete" 
               name="pre-slider-moral-person"
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="pre-slider-moral-person"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -509,20 +505,20 @@ function prePredictionsSelf(trialIndex) {
             </div>
           </div><br><br><br>
           
-          <!-- #################################### -->
-          <!-- # PRE-SAMPLING MORAL ACTION RATING # -->
-          <!-- #################################### -->
+          <!-- ####################################### -->
+          <!-- # PRE-SAMPLING MORAL CURIOSITY RATING # -->
+          <!-- ####################################### -->
           <input type="hidden" name="pre-slider-moral-curious-clicked" value="false">
           <label for="pre-slider-moral-curious" class="jspsych-survey-multi-choice-question">
             How curious are you to learn about what other people think about this statement?
           </label><br>
           <div style="position: relative;">
             <input 
+              id="pre-slider-moral-curious"
+              class="jspsych-slider incomplete" 
               name="pre-slider-moral-curious" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="pre-slider-moral-curious"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
@@ -553,11 +549,11 @@ function prePredictionsSelf(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="pre-slider-moral-justified"
+              class="jspsych-slider incomplete" 
               name="pre-slider-moral-justified" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="pre-slider-moral-justified"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
@@ -588,11 +584,11 @@ function prePredictionsSelf(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="pre-slider-moral-share"
+              class="jspsych-slider incomplete" 
               name="pre-slider-moral-share" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="pre-slider-moral-share"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
@@ -662,11 +658,11 @@ function prePredictionsOther(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="pre-slider-moral-estimate-percent"
+              class="jspsych-slider incomplete" 
               name="pre-slider-moral-estimate-percent" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="pre-slider-moral-estimate-percent"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -711,11 +707,11 @@ function prePredictionsOther(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="pre-slider-moral-confidence"
+              class="jspsych-slider incomplete" 
               name="pre-slider-moral-confidence" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="pre-slider-moral-confidence"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
@@ -812,11 +808,11 @@ function postPredictionsSelf(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="post-slider-moral-action"
+              class="jspsych-slider incomplete" 
               name="post-slider-moral-action" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="post-slider-moral-action"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -847,11 +843,11 @@ function postPredictionsSelf(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="post-slider-moral-person"
+              class="jspsych-slider incomplete" 
               name="post-slider-moral-person"
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="post-slider-moral-person"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -882,11 +878,11 @@ function postPredictionsSelf(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="post-slider-moral-share"
+              class="jspsych-slider incomplete" 
               name="post-slider-moral-share" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="post-slider-moral-share"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
@@ -949,11 +945,11 @@ function postPredictionsOther(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="post-slider-moral-estimate-percent"
+              class="jspsych-slider incomplete" 
               name="post-slider-moral-estimate-percent" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="post-slider-moral-estimate-percent"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('bipolar-clicked');
@@ -988,7 +984,6 @@ function postPredictionsOther(trialIndex) {
               </span>
             </div>
           </div><br><br><br>
-
           
           <!-- ########################################### --> 
           <!-- # POST-SAMPLING MORAL ESTIMATE CONFIDENCE # -->
@@ -999,11 +994,11 @@ function postPredictionsOther(trialIndex) {
           </label><br>
           <div style="position: relative;">
             <input 
+              id="post-slider-moral-confidence"
+              class="jspsych-slider incomplete" 
               name="post-slider-moral-confidence" 
               type="range" 
-              class="jspsych-slider incomplete" 
               value="50" min="0" max="100" step="1" 
-              id="post-slider-moral-confidence"
               onmousedown="
                 this.classList.remove('incomplete');
                 this.classList.add('unipolar-clicked');
@@ -1289,12 +1284,12 @@ const demographicsQuestions = {
         <div class="jspsych-survey-multi-choice-question">
           <label for="age">How old are you?</label><br>
           <input 
-            type="number" 
             id="age" 
+            class="incomplete"
             name="age" 
+            type="number" 
             min="18" max="100" 
             style="padding: 5px; width: 40px;" 
-            class="incomplete"
             oninput="this.classList.remove('incomplete');"
           >
         </div>
@@ -1306,11 +1301,11 @@ const demographicsQuestions = {
           <legend>Please indicate how you identify yourself:</legend>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="checkbox" 
               id="race-ethnicity-indigenous" 
-              name="race-ethnicity-indigenous" 
-              value="Indigenous American or Alaskan Native" 
               class="demographics-race-ethnicity incomplete"
+              name="race-ethnicity-indigenous" 
+              type="checkbox" 
+              value="Indigenous American or Alaskan Native" 
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll(
                   '.demographics-race-ethnicity'
@@ -1324,11 +1319,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="checkbox" 
               id="race-ethnicity-asian" 
-              name="race-ethnicity-asian" 
-              value="Asian or Asian-American" 
               class="demographics-race-ethnicity incomplete"
+              name="race-ethnicity-asian" 
+              type="checkbox" 
+              value="Asian or Asian-American" 
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll(
                   '.demographics-race-ethnicity'
@@ -1342,11 +1337,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="checkbox" 
               id="race-ethnicity-black" 
-              name="race-ethnicity-black" 
-              value="African or African-American" 
               class="demographics-race-ethnicity incomplete"
+              name="race-ethnicity-black" 
+              type="checkbox" 
+              value="African or African-American" 
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll(
                   '.demographics-race-ethnicity'
@@ -1360,11 +1355,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="checkbox" 
               id="race-ethnicity-native" 
-              name="race-ethnicity-native" 
-              value="Native Hawaiian or Pacific Islander" 
               class="demographics-race-ethnicity incomplete"
+              name="race-ethnicity-native" 
+              type="checkbox" 
+              value="Native Hawaiian or Pacific Islander" 
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll(
                   '.demographics-race-ethnicity'
@@ -1378,11 +1373,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="checkbox" 
               id="race-ethnicity-white" 
-              name="race-ethnicity-white" 
-              value="White" 
               class="demographics-race-ethnicity incomplete"
+              name="race-ethnicity-white" 
+              type="checkbox" 
+              value="White" 
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll(
                   '.demographics-race-ethnicity'
@@ -1396,11 +1391,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="checkbox" 
               id="race-ethnicity-hispanic" 
-              name="race-ethnicity-hispanic" 
-              value="Hispanic/Latino/a/e/x" 
               class="demographics-race-ethnicity incomplete"
+              name="race-ethnicity-hispanic" 
+              type="checkbox" 
+              value="Hispanic/Latino/a/e/x" 
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll(
                   '.demographics-race-ethnicity'
@@ -1414,11 +1409,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="checkbox" 
               id="race-ethnicity-other" 
-              name="race-ethnicity-other" 
-              value="Other" 
               class="demographics-race-ethnicity incomplete"
+              name="race-ethnicity-other" 
+              type="checkbox" 
+              value="Other" 
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll(
                   '.demographics-race-ethnicity'
@@ -1432,11 +1427,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="checkbox"
               id="race-ethnicity-prefer-not" 
-              name="race-ethnicity-prefer-not" 
-              value="Prefer not to disclose" 
               class="demographics-race-ethnicity incomplete"
+              name="race-ethnicity-prefer-not" 
+              type="checkbox"
+              value="Prefer not to disclose" 
               oninput="
                 let demographicsRaceEthnicity = document.querySelectorAll(
                   '.demographics-race-ethnicity'
@@ -1450,7 +1445,6 @@ const demographicsQuestions = {
           </div>
         </div>
 
-
         <!-- ########## -->
         <!-- # GENDER # -->
         <!-- ########## -->
@@ -1458,11 +1452,11 @@ const demographicsQuestions = {
           <legend>With which gender do you most closely identify?</legend>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="gender-man" 
-              name="gender" 
-              value="Man" 
               class="demographics-gender incomplete"
+              name="gender" 
+              type="radio" 
+              value="Man" 
               oninput="
                 let demographicsGender = document.querySelectorAll(
                   '.demographics-gender'
@@ -1476,11 +1470,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="gender-woman" 
-              name="gender" 
-              value="Woman" 
               class="demographics-gender incomplete"
+              name="gender" 
+              type="radio" 
+              value="Woman"
               oninput="
                 let demographicsGender = document.querySelectorAll(
                   '.demographics-gender'
@@ -1494,11 +1488,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="gender-non-binary" 
-              name="gender" 
-              value="Non-binary" 
               class="demographics-gender incomplete"
+              name="gender" 
+              type="radio" 
+              value="Non-binary" 
               oninput="
                 let demographicsGender = document.querySelectorAll(
                   '.demographics-gender'
@@ -1512,11 +1506,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="gender-other" 
-              name="gender" 
-              value="Other" 
               class="demographics-gender incomplete"
+              name="gender" 
+              type="radio" 
+              value="Other" 
               oninput="
                 let demographicsGender = document.querySelectorAll(
                   '.demographics-gender'
@@ -1530,11 +1524,11 @@ const demographicsQuestions = {
           </div>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="gender-prefer-not" 
-              name="gender" 
-              value="Prefer not to disclose" 
               class="demographics-gender incomplete"
+              name="gender" 
+              type="radio" 
+              value="Prefer not to disclose" 
               oninput="
                 let demographicsGender = document.querySelectorAll(
                   '.demographics-gender'
@@ -1558,11 +1552,11 @@ const demographicsQuestions = {
           </legend>
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="education-less-high-school" 
-              name="education" 
-              value="Less than a high school diploma" 
               class="demographics-education incomplete"
+              name="education" 
+              type="radio" 
+              value="Less than a high school diploma" 
               oninput="
                 let demographicsEducation = document.querySelectorAll(
                   '.demographics-education'
@@ -1579,11 +1573,11 @@ const demographicsQuestions = {
 
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="education-high-school" 
-              name="education" 
-              value="High school degree or equivalent (e.g. GED)" 
               class="demographics-education incomplete"
+              name="education" 
+              type="radio" 
+              value="High school degree or equivalent (e.g. GED)" 
               oninput="
                 let demographicsEducation = document.querySelectorAll(
                   '.demographics-education'
@@ -1600,11 +1594,11 @@ const demographicsQuestions = {
 
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="education-some-college" 
-              name="education" 
-              value="Some college, no degree" 
               class="demographics-education incomplete"
+              name="education" 
+              type="radio" 
+              value="Some college, no degree" 
               oninput="
                 let demographicsEducation = document.querySelectorAll(
                   '.demographics-education'
@@ -1621,11 +1615,11 @@ const demographicsQuestions = {
 
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="education-associate" 
-              name="education" 
-              value="Associate Degree (e.g. AA, AS)" 
               class="demographics-education incomplete"
+              name="education" 
+              type="radio" 
+              value="Associate Degree (e.g. AA, AS)" 
               oninput="
                 let demographicsEducation = document.querySelectorAll(
                   '.demographics-education'
@@ -1642,11 +1636,11 @@ const demographicsQuestions = {
 
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="education-bachelors" 
-              name="education" 
-              value="Bachelor's Degree (e.g. BA, BS)" 
               class="demographics-education incomplete"
+              name="education" 
+              type="radio" 
+              value="Bachelor's Degree (e.g. BA, BS)" 
               oninput="
                 let demographicsEducation = document.querySelectorAll(
                   '.demographics-education'
@@ -1663,11 +1657,11 @@ const demographicsQuestions = {
           
           <div class="jspsych-survey-multi-choice-option">
             <input 
-              type="radio" 
               id="education-postgraduate" 
-              name="education" 
-              value="Postgraduate Degree (e.g. Master's Degree, Professional Degree, Doctorate Degree)" 
               class="demographics-education incomplete"
+              name="education" 
+              type="radio" 
+              value="Postgraduate Degree (e.g. Master's Degree, Professional Degree, Doctorate Degree)" 
               oninput="
                 let demographicsEducation = document.querySelectorAll(
                   '.demographics-education'

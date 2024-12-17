@@ -18,10 +18,10 @@ const jsPsych = initJsPsych({
 // TODO: Declare experiment ID
 // Choose from among these to relay via DataPipe
 // const pilotExperimentId = "oA2BJCIcu8jQ";
-const debugExperimentId = "A6svaLMoS1gc";
+// const debugExperimentId = "A6svaLMoS1gc";
 // const preregisteredExperimentv1Id = "RahEcv24SVWm";
-// const preregisteredExperimentv2Id = "7S8N8Sx4B08Z";
-const experimentId = debugExperimentId;
+const preregisteredExperimentv2Id = "7S8N8Sx4B08Z";
+const experimentId = preregisteredExperimentv2Id;
 // ############################################
 
 
@@ -33,10 +33,10 @@ const experimentId = debugExperimentId;
 const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
 const studyId = jsPsych.data.getURLVariable('STUDY_ID');
 const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
-// const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
+const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
 
 // For debugging purposes, we will use a random subject ID (randomID(n) generates a random string of n characters)
-const filename = `${jsPsych.randomization.randomID(10)}.csv`;
+// const filename = `${jsPsych.randomization.randomID(10)}.csv`;
 // ############################################
 
 

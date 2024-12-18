@@ -33,10 +33,10 @@ const experimentId = preregisteredExperimentv2Id;
 const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
 const studyId = jsPsych.data.getURLVariable('STUDY_ID');
 const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
-const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
+// const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
 
 // For debugging purposes, we will use a random subject ID (randomID(n) generates a random string of n characters)
-// const filename = `${jsPsych.randomization.randomID(10)}.csv`;
+const filename = `${jsPsych.randomization.randomID(10)}.csv`;
 // ############################################
 
 
@@ -567,10 +567,10 @@ function prePredictionsSelf(trialIndex) {
             >
             <div class="slider-anchors">
               <span class="jspsych-slider-left-anchor">
-                Not at all
+                Not at all justified
               </span>
               <span class="jspsych-slider-right-anchor">
-                Completely
+                Completely justified
               </span>
             </div>
           </div><br><br><br>
@@ -602,10 +602,10 @@ function prePredictionsSelf(trialIndex) {
             >
             <div class="slider-anchors">
               <span class="jspsych-slider-left-anchor">
-                Not at all
+                Not at all willing
               </span>
               <span class="jspsych-slider-right-anchor">
-                Completely
+                Extremely willing
               </span>
             </div>
           </div><br><br><br>`,
@@ -895,8 +895,8 @@ function postPredictionsSelf(trialIndex) {
               "
             >
             <div class="slider-anchors">
-              <span class="jspsych-slider-left-anchor">Not at all</span>
-              <span class="jspsych-slider-right-anchor">Completely</span>
+              <span class="jspsych-slider-left-anchor">Not at all willing</span>
+              <span class="jspsych-slider-right-anchor">Extremely willing</span>
             </div>
           </div><br><br><br>`,
     button_label: 'Next',
@@ -1268,7 +1268,7 @@ for (let trialIndex = 0; trialIndex < trials.length; trialIndex++) {
 timeline.push(revealTask());
 
 // Post-Sampling Individual Differences
-timeline.push(iriQuestions, ihQuestions);
+timeline.push(ihQuestions); // Not including IRI this time
 
 // DEMOGRAPHICS //
 const demographicsQuestions = {

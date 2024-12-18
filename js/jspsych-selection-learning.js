@@ -365,8 +365,6 @@ var jsPsychSelectionLearning = (function (jspsych) {
 						}
 
 						clickRtArray.push(clickRt);
-						console.log(clickRtArray);
-
 						endTrial();
 					});
 

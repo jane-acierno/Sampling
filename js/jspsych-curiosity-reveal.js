@@ -90,17 +90,10 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				boxesGrid.append(statementBox);
 			};
 
-			
 			trial.button_html = trial.button_html || '<button class="jspsych-btn">%choice%</button>';
 			
-
-
-
 			// RECORD DATA
 			let boxSelections = [];
-
-			// Track number of clicks
-			let boxSelectionFlag = Array(3).fill(false);
 			
 			// Reaction times for clicking on boxes
 			let clickRtArray = [];
@@ -130,8 +123,6 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 			window.onload = function() {
 				window.scrollTo(0, 0);
 			};
-
-
 
 			var advanceButton = `<button class="jspsych-btn"><i class='fa-solid fa-circle-check' style='color: green'></i>&nbsp;&nbsp;I'm all done</button>`
 			$('#jspsych-curiosity-advance-btngroup').append(
@@ -171,16 +162,12 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 				}).text(ratingPrompt);
 
 				const inputElement = $('<input>', {
+					id: 'rating-slider',
+					class: 'jspsych-slider bipolar-clicked unclickable',
 					name: 'rating-slider',
 					type: 'range',
-					class: 'jspsych-slider bipolar-clicked unclickable',
 					value: trueRatingsDict[trials[boxIndex]],
 					min: 0, max: 100, step: 1,
-					id: 'rating-slider',
-					oninput: `
-						this.classList.remove('bipolar-clicked');
-						$('#rating-slider').addClass('fade-out');
-					`,
 					disabled: true
 				});
 
@@ -200,10 +187,8 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 					})
 				);
 
-
 				const value = trueRatingsDict[trials[boxIndex]];
 				const percentage = value; // Assuming this is already a percentage
-
 				const bigNumber = $(`
 					<div class="circle-container">
 						<svg class="circle-svg" width="150" height="150" viewBox="0 0 36 36">
@@ -296,43 +281,11 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 						trialFormat.html('<div id="trial-format"></div>');
 						trialFeedback.html('<div id="selection-buttons"></div>');
 						
-						// Fade the prompt back in
-						if (boxSelectionFlag.every((val, index) => val === [true, true, true][index])) {
+						// Fade the selection options back in
+						boxContainer.removeClass('fade-out-partial')
+							.addClass('fade-in');
+						reattachEventListeners();
 
-							const reviewButton = `<button class="jspsych-btn"><i class='fa-solid fa-rotate-left'></i>&nbsp;&nbsp;View again</button>`
-							
-							$('#jspsych-curiosity-advance-btngroup').append(
-								$(reviewButton).attr('id', 'jspsych-curiosity-review-btn')
-									.data('choice', 1)
-									.addClass('jspsych-curiosity-review-btn')
-									.on('click', function (e) {
-										for (let boxIndex = 0; boxIndex <= 3; boxIndex++) {									
-											$("#box" + boxIndex + " > div").css("background-color", "rgba(238, 238, 238, 1)");  // Fades background color back in
-											$("#box" + boxIndex + " > div").css("color", "rgba(0, 0, 0, 1)");  // Fades background text back in 
-											$("#box" + boxIndex + " > div").css("border-color", "rgba(0, 0, 0, 1)");  // Fades background text back in
-										};
-										$("#jspsych-curiosity-review-btn").remove();
-										boxSelectionFlag = [false, false, false];
-
-										for (let j = 0; j < trials.length; j++) {
-											$("#box" + j).removeClass('disabled');
-										};
-									})
-							);
-
-							$('#jspsych-selection-learning-button-1').on('click', function (e) {
-								let viewToc = (new Date()).getTime();
-								let viewRt = viewToc - viewTic;
-								viewRtArray.push(viewRt);
-								endTrial();
-							});
-
-						} else {
-							// Fade the selection options back in
-							boxContainer.removeClass('fade-out-partial')
-								.addClass('fade-in');
-							reattachEventListeners();
-						}
 					});
 
 					// Click advance
@@ -349,11 +302,9 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 						}
 						else { 
 							var clickRt = clickToc - (startTime + clickRtArray.reduce((acc, curr) => acc + curr, 0) + viewRtArray.reduce((acc, curr) => acc + curr, 0));
-						}
+						};
 
 						clickRtArray.push(clickRt);
-						console.log(clickRtArray);
-
 						endTrial();
 					});
 
@@ -374,12 +325,10 @@ var jsPsychCuriosityReveal = (function (jspsych) {
 
 						if (currentSelection !== boxIndex) {
 							boxSelections.push(boxIndex); // Push box index to selections
-							boxSelectionFlag[boxIndex] = true; // Set flag to true
 							currentSelection = boxIndex; // Update current selection
 						}
 
 						if (!isRevealInProgress && !this.classList.contains('disabled')) {
-
 
 							isRevealInProgress = true; // Set flag to indicate learning is in progress
 

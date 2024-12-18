@@ -33,10 +33,10 @@ const experimentId = preregisteredExperimentv2Id;
 const participantId = jsPsych.data.getURLVariable('PROLIFIC_PID');
 const studyId = jsPsych.data.getURLVariable('STUDY_ID');
 const sessionId = jsPsych.data.getURLVariable('SESSION_ID');
-// const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
+const filename = `${participantId}` + "_" + `${studyId}` + "_" + `${sessionId}.csv`;
 
 // For debugging purposes, we will use a random subject ID (randomID(n) generates a random string of n characters)
-const filename = `${jsPsych.randomization.randomID(10)}.csv`;
+// const filename = `${jsPsych.randomization.randomID(10)}.csv`;
 // ############################################
 
 
